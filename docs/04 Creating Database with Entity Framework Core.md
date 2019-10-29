@@ -314,6 +314,8 @@ Here are Cast and Crew entities.
 
 ```
 
+Below is the code for Cast and Crew in our MovieShopDbContext class
+
 ```csharp
 
         public DbSet<Crew> Crews { get; set; }
@@ -380,6 +382,9 @@ Our next entities/tables that we are going to create are User and Role tables.
         public string Name { get; set; }
     }
 ```
+
+Below is the code for User and Role in our MovieShopDbContext class
+
 
 ```csharp
 
