@@ -57,13 +57,13 @@ Add two new Folders called src (remember they are physical folders in windows ex
 In the src folder right click and add new project select ASP.NET Core Web Application and in the next screen make sure your Project name is MovieShop.API and Location is pointing to src folder and then click Create.
 
 **Solution Folders organization**
-![alt text](../images/01.02&#32;Solution&#32;Folder&#32;Structure.png "Solution Folders organization")
+![alt text](images/01.02&#32;MovieShop&#32;Solution.png "Solution Folders organization")
 
 **ASP.NET Core API Project**
-![alt text](../images/01.03&#32;ASP.NET&#32;Core&#32;API&#32;Create.jpg "ASP.NET Core API Project")
+![alt text](images/01.03&#32;ASP.NET&#32;Core&#32;API&#32;Create.jpg "ASP.NET Core API Project")
 
 **Create MovieShop.API ASP.NET Core API Project inside src folder**
-![alt text](../images/01.04&#32;Web&#32;API&#32;Project.png "Create MovieShop.API ASP.NET Core API Project inside src folder")
+![alt text](images/01.04&#32;Web&#32;API&#32;Project.png "Create MovieShop.API ASP.NET Core API Project inside src folder")
 
 
 ## Creating our First Controller and testing in Postman
@@ -110,7 +110,7 @@ Here **[HttpGet]** denotes a method that responds to an HTTP GET request.
 Now lets run the application and open __Postman__ and go to the url <https://localhost:44346/api/genres> (remember your port may vary). You should see the following output.
 
   **Making GET Request with Postman**
-  ![alt text](../images/01.11&#32;Postman&#32;Result.png " Making GET Request with Postman")
+  ![alt text](images/01.11&#32;Postman&#32;Result.png " Making GET Request with Postman")
 
 ```json
   [
