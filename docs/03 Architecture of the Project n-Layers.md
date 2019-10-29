@@ -68,14 +68,13 @@ We can create a single ASP.NET Core project and have all our logic that may incl
   The Services project is the one has all the business logic code for our application  and its going to communicate with MovieShop.Data project and use MovieShop.Entities project. Therefore we need to add reference for MovieShop.Entities project and MovieShop.Data inside the MovieShop.Services project.
 
   **MovieShop.Services class library project (.NET Standard 2.0)**
-  ![alt text](../images/01.08&#32;MovieShop.Services.png " MovieShop.Services class library project (.NET Standard 2.0)")
+  ![alt text](images/01.08&#32;MovieShop.Services.png " MovieShop.Services class library project (.NET Standard 2.1)")
 
 
 #### Here is how your solution should look like after creating all the layers
 
  **Solution with all the layers**
-  ![alt text](../images/01.09&#32;Layers.png "Solution with all the layers")
+  ![alt text](images/01.09&#32;Layers.png "Solution with all the layers")
 
 **Dependency Diagram of all the layers**
- ![alt text](../images/01.10&#32;Dependencies&#32;Graph.png "Dependency Diagram of all the layers")
-
+ ![alt text](images/01.10&#32;Dependencies&#32;Graph.png "Dependency Diagram of all the layers")
