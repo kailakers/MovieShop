@@ -110,7 +110,7 @@ Here **[HttpGet]** denotes a method that responds to an HTTP GET request.
 Now lets run the application and open __Postman__ and go to the url <https://localhost:44346/api/genres> (remember your port may vary). You should see the following output.
 
   **Making GET Request with Postman**
-  ![alt text](images/01.11&#32;Postman&#32;Result.png " Making GET Request with Postman")
+  ![alt text](images/01.10&#32;Postman&#32;Result.png " Making GET Request with Postman")
 
 ```json
   [
