@@ -273,8 +273,8 @@ SET IDENTITY_INSERT [dbo].[Genre] OFF
         public DateTime? ReleaseDate { get; set; }
         public int? RunTime { get; set; }
         public decimal? Price { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string UpdatedBy { get; set; }
         public string CreatedBy { get; set; }
 
@@ -311,7 +311,7 @@ You can not set a default value using Data Annotations. You can use the Fluent A
             builder.Property(m => m.PosterUrl).HasMaxLength(2084);
             builder.Property(m => m.BackdropUrl).HasMaxLength(2084);
             builder.Property(m => m.OriginalLanguage).HasMaxLength(64);
-            builder.Property(m => m.Price).HasColumnType("decimal(5, 2)").HasDefaultValue(9.9);
+            builder.Property(m => m.Price).HasColumnType("decimal(5, 2)").HasDefaultValue(9.9m);
             builder.Property(m => m.CreatedDate).HasDefaultValueSql("getdate()");
 
         }
