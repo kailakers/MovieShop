@@ -262,7 +262,7 @@ export class GenresComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.http.get('https://localhost:44346/api/genres').subscribe(
+    this.http.get('https://localhost:44312/api/genres').subscribe(
       (data) => {
         console.log(data);
         this.genres = data;
@@ -276,7 +276,7 @@ export class GenresComponent implements OnInit {
 
 __Now lets examine our code:__
 
-Here, first we are importing HttpClient from __@angular/common/http__ module then in the constructor we created private variable http of type Http. We are going to use get method to fetch the data from our API. Here we are specifying what is the URL for our HTTP request. In our case its <https://localhost:44346/api/genres>.
+Here, first we are importing HttpClient from __@angular/common/http__ module then in the constructor we created private variable http of type Http. We are going to use get method to fetch the data from our API. Here we are specifying what is the URL for our HTTP request. In our case its <https://localhost:44312/api/genres>.
 
 HttpClient in Angular is __Observable__ based API which is coming from RxJS library <https://rxjs-dev.firebaseapp.com/> (version 6). You can think of Observables as mechanism that provides a way to pass messages between publishers and subscribers in your application. If you are familiar with Promise based async programming then Observables offer significant benefits. The thing with Observables is that it can deliver multiple values over time. In our case our HTTP call returns an Observable. The thing with Observable here is that if we don't subscribe nothing will happen. If we subscribe multiple times to these observables, multiple HTTP requests will be triggered. As mentioned above Observables can return stream of values over time, in our case when HTTP call is successfully then it will emit only one value and then completes. If HTTP request fails then this Observable will emit error so that we can catch and take appropriate action.
 
@@ -287,7 +287,7 @@ In our code when we call get() method, it return an Observable, then we are subs
 Now lets run our app and go to <http://localhost:4200/genres> and open Chrome Developer tools by pressing F12 and go to Console tab.
 You should see following message
 
-__Access to XMLHttpRequest at 'https://localhost:44346/api/genres' from origin 'http://localhost:4200' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.__
+__Access to XMLHttpRequest at <https://localhost:44312/api/genres> from origin <http://localhost:4200> has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.__
 
 > ![alt text](../images/02.03&#32;CORS&#32;Error&#32;Chrome.png "CORS Error")
 
