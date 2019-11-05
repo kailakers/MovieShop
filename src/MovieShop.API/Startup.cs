@@ -41,6 +41,10 @@ namespace MovieShop.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder =>
+                        {
+                            builder.WithOrigins(Configuration.GetValue<string>("clientSPAUrl")).AllowAnyHeader().AllowAnyMethod();
+                        });
             app.UseHttpsRedirection();
 
             app.UseRouting();
