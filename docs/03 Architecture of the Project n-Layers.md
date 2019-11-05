@@ -25,7 +25,7 @@ We can create a single ASP.NET Core project and have all our logic that may incl
   
   **Single ASP.NET Core Project where separation is done by folders**
 
-![alt text](../images/01.05&#32;Monolithic&#32;Application.png "Single ASP.NET Core Project")
+![alt text](images/01.05&#32;Monolithic&#32;Application.png "Single ASP.NET Core Project")
 
 ## Layered architecture
 
@@ -41,12 +41,12 @@ We can create a single ASP.NET Core project and have all our logic that may incl
 
   **First**, we are going to create a layer called MovieShop.Entities. Except for our MovieShop.API project all of our layers are going to be a .NET Standard Class library projects.
 
-  Right Click on src folder and add new project and select .NET Standard as project type and enter **MovieShop.Entities** for Project name and point the location to src folder as shown in the below figure.
+  Right Click on src folder and add new project and select .NET Standard as project type and enter **MovieShop.Core** for Project name and point the location to src folder as shown in the below figure.
   
   The Entities project is the one that represents the business model classes are persisted and the idea is to use Entities Project across the application in almost all layers and it is the one with very minimal dependencies. 
 
-  **MovieShop.Entities class library project (.NET Standard 2.0)**
-  ![alt text](../images/01.06&#32;MovieShop.Entities.png " MovieShop.Entities class library project (.NET Standard 2.0)")
+  **MovieShop.Entities class library project (.NET Standard 2.1)**
+  ![alt text](images/01.06&#32;MovieShop.Core.png " MovieShop.Core class library project (.NET Standard 2.1)")
 
 
   **Second**, we are going to create a layer called MovieShop.Data. 
@@ -57,8 +57,8 @@ We can create a single ASP.NET Core project and have all our logic that may incl
   
   Since DbContext needs DbSets which are represented by our Entities (that needs to be persisted) we need to add reference for MovieShop.Entities project inside the MovieShop.Data project.
 
-  **MovieShop.Data class library project (.NET Standard 2.0)**
-  ![alt text](../images/01.07&#32;MovieShop.Data.png " MovieShop.Data class library project (.NET Standard 2.0)")
+  **MovieShop.Data class library project (.NET Standard 2.1)**
+  ![alt text](images/01.07&#32;MovieShop.Data.png " MovieShop.Data class library project (.NET Standard 2.1)")
 
 
   **Third**, we are going to create a layer called MovieShop.Services.
@@ -67,14 +67,14 @@ We can create a single ASP.NET Core project and have all our logic that may incl
   
   The Services project is the one has all the business logic code for our application  and its going to communicate with MovieShop.Data project and use MovieShop.Entities project. Therefore we need to add reference for MovieShop.Entities project and MovieShop.Data inside the MovieShop.Services project.
 
-  **MovieShop.Services class library project (.NET Standard 2.0)**
+  **MovieShop.Services class library project (.NET Standard 2.1)**
   ![alt text](images/01.08&#32;MovieShop.Services.png " MovieShop.Services class library project (.NET Standard 2.1)")
 
 
 #### Here is how your solution should look like after creating all the layers
 
  **Solution with all the layers**
-  ![alt text](images/01.09&#32;Layers.png "Solution with all the layers")
+  ![alt text](images/01.09&#32;All&#32;Layers.png"Solution with all the layers")
 
 **Dependency Diagram of all the layers**
- ![alt text](images/01.10&#32;Dependencies&#32;Graph.png "Dependency Diagram of all the layers")
+ ![alt text](images/01.09&#32;Dependency&#32;Graph.png "Dependency Diagram of all the layers")

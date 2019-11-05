@@ -53,7 +53,7 @@ The --open (or just -o) option automatically opens your browser to <http://local
 
 In the browser you should see the following greeting message, which means we have successfully created our Angular App.
 
-> ![alt text](../images/02.02&#32;Angular&#32;App&#32;Created.png "Welcome to MovieShopWeb!")
+> ![alt text](images/02.02&#32;Angular&#32;App&#32;Created.png "Welcome to MovieShopWeb!")
 
 
 ## Understanding the Angular app - Walkthrough
