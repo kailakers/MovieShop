@@ -517,6 +517,10 @@ INSERT INTO [Movie] ([TmdbUrl], [Title], [OverView], [Tagline], [Runtime], [Budg
 
 ```
 
+[a link](https://raw.githubusercontent.com/Reddy57/MovieShop/master/docs/sqlfiles/02Movies.sql?token=AEW7MTAJPMNANFZRZRYVJFC5YHJ4Y)
+
+
+
 #### Next tables we are going to create are Cast and Crew whic are pretty straight forwards and self explanotary.
 
 ##### Here are Cast and Crew entities
