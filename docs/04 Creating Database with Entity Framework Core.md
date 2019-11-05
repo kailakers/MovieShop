@@ -96,7 +96,7 @@ First let's add connectionString for our application in appsettings.json file
 ```json
  {
   "ConnectionStrings": {
-    "MovieShopDbConnection": "Server=(local);Integrated Security=true;Initial Catalog=MovieShopDb;"
+    "MovieShopDbConnection": "Server=(local);Integrated Security=true;Initial Catalog=MovieShop;"
   },
 
   "Logging": {
@@ -119,16 +119,7 @@ public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MovieShopDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MovieShopDbConnection")));
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy(_myAllowSpecificOrigins,
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
-                                  });
-            });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+           
         }
 ```
 
@@ -230,7 +221,40 @@ Here is our Database with first Table __Genre__. EF also creates a table called 
 
 > ![alt text](images/04.01&#32;First&#32;Migration&#32;Updated.png "First Migration Database")
 
-Now, we wanna create our Movie entity with followinf properties
+##### Insert Genres Data 
+
+Lets open our SQL CLient (SSMS  or Visual Studio Code with SQL Server Extension) and execute the following Query
+
+```sql
+SET IDENTITY_INSERT [dbo].[Genre] ON 
+
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (1, N'Adventure') 
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (2, N'Fantasy')
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (3, N'Animation')
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (4, N'Drama' )
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (5, N'Horror' )
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (6, N'Action' )
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (7, N'Comedy')
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (8, N'History' )
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (9, N'Western' )
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (10, N'Thriller' )
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (11, N'Crime' )
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (12, N'Documentary')
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (13, N'Science Fiction')
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (14, N'Mystery')
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (15, N'Music')
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (16, N'Romance')
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (17, N'Family')
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (18, N'War')
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (19, N'Foreign')
+INSERT [dbo].[Genre] ([Id], [Name]) VALUES (20, N'TV Movie')
+
+SET IDENTITY_INSERT [dbo].[Genre] OFF
+
+ 
+```
+
+#### Now, we wanna create our Movie entity with following properties
 
 ```csharp
   public class Movie
@@ -288,9 +312,9 @@ add-migration MovieTable
 update-database
 ```
 
-Next tables we are going to create are Cast and Crew whic are pretty straight forwards and self explanotary.
+#### Next tables we are going to create are Cast and Crew whic are pretty straight forwards and self explanotary.
 
-Here are Cast and Crew entities.
+##### Here are Cast and Crew entities
 
 ```csharp
 
