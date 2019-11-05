@@ -3042,11 +3042,11 @@ Our next entities/tables that we are going to create are User and Role tables.
         public string HashedPassword { get; set; }
         public string Salt { get; set; }
         public string PhoneNumber { get; set; }
-        public bool TwoFactorEnabled { get; set; }
+        public bool? TwoFactorEnabled { get; set; }
         public DateTime? LockoutEndDate { get; set; }
         public DateTime? LastLoginDateTime { get; set; }
-        public bool IsLocked { get; set; }
-        public int AccessFailedCount { get; set; }
+        public bool? IsLocked { get; set; }
+        public int? AccessFailedCount { get; set; }
     }
 
     public class Role

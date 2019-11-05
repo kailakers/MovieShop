@@ -9,6 +9,10 @@
     <Compile Remove="Migrations\20191029173744_InitialMigration.Designer.cs" />
     <Compile Remove="Migrations\20191105201428_MovieTable.cs" />
     <Compile Remove="Migrations\20191105201428_MovieTable.Designer.cs" />
+    <Compile Remove="Migrations\20191105205628_UserandRoleTables.cs" />
+    <Compile Remove="Migrations\20191105205628_UserandRoleTables.Designer.cs" />
+    <Compile Remove="Migrations\20191105211928_UserandRoleTables.cs" />
+    <Compile Remove="Migrations\20191105211928_UserandRoleTables.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

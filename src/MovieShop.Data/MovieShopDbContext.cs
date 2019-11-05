@@ -14,12 +14,20 @@ namespace MovieShop.Data
 
         }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Crew> Crews { get; set; }
+        public DbSet<Cast> Casts { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Genre>(ConfigureGenre);
             modelBuilder.Entity<Movie>(ConfigureMovie);
             modelBuilder.Entity<Cast>(ConfigureCast);
             modelBuilder.Entity<Crew>(ConfigureCrew);
+            modelBuilder.Entity<User>(ConfigureUser);
+            modelBuilder.Entity<Role>(ConfigureRole);
 
         }
 
@@ -68,5 +76,26 @@ namespace MovieShop.Data
             builder.Property(c => c.Name).HasMaxLength(128);
             builder.Property(c => c.ProfilePath).HasMaxLength(2084);
         }
+        private void ConfigureRole(EntityTypeBuilder<Role> builder)
+        {
+            builder.ToTable("Role");
+            builder.HasKey(r => r.Id);
+            builder.Property(r => r.Name).HasMaxLength(20);
+        }
+
+        private void ConfigureUser(EntityTypeBuilder<User> builder)
+        {
+            builder.ToTable("User");
+            builder.HasKey(u => u.Id);
+            builder.HasIndex(u => u.Email).IsUnique();
+            builder.Property(u => u.Email).HasMaxLength(256);
+            builder.Property(u => u.FirstName).HasMaxLength(128);
+            builder.Property(u => u.LastName).HasMaxLength(128);
+            builder.Property(u => u.HashedPassword).HasMaxLength(1024);
+            builder.Property(u => u.PhoneNumber).HasMaxLength(16);
+            builder.Property(u => u.Salt).HasMaxLength(1024);
+            builder.Property(u => u.IsLocked).HasDefaultValue(false);
+        }
+
     }
 }
