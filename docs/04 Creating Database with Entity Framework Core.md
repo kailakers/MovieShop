@@ -273,11 +273,21 @@ SET IDENTITY_INSERT [dbo].[Genre] OFF
         public DateTime? ReleaseDate { get; set; }
         public int? RunTime { get; set; }
         public decimal? Price { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public string UpdatedBy { get; set; }
+        public string CreatedBy { get; set; }
+
      }
 ```
 
 We need to Configure Fluent API for our Movie Entity. First lets add  Movies DbSet ptoperty, then add Fuent API Configuration.
 Add Following Code in __MovieShopDbContext__
+We are going to add some default values for some columns such as price, createddate etc.
+The default value of a column is the value that will be inserted if a new row is inserted but no value is specified for the column.
+You can not set a default value using Data Annotations. You can use the Fluent API to specify the default value for a property
+
+
 ```csharp
 
         public DbSet<Movie> Movies { get; set; }
@@ -301,7 +311,9 @@ Add Following Code in __MovieShopDbContext__
             builder.Property(m => m.PosterUrl).HasMaxLength(2084);
             builder.Property(m => m.BackdropUrl).HasMaxLength(2084);
             builder.Property(m => m.OriginalLanguage).HasMaxLength(64);
-            builder.Property(m => m.Price).HasColumnType("decimal(5, 2)");
+            builder.Property(m => m.Price).HasColumnType("decimal(5, 2)").HasDefaultValue(9.9);
+            builder.Property(m => m.CreatedDate).HasDefaultValueSql("getdate()");
+
         }
 
 ```
@@ -516,10 +528,6 @@ INSERT INTO [Movie] ([TmdbUrl], [Title], [OverView], [Tagline], [Runtime], [Budg
 INSERT INTO [Movie] ([TmdbUrl], [Title], [OverView], [Tagline], [Runtime], [Budget], [Revenue], [BackdropUrl], [PosterUrl], [ImdbUrl], [OriginalLanguage], [ReleaseDate]) VALUES ('https://www.themoviedb.org/movie/260513', 'Incredibles 2', 'Elastigirl springs into action to save the day, while Mr. Incredible faces his greatest challenge yet – taking care of the problems of his three children.', 'Back to work.', 118, 200000000, 1241891456, 'https://image.tmdb.org/t/p/original//mabuNsGJgRuCTuGqjFkWe1xdu19.jpg', 'https://image.tmdb.org/t/p/w342//9lFKBtaVIhP7E2Pk0IY1CwTKTMZ.jpg', 'https://www.imdb.com/title/tt3606756', 'en', '2018-06-14')
 
 ```
-
-[a link](https://raw.githubusercontent.com/Reddy57/MovieShop/master/docs/sqlfiles/02Movies.sql?token=AEW7MTAJPMNANFZRZRYVJFC5YHJ4Y)
-
-
 
 #### Next tables we are going to create are Cast and Crew whic are pretty straight forwards and self explanotary.
 
