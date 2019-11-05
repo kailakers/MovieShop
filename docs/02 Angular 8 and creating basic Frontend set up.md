@@ -324,7 +324,7 @@ Now, lets go to the Startup.cs in or API and write the following code
 
 Now lets run pur API and refresh the Angular App at <http://localhost:4200/genres>, you should see the 3 genres in the console window of the Chrome Dev tools. Also if you look at the Network Tab and click the genres item and inspect the Headers tab in the Request Headers you should see the __Origin :__ <http://localhost:4200> and in Response Headers we should see __access-control-allow-origin:__ <http://localhost:4200>
 
-> ![alt text](../images/02.04&#32;CORS&#32;working.png "CORS Working")
+> ![alt text](images/02.04&#32;CORS&#32;working.png "CORS Working")
 
 
 ## Using *ngFor Directive for displaying some test data
