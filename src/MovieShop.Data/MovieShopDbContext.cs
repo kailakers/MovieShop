@@ -18,6 +18,8 @@ namespace MovieShop.Data
         {
             modelBuilder.Entity<Genre>(ConfigureGenre);
             modelBuilder.Entity<Movie>(ConfigureMovie);
+            modelBuilder.Entity<Cast>(ConfigureCast);
+            modelBuilder.Entity<Crew>(ConfigureCrew);
 
         }
 
@@ -47,6 +49,24 @@ namespace MovieShop.Data
             builder.Property(m => m.OriginalLanguage).HasMaxLength(64);
             builder.Property(m => m.Price).HasColumnType("decimal(5, 2)").HasDefaultValue(9.9m);
             builder.Property(m => m.CreatedDate).HasDefaultValueSql("getdate()");
+        }
+
+        private void ConfigureCrew(EntityTypeBuilder<Crew> builder)
+        {
+            builder.ToTable("Crew");
+            builder.HasKey(c => c.Id);
+            builder.HasIndex(c => c.Name);
+            builder.Property(c => c.Name).HasMaxLength(128);
+            builder.Property(c => c.ProfilePath).HasMaxLength(2084);
+        }
+
+        private void ConfigureCast(EntityTypeBuilder<Cast> builder)
+        {
+            builder.ToTable("Cast");
+            builder.HasKey(c => c.Id);
+            builder.HasIndex(c => c.Name);
+            builder.Property(c => c.Name).HasMaxLength(128);
+            builder.Property(c => c.ProfilePath).HasMaxLength(2084);
         }
     }
 }
