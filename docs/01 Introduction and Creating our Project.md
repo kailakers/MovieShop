@@ -93,17 +93,18 @@ Lets add a simple Action method that returns some dummy Genres to our GenresCont
 
 
 ```cs
-[HttpGet]
-public IActionResult GetAllGenres()
-{
-    var genres = new[]
-                 {
-                     new {Id = 1, Name = "Action"},
-                     new {Id = 2, Name = "Comedy"},
-                     new {Id = 2, Name = "Thriller"}
 
-    return Ok(genres);
-}
+        [HttpGet]
+        public IActionResult GetAllGenres()
+        {
+            var genres = new[]
+                         {
+                             new {Id = 1, Name = "Action"},
+                             new {Id = 2, Name = "Comedy"},
+                             new {Id = 3, Name = "Thriller"}
+                         };
+            return Ok(genres);
+        }
 ```
 
 Here **[HttpGet]** denotes a method that responds to an HTTP GET request.
@@ -123,7 +124,7 @@ Now lets run the application and open __Postman__ and go to the url <https://loc
         "name": "Comedy"
     },
     {
-        "id": 2,
+        "id": 3,
         "name": "Thriller"
     }
 ]
