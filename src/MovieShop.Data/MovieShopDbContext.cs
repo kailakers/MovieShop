@@ -28,6 +28,7 @@ namespace MovieShop.Data
             modelBuilder.Entity<Crew>(ConfigureCrew);
             modelBuilder.Entity<User>(ConfigureUser);
             modelBuilder.Entity<Role>(ConfigureRole);
+            modelBuilder.Entity<MovieGenre>(ConfigureMovieGenre);
 
         }
 
@@ -95,6 +96,14 @@ namespace MovieShop.Data
             builder.Property(u => u.PhoneNumber).HasMaxLength(16);
             builder.Property(u => u.Salt).HasMaxLength(1024);
             builder.Property(u => u.IsLocked).HasDefaultValue(false);
+        }
+
+        private void ConfigureMovieGenre(EntityTypeBuilder<MovieGenre> builder)
+        {
+            builder.ToTable("MovieGenre");
+            builder.HasKey(mg => new { mg.MovieId, mg.GenreId });
+            builder.HasOne(mg => mg.Movie).WithMany(g => g.MovieGenres).HasForeignKey(mg => mg.MovieId);
+            builder.HasOne(mg => mg.Genre).WithMany(g => g.MovieGenres).HasForeignKey(mg => mg.GenreId);
         }
 
     }

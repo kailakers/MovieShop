@@ -5017,3 +5017,64 @@ INSERT [dbo].[User] ([Id], [FirstName], [LastName], [DateOfBirth], [Email], [Has
 SET IDENTITY_INSERT [dbo].[User] OFF
 
 ```
+
+Now that we have created some of our tables, lets try to establish relation between those entities. 
+If you look at our ER diagram we have __Many-to-many__ relationship between Movie and Genre entities i.e one movie can belong to multiple Genres and one Genre can have multiple Movies.
+In Relational Databases we typically associate __Many-to-many__ with a join table where we have primary keys of each of those table in the Join table. Therefore in our scenario we want to have GenreId and MovieId in our join table.
+
+Entity Framework Core can can represent __Many-to-many__ relationship only by combining two one-to-many relationships and using a junction class to join them together.
+First Lets create the Junction class MovieGenre
+
+```cs
+
+public class MovieGenre
+    {
+        public int MovieId { get; set; }
+        public int GenreId { get; set; }
+        public virtual Movie Movie { get; set; }
+        public virtual Genre Genre { get; set; }
+    }
+
+``` 
+
+Now we are going to map two separate __One-to-many__ relationships in our Movie and Genre entities
+
+Add below property inside both of our Movie and Genre Entities
+
+```cs
+public ICollection<MovieGenre> MovieGenres { get; set; }
+
+```
+Now we are going to add the necessary Fluent API configurations
+
+In our __OnModelCreating__ method we are going to add configuration for MovieGenre
+
+```cs
+
+ modelBuilder.Entity<MovieGenre>(ConfigureMovieGenre);
+  
+```
+
+Here is the mthod for the Configuration of MovieGenre Table using Fluent API
+
+```cs
+private void ConfigureMovieGenre(EntityTypeBuilder<MovieGenre> builder)
+        {
+            builder.ToTable("MovieGenre");
+            builder.HasKey(mg => new { mg.MovieId, mg.GenreId });
+            builder.HasOne(mg => mg.Movie).WithMany(g => g.MovieGenres).HasForeignKey(mg => mg.MovieId);
+            builder.HasOne(mg => mg.Genre).WithMany(g => g.MovieGenres).HasForeignKey(mg => mg.GenreId);
+        }
+```
+
+Lets add our migration and update the database.
+
+
+```cmd
+  Add-Migration MovieGenreTable
+  Update-Database
+
+```
+
+You should see the MovieGenre table in the database.
+
