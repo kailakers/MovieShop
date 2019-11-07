@@ -26,6 +26,7 @@ namespace MovieShop.Core.Entities
         public string CreatedBy { get; set; }
 
         public ICollection<MovieGenre> MovieGenres { get; set; }
-
+        public ICollection<MovieCast> MovieCasts { get; set; }
+        public ICollection<MovieCrew> MovieCrews { get; set; }
     }
 }

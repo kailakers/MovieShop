@@ -13,6 +13,8 @@
     <Compile Remove="Migrations\20191105205628_UserandRoleTables.Designer.cs" />
     <Compile Remove="Migrations\20191105211928_UserandRoleTables.cs" />
     <Compile Remove="Migrations\20191105211928_UserandRoleTables.Designer.cs" />
+    <Compile Remove="Migrations\20191107173615_MovieCastandCrewTables.cs" />
+    <Compile Remove="Migrations\20191107173615_MovieCastandCrewTables.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

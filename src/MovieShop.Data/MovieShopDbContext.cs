@@ -29,6 +29,8 @@ namespace MovieShop.Data
             modelBuilder.Entity<User>(ConfigureUser);
             modelBuilder.Entity<Role>(ConfigureRole);
             modelBuilder.Entity<MovieGenre>(ConfigureMovieGenre);
+            modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
+            modelBuilder.Entity<MovieCrew>(ConfigureMovieCrew);
 
         }
 
@@ -105,6 +107,22 @@ namespace MovieShop.Data
             builder.HasOne(mg => mg.Movie).WithMany(g => g.MovieGenres).HasForeignKey(mg => mg.MovieId);
             builder.HasOne(mg => mg.Genre).WithMany(g => g.MovieGenres).HasForeignKey(mg => mg.GenreId);
         }
+        private void ConfigureMovieCast(EntityTypeBuilder<MovieCast> builder)
+        {
+            builder.ToTable("MovieCast");
+            builder.HasKey(mc => new { mc.CastId, mc.MovieId, mc.Character });
+            builder.HasOne(mc => mc.Movie).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.MovieId);
+            builder.HasOne(mc => mc.Cast).WithMany(mc => mc.MovieCasts).HasForeignKey(mc => mc.CastId);
+        }
 
+        private void ConfigureMovieCrew(EntityTypeBuilder<MovieCrew> builder)
+        {
+            builder.ToTable("MovieCrew");
+            builder.Property(c => c.Job).HasMaxLength(128);
+            builder.Property(c => c.Department).HasMaxLength(128);
+            builder.HasKey(mc => new { mc.MovieId, mc.CrewId, mc.Department, mc.Job });
+            builder.HasOne(mc => mc.Movie).WithMany(mc => mc.MovieCrews).HasForeignKey(mc => mc.MovieId);
+            builder.HasOne(mc => mc.Crew).WithMany(mc => mc.MovieCrews).HasForeignKey(mc => mc.CrewId);
+        }
     }
 }
