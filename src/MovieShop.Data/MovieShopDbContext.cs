@@ -25,6 +25,7 @@ namespace MovieShop.Data
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,6 +41,7 @@ namespace MovieShop.Data
             modelBuilder.Entity<UserRole>(ConfigureUserRoles);
             modelBuilder.Entity<Purchase>(ConfigurePurchase);
             modelBuilder.Entity<Favorite>(ConfigureFavorites);
+            modelBuilder.Entity<Review>(ConfigureReview);
         }
 
         private void ConfigureGenre(EntityTypeBuilder<Genre> builder)
@@ -153,8 +155,15 @@ namespace MovieShop.Data
         private void ConfigureFavorites(EntityTypeBuilder<Favorite> builder)
         {
             builder.ToTable("Favorite");
-            builder.HasKey(p => p.Id);
+            builder.HasKey(f => f.Id);
             builder.HasIndex(f => new { f.MovieId, f.UserId }).IsUnique();
+        }
+        private void ConfigureReview(EntityTypeBuilder<Review> builder)
+        {
+            builder.ToTable("Review");
+            builder.HasKey(r => new { r.MovieId, r.UserId });
+            builder.Property(r => r.ReviewText).HasMaxLength(20000);
+            builder.Property(r => r.Rating).HasColumnType("decimal(3, 2)");
         }
     }
 }
