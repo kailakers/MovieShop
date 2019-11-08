@@ -19,6 +19,11 @@ namespace MovieShop.Data
         public DbSet<Cast> Casts { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<MovieGenre> MovieGenres { get; set; }
+        public DbSet<MovieCast> MovieCasts { get; set; }
+        public DbSet<MovieCrew> MovieCrews { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,7 +37,7 @@ namespace MovieShop.Data
             modelBuilder.Entity<MovieCast>(ConfigureMovieCast);
             modelBuilder.Entity<MovieCrew>(ConfigureMovieCrew);
             modelBuilder.Entity<UserRole>(ConfigureUserRoles);
-
+            modelBuilder.Entity<Purchase>(ConfigurePurchase);
         }
 
         private void ConfigureGenre(EntityTypeBuilder<Genre> builder)
@@ -132,6 +137,15 @@ namespace MovieShop.Data
             builder.HasKey(ur => new { ur.UserId, ur.RoleId });
             builder.HasOne(ur => ur.Role).WithMany(ur => ur.UserRoles).HasForeignKey(ur => ur.RoleId);
             builder.HasOne(ur => ur.User).WithMany(ur => ur.UserRoles).HasForeignKey(ur => ur.UserId);
+        }
+
+        private void ConfigurePurchase(EntityTypeBuilder<Purchase> builder)
+        {
+            builder.ToTable("Purchase");
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.Id).ValueGeneratedOnAdd();
+            builder.Property(p => p.PurchaseNumber).ValueGeneratedOnAdd();
+            builder.HasIndex(p => new { p.UserId, p.MovieId }).IsUnique();
         }
     }
 }
