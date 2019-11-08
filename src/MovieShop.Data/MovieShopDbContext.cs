@@ -24,6 +24,7 @@ namespace MovieShop.Data
         public DbSet<MovieCrew> MovieCrews { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,6 +39,7 @@ namespace MovieShop.Data
             modelBuilder.Entity<MovieCrew>(ConfigureMovieCrew);
             modelBuilder.Entity<UserRole>(ConfigureUserRoles);
             modelBuilder.Entity<Purchase>(ConfigurePurchase);
+            modelBuilder.Entity<Favorite>(ConfigureFavorites);
         }
 
         private void ConfigureGenre(EntityTypeBuilder<Genre> builder)
@@ -146,6 +148,13 @@ namespace MovieShop.Data
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
             builder.Property(p => p.PurchaseNumber).ValueGeneratedOnAdd();
             builder.HasIndex(p => new { p.UserId, p.MovieId }).IsUnique();
+        }
+
+        private void ConfigureFavorites(EntityTypeBuilder<Favorite> builder)
+        {
+            builder.ToTable("Favorite");
+            builder.HasKey(p => p.Id);
+            builder.HasIndex(f => new { f.MovieId, f.UserId }).IsUnique();
         }
     }
 }
