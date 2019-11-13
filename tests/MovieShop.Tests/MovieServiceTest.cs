@@ -3,11 +3,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MovieShop.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class MovieServiceTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestListOfMoviesfromFakeData()
         {
+            Assert.AreEqual(10,10);
         }
     }
 }
