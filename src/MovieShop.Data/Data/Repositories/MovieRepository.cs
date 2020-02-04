@@ -22,18 +22,24 @@ namespace MovieShop.Infrastructure.Data.Repositories
         public async Task<IEnumerable<Movie>> GetTopRatedMovies()
         {
             var topRatedMovies = await _dbContext.Reviews.Include(m => m.Movie)
-                                                 .GroupBy(m => m.MovieId)
-                                                 .OrderByDescending(r => r.Average(m => m.Rating))
-                                                 .Take(25)
+                                                 .GroupBy(r => new
+                                                               {
+                                                                   Id = r.MovieId,
+                                                                   r.Movie.PosterUrl,
+                                                                   r.Movie.Title,
+                                                                   r.Movie.BackdropUrl
+                                                               })
+                                                 .OrderByDescending(g => g.Average(m => m.Rating))
                                                  .Select(m => new Movie
                                                               {
-                                                                  Id = m.Key,
-                                                                  PosterUrl = m.FirstOrDefault().Movie.PosterUrl,
-                                                                  Title = m.FirstOrDefault().Movie.Title,
-                                                                  BackdropUrl = m.FirstOrDefault().Movie.BackdropUrl,
-                                                                  Rating = m.Average( x => x.Rating)
-                                                                
-                                                              }).ToListAsync();
+                                                                  Id = m.Key.Id,
+                                                                  PosterUrl = m.Key.PosterUrl,
+                                                                  Title = m.Key.Title,
+                                                                  BackdropUrl = m.Key.BackdropUrl,
+                                                                  Rating = m.Average(x => x.Rating)
+                                                              })
+                                                 .Take(25)
+                                                 .ToListAsync();
 
             return topRatedMovies;
         }
