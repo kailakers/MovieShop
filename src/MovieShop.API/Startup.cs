@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,7 +36,7 @@ namespace MovieShop.API
 
             services.AddDbContext<MovieShopDbContext>(options =>
                                                           options.UseSqlServer(Configuration.GetConnectionString("MovieShopDbConnection")));
-
+            services.AddAutoMapper(typeof(Startup), typeof(MovieShop.Core.MappingProfiles.MoviesMappingProfile));
             ConfigureRepositoriesDependencyInjection(services);
             ConfigureServicesDependencyInjection(services);
         }

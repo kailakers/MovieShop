@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Entities;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
@@ -9,10 +11,11 @@ namespace MovieShop.Core.Services
     public class MovieService: IMovieService
     {
         private readonly IMovieRepository _movieRepository;
-
-        public MovieService(IMovieRepository movieRepository)
+        private readonly IMapper _mapper;
+        public MovieService(IMovieRepository movieRepository, IMapper mapper)
         {
             _movieRepository = movieRepository;
+            _mapper = mapper;
         }
         public async Task<IEnumerable<Movie>> GetAllMoviesAsync(int pageSize = 20, int pageIndex = 0, string title = "")
         {
@@ -31,9 +34,11 @@ namespace MovieShop.Core.Services
             return await _movieRepository.GetCountAsync(m => m.Title.Contains(title));
         }
 
-        public async Task<IEnumerable<Movie>> GetTopRatedMovies()
+        public async Task<IEnumerable<MovieCardResponseModel>> GetTopRatedMovies()
         {
-            return await _movieRepository.GetTopRatedMovies();
+            var topMovies = await _movieRepository.GetTopRatedMovies();
+            var response = _mapper.Map< IEnumerable<MovieCardResponseModel> >(topMovies);
+            return response;
         }
 
         public async Task<IEnumerable<Movie>> GetHighestGrossingMovies()

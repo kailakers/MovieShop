@@ -8,4 +8,8 @@
     <Folder Include="ApiModels\Request\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+  </ItemGroup>
+
 </Project>
