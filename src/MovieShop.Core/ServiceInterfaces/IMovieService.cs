@@ -12,6 +12,6 @@ namespace MovieShop.Core.ServiceInterfaces
         Task<int> GetMoviesCount(string title = "");
         Task<IEnumerable<MovieCardResponseModel>> GetTopRatedMovies();
         Task<IEnumerable<Movie>> GetHighestGrossingMovies();
-        Task<IEnumerable<Movie>> GetMoviesByGenre(int genreId);
+        Task<IEnumerable<MovieCardResponseModel>> GetMoviesByGenre(int genreId);
     }
 }

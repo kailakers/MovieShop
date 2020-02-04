@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Entities;
+using MovieShop.Core.Exceptions;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
 
@@ -46,9 +48,15 @@ namespace MovieShop.Core.Services
             throw new System.NotImplementedException();
         }
 
-        public async Task<IEnumerable<Movie>> GetMoviesByGenre(int genreId)
+        public async Task<IEnumerable<MovieCardResponseModel>> GetMoviesByGenre(int genreId)
         {
-            throw new System.NotImplementedException();
+            var movies = await _movieRepository.GetMoviesByGenre(genreId);
+            if (!movies.Any())
+            {
+                throw new NotFoundException("Movies for genre",null);
+            }
+            var response = _mapper.Map<IEnumerable<MovieCardResponseModel>>(movies);
+            return response;
         }
     }
 }
