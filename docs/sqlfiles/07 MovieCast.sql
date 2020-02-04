@@ -1,3 +1,5 @@
+USE [MovieShop]
+GO
 INSERT INTO [MovieCast] ([MovieId], [CastId], [Character]) VALUES (1, 1, 'Dom Cobb')
 INSERT INTO [MovieCast] ([MovieId], [CastId], [Character]) VALUES (1, 2, 'Arthur')
 INSERT INTO [MovieCast] ([MovieId], [CastId], [Character]) VALUES (1, 3, 'Ariadne')

@@ -1,0 +1,16 @@
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using MovieShop.Core.Entities;
+
+namespace MovieShop.Core.ServiceInterfaces
+{
+    public interface IMovieService
+    {
+        Task<IEnumerable<Movie>> GetAllMoviesAsync(int pageSize = 20, int pageIndex = 0, string title = "");
+        Task<Movie> GetMovieAsync(int id);
+        Task<int> GetMoviesCount(string title = "");
+        Task<IEnumerable<Movie>> GetTopRatedMovies();
+        Task<IEnumerable<Movie>> GetHighestGrossingMovies();
+        Task<IEnumerable<Movie>> GetMoviesByGenre(int genreId);
+    }
+}

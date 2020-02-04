@@ -1,3 +1,5 @@
+USE [MovieShop]
+GO
 INSERT INTO [MovieCrew] ([MovieId], [CrewId], [Department], [Job]) VALUES (1, 1, 'Production', 'Producer')
 INSERT INTO [MovieCrew] ([MovieId], [CrewId], [Department], [Job]) VALUES (1, 2, 'Production', 'Producer')
 INSERT INTO [MovieCrew] ([MovieId], [CrewId], [Department], [Job]) VALUES (1, 3, 'Camera', 'Director of Photography')

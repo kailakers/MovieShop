@@ -1,3 +1,5 @@
+USE [MovieShop]
+GO
 INSERT INTO [MovieGenre] ([MovieId], [GenreId]) VALUES (1, 6)
 INSERT INTO [MovieGenre] ([MovieId], [GenreId]) VALUES (1, 10)
 INSERT INTO [MovieGenre] ([MovieId], [GenreId]) VALUES (1, 13)

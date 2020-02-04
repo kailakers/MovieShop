@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieShop.API", "src\MovieShop.API\MovieShop.API.csproj", "{EDDE9078-2DF7-448F-BB01-75FEB59547F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieShop.API", "src\MovieShop.API\MovieShop.API.csproj", "{EDDE9078-2DF7-448F-BB01-75FEB59547F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieShop.Core", "src\MovieShop.Core\MovieShop.Core.csproj", "{D00ECE74-1AFD-4B69-A9E4-C3FA58806BC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieShop.Core", "src\MovieShop.Core\MovieShop.Core.csproj", "{D00ECE74-1AFD-4B69-A9E4-C3FA58806BC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieShop.Data", "src\MovieShop.Data\MovieShop.Data.csproj", "{63C25357-5F2F-475E-9A35-611F505513B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieShop.Infrastructure", "src\MovieShop.Data\MovieShop.Infrastructure.csproj", "{63C25357-5F2F-475E-9A35-611F505513B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieShop.Services", "src\MovieShop.Services\MovieShop.Services.csproj", "{25DE0F5F-AF4F-4145-9C6C-145CBD4E0683}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieShop.Tests", "tests\MovieShop.Tests\MovieShop.Tests.csproj", "{B74907A2-69CB-49AD-B1D2-0E2D0CF04525}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieShop.Tests", "tests\MovieShop.Tests\MovieShop.Tests.csproj", "{B74907A2-69CB-49AD-B1D2-0E2D0CF04525}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{63C25357-5F2F-475E-9A35-611F505513B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63C25357-5F2F-475E-9A35-611F505513B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63C25357-5F2F-475E-9A35-611F505513B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{25DE0F5F-AF4F-4145-9C6C-145CBD4E0683}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{25DE0F5F-AF4F-4145-9C6C-145CBD4E0683}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{25DE0F5F-AF4F-4145-9C6C-145CBD4E0683}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{25DE0F5F-AF4F-4145-9C6C-145CBD4E0683}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B74907A2-69CB-49AD-B1D2-0E2D0CF04525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B74907A2-69CB-49AD-B1D2-0E2D0CF04525}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B74907A2-69CB-49AD-B1D2-0E2D0CF04525}.Release|Any CPU.ActiveCfg = Release|Any CPU
