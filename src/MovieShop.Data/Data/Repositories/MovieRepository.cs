@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MovieShop.Core.Entities;
+using MovieShop.Core.Exceptions;
 using MovieShop.Core.RepositoryInterfaces;
 
 namespace MovieShop.Infrastructure.Data.Repositories
@@ -46,7 +47,8 @@ namespace MovieShop.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<Movie>> GetMoviesByGenre(int genreId)
         {
-            var movies = await _dbContext.MovieGenres.Where(g => g.GenreId == genreId).Include(mg => mg.Movie).Select(m => m.Movie)
+            var movies = await _dbContext.MovieGenres.Where(g => g.GenreId == genreId).Include(mg => mg.Movie)
+                                         .Select(m => m.Movie)
                                          .ToListAsync();
             return movies;
         }
@@ -55,6 +57,18 @@ namespace MovieShop.Infrastructure.Data.Repositories
         {
             var movies = await _dbContext.Movies.OrderByDescending(m => m.Revenue).Take(25).ToListAsync();
             return movies;
+        }
+
+        public override async Task<Movie> GetByIdAsync(int id)
+        {
+            var movie = await _dbContext.Movies
+                                        .Include(m => m.MovieCasts).ThenInclude(m => m.Cast)
+                                        .FirstOrDefaultAsync(m => m.Id == id);
+            if (movie == null) return null;
+            var movieRating = await _dbContext.Reviews.Where(r => r.MovieId == id).AverageAsync(r => r.Rating);
+            if (movieRating > 0) movie.Rating = movieRating;
+
+            return movie;
         }
     }
 }

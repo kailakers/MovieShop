@@ -38,11 +38,18 @@ namespace MovieShop.Core.Services
             return response;
         }
 
-        public async Task<Movie> GetMovieAsync(int id)
+        public async Task<MovieDetailsResponseModel> GetMovieAsync(int id)
         {
             var movie = await _movieRepository.GetByIdAsync(id);
-            return movie;
+            if (movie == null)
+            {
+                throw new NotFoundException("Movie",id);
+
+            }
+            var response = _mapper.Map<MovieDetailsResponseModel>(movie);
+            return response;
         }
+
 
         public async Task<int> GetMoviesCount(string title = "")
         {
@@ -67,7 +74,7 @@ namespace MovieShop.Core.Services
         public async Task<IEnumerable<MovieCardResponseModel>> GetMoviesByGenre(int genreId)
         {
             var movies = await _movieRepository.GetMoviesByGenre(genreId);
-            if (!movies.Any()) throw new NotFoundException("Movies for genre", null);
+            if (!movies.Any()) throw new NotFoundException("Movies for genre", genreId);
             var response = _mapper.Map<IEnumerable<MovieCardResponseModel>>(movies);
             return response;
         }

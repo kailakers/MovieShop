@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MovieShop.Core.ServiceInterfaces;
 
@@ -20,12 +17,20 @@ namespace MovieShop.API.Controllers
 
         [HttpGet]
         [Route("")]
-      public async Task<IActionResult> GetAllMovies([FromQuery] int pageSize = 30, [FromQuery] int pageIndex = 1, string title = "")
-      {
-          var movies = await _movieService.GetMoviesByPagination(pageSize, pageIndex, title);
-          return Ok(movies);
-      }
+        public async Task<IActionResult> GetAllMovies([FromQuery] int pageSize = 30, [FromQuery] int pageIndex = 1,
+                                                      string title = "")
+        {
+            var movies = await _movieService.GetMoviesByPagination(pageSize, pageIndex, title);
+            return Ok(movies);
+        }
 
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<IActionResult> GetMovie(int id)
+        {
+            var movie = await _movieService.GetMovieAsync(id);
+            return Ok(movie);
+        }
 
         [HttpGet]
         [Route("toprated")]
