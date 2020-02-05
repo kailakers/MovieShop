@@ -50,5 +50,11 @@ namespace MovieShop.Infrastructure.Data.Repositories
                                          .ToListAsync();
             return movies;
         }
+
+        public async Task<IEnumerable<Movie>> GetHighestGrossingMovies()
+        {
+            var movies = await _dbContext.Movies.OrderByDescending(m => m.Revenue).Take(25).ToListAsync();
+            return movies;
+        }
     }
 }

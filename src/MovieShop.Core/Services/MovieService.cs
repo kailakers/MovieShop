@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using MovieShop.Core.ApiModels.Response;
@@ -10,18 +12,30 @@ using MovieShop.Core.ServiceInterfaces;
 
 namespace MovieShop.Core.Services
 {
-    public class MovieService: IMovieService
+    public class MovieService : IMovieService
     {
-        private readonly IMovieRepository _movieRepository;
         private readonly IMapper _mapper;
+        private readonly IMovieRepository _movieRepository;
+
         public MovieService(IMovieRepository movieRepository, IMapper mapper)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<Movie>> GetAllMoviesAsync(int pageSize = 20, int pageIndex = 0, string title = "")
+
+
+        public async Task<IEnumerable<MovieCardResponseModel>> GetMoviesByPagination(
+            int pageSize = 20, int pageIndex = 0, string title = "")
         {
-            throw new System.NotImplementedException();
+            Expression<Func<Movie, bool>> filterExpression = null;
+            if (!string.IsNullOrEmpty(title)) filterExpression = movie => title != null && movie.Title.Contains(title);
+
+            var pagedMovies = await _movieRepository.GetPagedData(pageIndex, pageSize,
+                                                                  movies => movies.OrderBy(m => m.Title),
+                                                                  filterExpression);
+
+            var response = _mapper.Map<IEnumerable<MovieCardResponseModel>>(pagedMovies);
+            return response;
         }
 
         public async Task<Movie> GetMovieAsync(int id)
@@ -39,22 +53,21 @@ namespace MovieShop.Core.Services
         public async Task<IEnumerable<MovieCardResponseModel>> GetTopRatedMovies()
         {
             var topMovies = await _movieRepository.GetTopRatedMovies();
-            var response = _mapper.Map< IEnumerable<MovieCardResponseModel> >(topMovies);
+            var response = _mapper.Map<IEnumerable<MovieCardResponseModel>>(topMovies);
             return response;
         }
 
-        public async Task<IEnumerable<Movie>> GetHighestGrossingMovies()
+        public async Task<IEnumerable<MovieCardResponseModel>> GetHighestGrossingMovies()
         {
-            throw new System.NotImplementedException();
+            var movies = await _movieRepository.GetHighestGrossingMovies();
+            var response = _mapper.Map<IEnumerable<MovieCardResponseModel>>(movies);
+            return response;
         }
 
         public async Task<IEnumerable<MovieCardResponseModel>> GetMoviesByGenre(int genreId)
         {
             var movies = await _movieRepository.GetMoviesByGenre(genreId);
-            if (!movies.Any())
-            {
-                throw new NotFoundException("Movies for genre",null);
-            }
+            if (!movies.Any()) throw new NotFoundException("Movies for genre", null);
             var response = _mapper.Map<IEnumerable<MovieCardResponseModel>>(movies);
             return response;
         }
