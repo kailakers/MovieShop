@@ -1,17 +1,26 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MovieShop.API.Infrastructure
 {
-    public class ModelStateValidationFilterAttribute: ActionFilterAttribute
+    public class ModelStateValidationFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var model = context.ActionArguments.FirstOrDefault(a => a.Key == "model");
             if (!context.ModelState.IsValid)
             {
-                context.Result = new BadRequestObjectResult(context.ModelState);
+                var problemDetails = new ValidationProblemDetails(context.ModelState)
+                                     {
+                                         Instance = context.HttpContext.Request.Path,
+                                         Status = StatusCodes.Status400BadRequest,
+                                         Type = $"https://httpstatuses.com/400",
+                                         Detail = "Please Refer to documentation"
+                                     };
+
+                context.Result = new BadRequestObjectResult(problemDetails);
+
             }
         }
     }
