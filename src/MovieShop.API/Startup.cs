@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MovieShop.API.Infrastructure;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
 using MovieShop.Core.Services;
@@ -33,6 +34,10 @@ namespace MovieShop.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(ModelStateValidationFilterAttribute));
+            });
 
             services.AddDbContext<MovieShopDbContext>(options =>
                                                           options.UseSqlServer(Configuration.GetConnectionString("MovieShopDbConnection")));
@@ -50,6 +55,8 @@ namespace MovieShop.API
         private void ConfigureServicesDependencyInjection(IServiceCollection services)
         {
             services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICryptoService, CryptoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +64,8 @@ namespace MovieShop.API
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+                app.UseExceptionMiddleware();
             }
 
             app.UseCors(builder =>
