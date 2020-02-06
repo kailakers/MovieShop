@@ -75,6 +75,7 @@ namespace MovieShop.API
                         {
                             builder.WithOrigins(Configuration.GetValue<string>("clientSPAUrl")).AllowAnyHeader().AllowAnyMethod();
                         });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
