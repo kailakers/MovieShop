@@ -10,10 +10,25 @@ namespace MovieShop.Core.MappingProfiles
         public MoviesMappingProfile()
         {
             CreateMap<Movie, MovieCardResponseModel>();
+            CreateMap<Cast, CastDetailsResponseModel>()
+                .ForMember(c => c.Movies, opt => opt.MapFrom(src => GetMoviesForCast(src.MovieCasts)));
 
             CreateMap<Movie, MovieDetailsResponseModel>()
                 .ForMember(md => md.Casts, opt => opt.MapFrom(src => GetCasts(src.MovieCasts)));
         }
+
+        private List<MovieCardResponseModel> GetMoviesForCast(IEnumerable<MovieCast> srcMovieCasts)
+        {
+            var castMovies = new List<MovieCardResponseModel>();
+            foreach (var movie in srcMovieCasts)
+                castMovies.Add(new MovieCardResponseModel
+                               {
+                                   Id = movie.MovieId, PosterUrl = movie.Movie.PosterUrl, Title = movie.Movie.Title
+                               });
+
+            return castMovies;
+        }
+
 
         private static List<MovieDetailsResponseModel.CastResponseModel> GetCasts(IEnumerable<MovieCast> srcMovieCasts)
         {
