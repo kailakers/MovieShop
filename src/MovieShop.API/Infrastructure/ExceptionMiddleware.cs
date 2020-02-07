@@ -46,10 +46,14 @@ namespace MovieShop.API.Infrastructure
 
             switch (exception)
             {
-                case BadRequestException _:
+                case BadRequestException ex:
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    errors = ex.Message;
                     break;
-
+                case EmailExistsException ex:
+                    context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    errors = ex.Message;
+                    break;
                 case NotFoundException _:
                     context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     errors = exception.Message;

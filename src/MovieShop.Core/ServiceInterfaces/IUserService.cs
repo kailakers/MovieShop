@@ -7,9 +7,9 @@ namespace MovieShop.Core.ServiceInterfaces
 {
     public interface IUserService
     {
-        Task<bool> ValidateUser(string username, string password);
+        Task<User> ValidateUser(string email, string password);
         Task<UserRegisterResponseModel> CreateUser(UserRegisterRequestModel requestModel);
-        Task<User> GetUserDetails(int id);
+        Task<UserRegisterResponseModel> GetUserDetails(int id);
         Task<User> GetUser(string username);
     }
 }

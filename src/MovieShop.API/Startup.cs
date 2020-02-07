@@ -58,6 +58,7 @@ namespace MovieShop.API
             services.AddScoped<IMovieRepository, MovieRepository>();
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ICastRepository, CastRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         private void ConfigureServicesDependencyInjection(IServiceCollection services)
@@ -75,8 +76,8 @@ namespace MovieShop.API
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-               // app.UseExceptionMiddleware();
+               // app.UseDeveloperExceptionPage();
+                app.UseExceptionMiddleware();
             }
 
             app.UseCors(builder =>
@@ -90,10 +91,7 @@ namespace MovieShop.API
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
         }
     }
 }

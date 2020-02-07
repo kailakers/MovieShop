@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using MovieShop.Core.ApiModels.Request;
 using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Entities;
 
@@ -15,6 +16,8 @@ namespace MovieShop.Core.MappingProfiles
 
             CreateMap<Movie, MovieDetailsResponseModel>()
                 .ForMember(md => md.Casts, opt => opt.MapFrom(src => GetCasts(src.MovieCasts)));
+
+            CreateMap<User, UserRegisterResponseModel>();
         }
 
         private List<MovieCardResponseModel> GetMoviesForCast(IEnumerable<MovieCast> srcMovieCasts)

@@ -16,16 +16,19 @@ namespace MovieShop.API.Controllers
             _userService = userService;
         }
 
+        [HttpGet]
+        [Route("{id:int}", Name = "GetUser")]
+        public async Task<ActionResult> GetUserByIdAsync(int id)
+        {
+            var user = await _userService.GetUserDetails(id);
+            return Ok(user);
+        }
+
         [HttpPost]
         public async Task<ActionResult> RegisterUserAsync([FromBody] UserRegisterRequestModel user)
         {
-            if (user is null) return BadRequest();
-
             var createdUser = await _userService.CreateUser(user);
-            if (createdUser == null) return BadRequest(" Username Already Exists!");
-
-            return Ok(createdUser);
-            // return CreatedAtAction(nameof(GetUserByIdAsync), new { id = createdUser.Id }, null);
+            return CreatedAtRoute("GetUser", new { id = createdUser.Id }, createdUser);
         }
     }
 }
