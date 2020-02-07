@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MovieShop.Core.ServiceInterfaces;
 
@@ -21,6 +22,7 @@ namespace MovieShop.API.Controllers
                                                       string title = "")
         {
             var movies = await _movieService.GetMoviesByPagination(pageSize, pageIndex, title);
+         
             return Ok(movies);
         }
 

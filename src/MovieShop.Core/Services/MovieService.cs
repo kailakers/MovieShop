@@ -7,6 +7,7 @@ using AutoMapper;
 using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Entities;
 using MovieShop.Core.Exceptions;
+using MovieShop.Core.Helpers;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
 
@@ -24,7 +25,7 @@ namespace MovieShop.Core.Services
         }
 
 
-        public async Task<IEnumerable<MovieCardResponseModel>> GetMoviesByPagination(
+        public async Task<PagedResultSet<MovieCardResponseModel>> GetMoviesByPagination(
             int pageSize = 20, int pageIndex = 0, string title = "")
         {
             Expression<Func<Movie, bool>> filterExpression = null;
@@ -33,19 +34,17 @@ namespace MovieShop.Core.Services
             var pagedMovies = await _movieRepository.GetPagedData(pageIndex, pageSize,
                                                                   movies => movies.OrderBy(m => m.Title),
                                                                   filterExpression);
-
-            var response = _mapper.Map<IEnumerable<MovieCardResponseModel>>(pagedMovies);
-            return response;
+            var movies =
+                new PagedResultSet<MovieCardResponseModel>(_mapper.Map<List<MovieCardResponseModel>>(pagedMovies),
+                                                           pagedMovies.PageIndex,
+                                                           pagedMovies.PageIndex, pagedMovies.TotalCount);
+            return movies;
         }
 
         public async Task<MovieDetailsResponseModel> GetMovieAsync(int id)
         {
             var movie = await _movieRepository.GetByIdAsync(id);
-            if (movie == null)
-            {
-                throw new NotFoundException("Movie",id);
-
-            }
+            if (movie == null) throw new NotFoundException("Movie", id);
             var response = _mapper.Map<MovieDetailsResponseModel>(movie);
             return response;
         }
