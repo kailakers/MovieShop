@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MovieShop.API.Caching;
 using MovieShop.API.Infrastructure;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
@@ -41,6 +42,9 @@ namespace MovieShop.API
             {
                 options.Filters.Add(typeof(ModelStateValidationFilterAttribute));
             });
+            
+            // Add memory cache services
+            services.AddMemoryCache();
 
             services.AddDbContext<MovieShopDbContext>(options =>
                                                           options.UseSqlServer(Configuration.GetConnectionString("MovieShopDbConnection")));
@@ -59,6 +63,8 @@ namespace MovieShop.API
         {
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddTransient<ICachedGenreService, CachedGenreService>();
+            services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<ICryptoService, CryptoService>();
         }
 
