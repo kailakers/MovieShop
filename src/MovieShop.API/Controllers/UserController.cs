@@ -36,10 +36,18 @@ namespace MovieShop.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("purchases")]
+        [HttpGet("{id:int}/purchases")]
         public async Task<ActionResult> GetUserPurchasedMoviesAsync(int id)
         {
-            var userMovies = await _userService.GetAllPurchases();
+            var userMovies = await _userService.GetAllPurchasesForUser(id);
+            return Ok(userMovies);
+        }
+
+        [Authorize]
+        [HttpGet("{id:int}/favorites")]
+        public async Task<ActionResult> GetUserFavoriteMoviesAsync(int id)
+        {
+            var userMovies = await _userService.GetAllFavoritesForUser(id);
             return Ok(userMovies);
         }
     }

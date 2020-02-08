@@ -16,10 +16,11 @@ namespace MovieShop.Core.ServiceInterfaces
         Task AddFavorite(FavoriteRequestModel favoriteRequest);
         Task RemoveFavorite(FavoriteRequestModel favoriteRequest);
         Task<bool> FavoriteExists(FavoriteRequestModel favoriteRequest);
+        Task<FavoriteResponseModel> GetAllFavoritesForUser(int id);
 
         Task PurchaseMovie(PurchaseRequestModel purchaseRequest);
-        Task<bool> IsMoviePurchased(int movieId, int userId);
-        Task<PurchaseResponseModel> GetAllPurchases();
+        Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest);
+        Task<PurchaseResponseModel> GetAllPurchasesForUser(int id);
 
     }
 }

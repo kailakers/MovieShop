@@ -24,28 +24,49 @@ namespace MovieShop.Core.MappingProfiles
                 .ForMember(p => p.PurchasedMovies, opt => opt.MapFrom(src => GetPurchasedMovies(src)))
                 .ForMember(p => p.UserId, opt => opt.MapFrom(src => src.FirstOrDefault().UserId));
 
+            CreateMap<IEnumerable<Favorite>, FavoriteResponseModel>()
+                .ForMember(p => p.FavoriteMovies, opt => opt.MapFrom(src => GetFavoriteMovies(src)))
+                .ForMember(p => p.UserId, opt => opt.MapFrom(src => src.FirstOrDefault().UserId));
+
             // Request Models to Db Entities Mappings
             CreateMap<PurchaseRequestModel, Purchase>();
             CreateMap<FavoriteRequestModel, Favorite>();
         }
 
-        private List<PurchaseResponseModel.PurchasedMovieResponseModel>  GetPurchasedMovies(IEnumerable<Purchase> purchases)
+        private List<FavoriteResponseModel.FavoriteMovieResponseModel> GetFavoriteMovies(
+            IEnumerable<Favorite> favorites)
+        {
+            var favoriteResponse = new FavoriteResponseModel
+                                   {
+                                       FavoriteMovies = new List<FavoriteResponseModel.FavoriteMovieResponseModel>()
+                                   };
+            foreach (var favorite in favorites)
+                favoriteResponse.FavoriteMovies.Add(new FavoriteResponseModel.FavoriteMovieResponseModel
+                {
+                                                         PosterUrl = favorite.Movie.PosterUrl,
+                                                         Id = favorite.MovieId,
+                                                         Title = favorite.Movie.Title
+                                                     });
+
+            return favoriteResponse.FavoriteMovies;
+        }
+
+        private List<PurchaseResponseModel.PurchasedMovieResponseModel> GetPurchasedMovies(
+            IEnumerable<Purchase> purchases)
         {
             var purchaseResponse = new PurchaseResponseModel
-                                                     {
-                                                         PurchasedMovies =
-                                                             new List<PurchaseResponseModel.PurchasedMovieResponseModel>()
-                                                     };
+                                   {
+                                       PurchasedMovies =
+                                           new List<PurchaseResponseModel.PurchasedMovieResponseModel>()
+                                   };
             foreach (var purchase in purchases)
-            {
-                purchaseResponse.PurchasedMovies.Add( new PurchaseResponseModel.PurchasedMovieResponseModel
-                                                      {
-                                                          PosterUrl = purchase.Movie.PosterUrl,
-                                                          PurchaseDateTime = purchase.PurchaseDateTime,
-                                                          Id = purchase.MovieId,
-                                                          Title = purchase.Movie.Title
-                                                      });
-            }
+                purchaseResponse.PurchasedMovies.Add(new PurchaseResponseModel.PurchasedMovieResponseModel
+                                                     {
+                                                         PosterUrl = purchase.Movie.PosterUrl,
+                                                         PurchaseDateTime = purchase.PurchaseDateTime,
+                                                         Id = purchase.MovieId,
+                                                         Title = purchase.Movie.Title
+                                                     });
 
             return purchaseResponse.PurchasedMovies;
         }

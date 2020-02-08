@@ -102,13 +102,23 @@ namespace MovieShop.Core.Services
                                                                  f.UserId == favorite.UserId);
         }
 
+        public async Task<FavoriteResponseModel> GetAllFavoritesForUser(int id)
+        {
+            if (_currentUserService.UserId != id)
+                throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to View Favorites");
+
+            var favoriteMovies = await _favoriteRepository.ListAllWithIncludesAsync(p => p.UserId == _currentUserService.UserId,
+                                                                                     p => p.Movie);
+            return _mapper.Map<FavoriteResponseModel>(favoriteMovies);
+        }
+
         public async Task PurchaseMovie(PurchaseRequestModel purchaseRequest)
         {
             if (_currentUserService.UserId != purchaseRequest.UserId)
                 throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to purchase");
 
             // See if Movie is already purchased.
-            if (await IsMoviePurchased(purchaseRequest.MovieId, purchaseRequest.UserId))
+            if (await IsMoviePurchased(purchaseRequest))
                 throw new ConflictException("Movie already Purchased");
             // Get Movie Price from Movie Table
             var movie = await _movieService.GetMovieAsync(purchaseRequest.MovieId);
@@ -118,13 +128,16 @@ namespace MovieShop.Core.Services
             await _purchaseRepository.AddAsync(purchase);
         }
 
-        public async Task<bool> IsMoviePurchased(int movieId, int userId)
+        public async Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest)
         {
-            return await _purchaseRepository.GetExistsAsync(p => p.UserId == userId && p.MovieId == movieId);
+            return await _purchaseRepository.GetExistsAsync(p => p.UserId == purchaseRequest.UserId && p.MovieId == purchaseRequest.MovieId);
         }
 
-        public async Task<PurchaseResponseModel> GetAllPurchases()
+        public async Task<PurchaseResponseModel> GetAllPurchasesForUser(int id)
         {
+            if (_currentUserService.UserId != id)
+                throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to View Purchases");
+
             var purchasedMovies = await _purchaseRepository.ListAllWithIncludesAsync(p => p.UserId == _currentUserService.UserId,
                                                                       p => p.Movie);
             return _mapper.Map<PurchaseResponseModel>(purchasedMovies);

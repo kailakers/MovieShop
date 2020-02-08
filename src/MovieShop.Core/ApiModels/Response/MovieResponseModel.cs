@@ -10,6 +10,6 @@ namespace MovieShop.Core.ApiModels.Response
         public string Title { get; set; }
         public string PosterUrl { get; set; }
         public string BackdropUrl { get; set; }
-        public decimal? Rating { get; set; }
+       
     }
 }

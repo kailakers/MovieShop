@@ -7,11 +7,8 @@ namespace MovieShop.Core.ApiModels.Response
     {
         public int UserId { get; set; }
         public List<PurchasedMovieResponseModel> PurchasedMovies { get; set; }
-        public class PurchasedMovieResponseModel
+        public class PurchasedMovieResponseModel:MovieResponseModel
         {
-            public int Id { get; set; }
-            public string Title { get; set; }
-            public string PosterUrl { get; set; }
             public DateTime PurchaseDateTime { get; set; }
         }
     }
