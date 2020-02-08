@@ -57,12 +57,11 @@ namespace MovieShop.API.Controllers
         {
             var claims = new List<Claim>
                          {
-                             new Claim(ClaimTypes.Email, user.Email),
+                             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                              new Claim(JwtRegisteredClaimNames.Birthdate, user.DateOfBirth?.ToShortDateString()),
                              new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
                              new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
                              new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString())
                          };
 
             var identityClaims = new ClaimsIdentity();
