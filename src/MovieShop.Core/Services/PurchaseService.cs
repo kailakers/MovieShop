@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -30,7 +31,7 @@ namespace MovieShop.Core.Services
         {
             if (_currentUserService.UserId != purchaseRequest.UserId)
             {
-                throw new UnauthorizedAccessException("You are not Authorized to purchase");
+                throw new HttpException( HttpStatusCode.Unauthorized,"You are not Authorized to purchase");
             }
 
             // See if Movie is already purchased.

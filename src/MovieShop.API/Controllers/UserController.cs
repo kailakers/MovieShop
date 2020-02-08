@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using MovieShop.Core.ApiModels.Request;
 using MovieShop.Core.Entities;
 using MovieShop.Core.ServiceInterfaces;
@@ -26,6 +28,7 @@ namespace MovieShop.API.Controllers
             _movieService = movieService;
         }
 
+        [Authorize]
         [HttpPost("purchase")]
         public async Task<ActionResult> CreatePurchase([FromBody] PurchaseRequestModel purchaseRequest)
         {

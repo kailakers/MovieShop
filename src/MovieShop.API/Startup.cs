@@ -1,19 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using MovieShop.API.Caching;
 using MovieShop.API.Infrastructure;
+using MovieShop.Core.MappingProfiles;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
 using MovieShop.Core.Services;
@@ -35,21 +33,44 @@ namespace MovieShop.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().ConfigureApiBehaviorOptions(options =>
-                                                                  {
-                                                                      options.SuppressModelStateInvalidFilter = true;
-                                                                  });
-            services.AddMvc(options =>
             {
-                options.Filters.Add(typeof(ModelStateValidationFilterAttribute));
+                options.SuppressModelStateInvalidFilter = true;
             });
-            
+            services.AddMvc(options => { options.Filters.Add(typeof(ModelStateValidationFilterAttribute)); });
+
             // Add memory cache services
             services.AddMemoryCache();
             services.AddHttpContextAccessor();
 
             services.AddDbContext<MovieShopDbContext>(options =>
-                                                          options.UseSqlServer(Configuration.GetConnectionString("MovieShopDbConnection")));
-            services.AddAutoMapper(typeof(Startup), typeof(MovieShop.Core.MappingProfiles.MoviesMappingProfile));
+                                                          options.UseSqlServer(Configuration
+                                                                                   .GetConnectionString("MovieShopDbConnection")));
+            services.AddAutoMapper(typeof(Startup), typeof(MoviesMappingProfile));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                                                            {
+                                                                ValidateIssuer = false,
+                                                                ValidateAudience = false,
+                                                                ValidateIssuerSigningKey = true,
+                                                                IssuerSigningKey =
+                                                                    new SymmetricSecurityKey(Encoding
+                                                                                             .UTF8
+                                                                                             .GetBytes(Configuration
+                                                                                                           ["TokenSettings:PrivateKey"]))
+                                                            };
+                    });
+
+            services.AddAuthorization(options =>
+            {
+                var defaultAuthorizationPolicyBuilder =
+                    new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme);
+                defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
+                options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
+            });
+
             ConfigureRepositoriesDependencyInjection(services);
             ConfigureServicesDependencyInjection(services);
         }
@@ -79,15 +100,14 @@ namespace MovieShop.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
-               // app.UseDeveloperExceptionPage();
+                // app.UseDeveloperExceptionPage();
                 app.UseExceptionMiddleware();
-            }
 
             app.UseCors(builder =>
-                        {
-                            builder.WithOrigins(Configuration.GetValue<string>("clientSPAUrl")).AllowAnyHeader().AllowAnyMethod();
-                        });
+            {
+                builder.WithOrigins(Configuration.GetValue<string>("clientSPAUrl")).AllowAnyHeader()
+                       .AllowAnyMethod();
+            });
 
             app.UseHttpsRedirection();
 
