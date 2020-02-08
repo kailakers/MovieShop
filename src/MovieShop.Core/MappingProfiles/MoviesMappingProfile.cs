@@ -10,7 +10,7 @@ namespace MovieShop.Core.MappingProfiles
     {
         public MoviesMappingProfile()
         {
-            CreateMap<Movie, MovieCardResponseModel>();
+            CreateMap<Movie, MovieResponseModel>();
             CreateMap<Cast, CastDetailsResponseModel>()
                 .ForMember(c => c.Movies, opt => opt.MapFrom(src => GetMoviesForCast(src.MovieCasts)));
 
@@ -25,11 +25,11 @@ namespace MovieShop.Core.MappingProfiles
             CreateMap<FavoriteRequestModel, Favorite>();
         }
 
-        private List<MovieCardResponseModel> GetMoviesForCast(IEnumerable<MovieCast> srcMovieCasts)
+        private List<MovieResponseModel> GetMoviesForCast(IEnumerable<MovieCast> srcMovieCasts)
         {
-            var castMovies = new List<MovieCardResponseModel>();
+            var castMovies = new List<MovieResponseModel>();
             foreach (var movie in srcMovieCasts)
-                castMovies.Add(new MovieCardResponseModel
+                castMovies.Add(new MovieResponseModel
                                {
                                    Id = movie.MovieId, PosterUrl = movie.Movie.PosterUrl, Title = movie.Movie.Title
                                });

@@ -60,3 +60,9 @@ select  u.Id
               WHERE ([f].[MovieId] = 14) AND ([f].[UserId] = 1)) THEN CAST(1 AS bit)
           ELSE CAST(0 AS bit)
       END
+
+	  -- Get Purchases by User
+	  SELECT [p].[Id], [p].[MovieId], [p].[PurchaseDateTime], [p].[PurchaseNumber], [p].[TotalPrice], [p].[UserId], [m].[Id], [m].[BackdropUrl], [m].[Budget], [m].[CreatedBy], [m].[CreatedDate], [m].[ImdbUrl], [m].[OriginalLanguage], [m].[Overview], [m].[PosterUrl], [m].[Price], [m].[ReleaseDate], [m].[Revenue], [m].[RunTime], [m].[Tagline], [m].[Title], [m].[TmdbUrl], [m].[UpdatedBy], [m].[UpdatedDate]
+      FROM [Purchase] AS [p]
+      INNER JOIN [Movie] AS [m] ON [p].[MovieId] = [m].[Id]
+      WHERE [p].[UserId] = 1

@@ -10,6 +10,6 @@ namespace MovieShop.Core.ApiModels.Response
         public string TmdbUrl { get; set; }
         public string ProfilePath { get; set; }
 
-        public IEnumerable<MovieCardResponseModel> Movies { get; set; }
+        public IEnumerable<MovieResponseModel> Movies { get; set; }
     }
 }

@@ -17,15 +17,30 @@ namespace MovieShop.Infrastructure.Data.Repositories
         {
             _dbContext = dbContext;
         }
+
         public virtual async Task<T> GetByIdAsync(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public virtual async Task<IEnumerable<T>> ListAllAsync()
+        public async Task<IEnumerable<T>> ListAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();
         }
+
+        public async Task<IEnumerable<T>> ListAllWithIncludesAsync(Expression<Func<T, bool>> @where, params Expression<Func<T, object>>[] includes)
+        {
+            var query = _dbContext.Set<T>().AsQueryable();
+
+            if (includes != null)
+                foreach (Expression<Func<T, object>> navigationProperty in includes)
+                    query = query.Include(navigationProperty);
+
+
+            return await query.Where(@where).ToListAsync();
+        }
+
+  
 
         public virtual async Task<IEnumerable<T>> ListAsync(Expression<Func<T, bool>> filter)
         {
@@ -63,9 +78,12 @@ namespace MovieShop.Infrastructure.Data.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public virtual async Task<PaginatedList<T>> GetPagedData(int pageIndex, int pageSize, Func<IQueryable<T>, IOrderedQueryable<T>> orderedQuery = null, Expression<Func<T, bool>> filter = null)
+        public virtual async Task<PaginatedList<T>> GetPagedData(int pageIndex, int pageSize,
+                                                                 Func<IQueryable<T>, IOrderedQueryable<T>> orderedQuery
+                                                                     = null, Expression<Func<T, bool>> filter = null)
         {
-            var pagedList = await PaginatedList<T>.GetPaged(_dbContext.Set<T>(), pageIndex, pageSize, orderedQuery, filter);
+            var pagedList =
+                await PaginatedList<T>.GetPaged(_dbContext.Set<T>(), pageIndex, pageSize, orderedQuery, filter);
             return pagedList;
         }
     }

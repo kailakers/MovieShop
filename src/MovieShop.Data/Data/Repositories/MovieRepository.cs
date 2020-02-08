@@ -15,10 +15,7 @@ namespace MovieShop.Infrastructure.Data.Repositories
         {
         }
 
-        public async Task<IEnumerable<Movie>> GetMovies(int pageSize = 20, int pageIndex = 0, string title = "")
-        {
-            throw new NotImplementedException();
-        }
+    
 
         public async Task<IEnumerable<Movie>> GetTopRatedMovies()
         {

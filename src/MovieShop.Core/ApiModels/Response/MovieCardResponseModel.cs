@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MovieShop.Core.ApiModels.Response
 {
-   public class MovieCardResponseModel
+   public class MovieResponseModel
     {
-        public MovieCardResponseModel()
+        public MovieResponseModel()
         {
             
         }

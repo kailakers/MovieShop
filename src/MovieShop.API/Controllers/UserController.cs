@@ -34,5 +34,13 @@ namespace MovieShop.API.Controllers
             await _userService.AddFavorite(favoriteRequest);
             return Ok();
         }
+
+        [Authorize]
+        [HttpGet("purchases")]
+        public async Task<ActionResult> GetUserPurchasedMoviesAsync(int id)
+        {
+            var userMovies = await _userService.GetAllPurchases();
+            return Ok(userMovies);
+        }
     }
 }
