@@ -123,10 +123,12 @@ namespace MovieShop.Core.Services
             return await _purchaseRepository.GetExistsAsync(p => p.UserId == userId && p.MovieId == movieId);
         }
 
-        public async Task<IEnumerable<Purchase>> GetAllPurchases()
+        public async Task<PurchaseResponseModel> GetAllPurchases()
         {
-            return await _purchaseRepository.ListAllWithIncludesAsync(p => p.UserId == _currentUserService.UserId,
+            var purchasedMovies = await _purchaseRepository.ListAllWithIncludesAsync(p => p.UserId == _currentUserService.UserId,
                                                                       p => p.Movie);
+            return _mapper.Map<PurchaseResponseModel>(purchasedMovies);
+
         }
     }
 }

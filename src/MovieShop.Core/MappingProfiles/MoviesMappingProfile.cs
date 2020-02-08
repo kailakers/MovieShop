@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using MovieShop.Core.ApiModels.Request;
 using MovieShop.Core.ApiModels.Response;
@@ -19,10 +20,34 @@ namespace MovieShop.Core.MappingProfiles
 
             CreateMap<User, UserRegisterResponseModel>();
 
+            CreateMap<IEnumerable<Purchase>, PurchaseResponseModel>()
+                .ForMember(p => p.PurchasedMovies, opt => opt.MapFrom(src => GetPurchasedMovies(src)))
+                .ForMember(p => p.UserId, opt => opt.MapFrom(src => src.FirstOrDefault().UserId));
 
             // Request Models to Db Entities Mappings
             CreateMap<PurchaseRequestModel, Purchase>();
             CreateMap<FavoriteRequestModel, Favorite>();
+        }
+
+        private List<PurchaseResponseModel.PurchasedMovieResponseModel>  GetPurchasedMovies(IEnumerable<Purchase> purchases)
+        {
+            var purchaseResponse = new PurchaseResponseModel
+                                                     {
+                                                         PurchasedMovies =
+                                                             new List<PurchaseResponseModel.PurchasedMovieResponseModel>()
+                                                     };
+            foreach (var purchase in purchases)
+            {
+                purchaseResponse.PurchasedMovies.Add( new PurchaseResponseModel.PurchasedMovieResponseModel
+                                                      {
+                                                          PosterUrl = purchase.Movie.PosterUrl,
+                                                          PurchaseDateTime = purchase.PurchaseDateTime,
+                                                          Id = purchase.MovieId,
+                                                          Title = purchase.Movie.Title
+                                                      });
+            }
+
+            return purchaseResponse.PurchasedMovies;
         }
 
         private List<MovieResponseModel> GetMoviesForCast(IEnumerable<MovieCast> srcMovieCasts)

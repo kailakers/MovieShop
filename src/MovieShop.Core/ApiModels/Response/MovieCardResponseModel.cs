@@ -6,10 +6,6 @@ namespace MovieShop.Core.ApiModels.Response
 {
    public class MovieResponseModel
     {
-        public MovieResponseModel()
-        {
-            
-        }
         public int Id { get; set; }
         public string Title { get; set; }
         public string PosterUrl { get; set; }

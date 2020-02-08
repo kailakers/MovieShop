@@ -19,7 +19,7 @@ namespace MovieShop.Core.ServiceInterfaces
 
         Task PurchaseMovie(PurchaseRequestModel purchaseRequest);
         Task<bool> IsMoviePurchased(int movieId, int userId);
-        Task<IEnumerable<Purchase>> GetAllPurchases();
+        Task<PurchaseResponseModel> GetAllPurchases();
 
     }
 }
