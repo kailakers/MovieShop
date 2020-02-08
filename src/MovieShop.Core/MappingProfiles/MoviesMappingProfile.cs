@@ -18,6 +18,10 @@ namespace MovieShop.Core.MappingProfiles
                 .ForMember(md => md.Casts, opt => opt.MapFrom(src => GetCasts(src.MovieCasts)));
 
             CreateMap<User, UserRegisterResponseModel>();
+
+
+            // Request Models to Db Entities Mappings
+            CreateMap<PurchaseRequestModel, Purchase>();
         }
 
         private List<MovieCardResponseModel> GetMoviesForCast(IEnumerable<MovieCast> srcMovieCasts)

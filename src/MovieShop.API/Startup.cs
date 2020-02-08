@@ -45,6 +45,7 @@ namespace MovieShop.API
             
             // Add memory cache services
             services.AddMemoryCache();
+            services.AddHttpContextAccessor();
 
             services.AddDbContext<MovieShopDbContext>(options =>
                                                           options.UseSqlServer(Configuration.GetConnectionString("MovieShopDbConnection")));
@@ -59,16 +60,19 @@ namespace MovieShop.API
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ICastRepository, CastRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPurchaseRepository, PurchaseRepository>();
         }
 
         private void ConfigureServicesDependencyInjection(IServiceCollection services)
         {
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddTransient<ICachedGenreService, CachedGenreService>();
             services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<ICryptoService, CryptoService>();
             services.AddScoped<ICastService, CastService>();
+            services.AddScoped<IPurchaseService, PurchaseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
