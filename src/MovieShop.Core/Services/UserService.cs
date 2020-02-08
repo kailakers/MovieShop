@@ -34,7 +34,7 @@ namespace MovieShop.Core.Services
         {
             var dbUser = await _userRepository.GetUserByEmail(requestModel.Email);
             if (dbUser != null && string.Equals(dbUser.Email, requestModel.Email, StringComparison.CurrentCultureIgnoreCase))
-                throw new EmailExistsException("Email Already Exits");
+                throw new ConflictException("Email Already Exits");
             var salt = _encryptionService.CreateSalt();
             var hashedPassword = _encryptionService.HashPassword(requestModel.Password, salt);
             var user = new User { Email = requestModel.Email, Salt = salt, HashedPassword = hashedPassword, FirstName = requestModel.FirstName, LastName = requestModel.LastName };

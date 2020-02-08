@@ -2,9 +2,9 @@
 
 namespace MovieShop.Core.Exceptions
 {
-    public class EmailExistsException: Exception
+    public class ConflictException: Exception
     {
-        public EmailExistsException(string message): base(message)
+        public ConflictException(string message): base(message)
         {
             
         }

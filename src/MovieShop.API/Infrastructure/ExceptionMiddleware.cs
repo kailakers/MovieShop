@@ -50,7 +50,7 @@ namespace MovieShop.API.Infrastructure
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     errors = ex.Message;
                     break;
-                case EmailExistsException ex:
+                case ConflictException ex:
                     context.Response.StatusCode = (int)HttpStatusCode.Conflict;
                     errors = ex.Message;
                     break;
@@ -58,7 +58,6 @@ namespace MovieShop.API.Infrastructure
                     context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     errors = exception.Message;
                     break;
-
                 case HttpException re:
                     errors = re.Errors;
                     context.Response.StatusCode = (int)re.Code;

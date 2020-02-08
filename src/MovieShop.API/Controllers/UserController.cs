@@ -29,14 +29,8 @@ namespace MovieShop.API.Controllers
         [HttpPost("purchase")]
         public async Task<ActionResult> CreatePurchase([FromBody] PurchaseRequestModel purchaseRequest)
         {
-            //var currentUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            //if (currentUser != purchaseRequest.UserId) return Unauthorized();
-          
-            //// Get Movie Price from Movie Table
-            //var price = await _movieService.GetMovieAsync(purchaseRequest.MovieId);
-            //purchaseRequest.TotalPrice = price.Price;
             await _purchaseService.PurchaseMovie(purchaseRequest);
-            return Ok("Movie purchased");
+            return Ok();
         }
     }
 }
