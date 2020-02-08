@@ -22,6 +22,7 @@ namespace MovieShop.Core.MappingProfiles
 
             // Request Models to Db Entities Mappings
             CreateMap<PurchaseRequestModel, Purchase>();
+            CreateMap<FavoriteRequestModel, Favorite>();
         }
 
         private List<MovieCardResponseModel> GetMoviesForCast(IEnumerable<MovieCast> srcMovieCasts)

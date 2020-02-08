@@ -8,9 +8,9 @@ namespace MovieShop.Core.Services
 {
     public class GenreService: IGenreService
     {
-        private readonly IGenreRepository _genreRepository;
+        private readonly IAsyncRepository<Genre> _genreRepository;
 
-        public GenreService(IGenreRepository genreRepository)
+        public GenreService(IAsyncRepository<Genre> genreRepository)
         {
             _genreRepository = genreRepository;
         }

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using MovieShop.Core.ApiModels.Request;
-using MovieShop.Core.Entities;
 using MovieShop.Core.ServiceInterfaces;
 
 namespace MovieShop.API.Controllers
@@ -17,13 +10,11 @@ namespace MovieShop.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IMovieService _movieService;
         private readonly IUserService _userService;
-        private readonly IPurchaseService _purchaseService;
-        private readonly  IMovieService _movieService;
 
-        public UserController(IPurchaseService purchaseService, IUserService userService, IMovieService movieService)
+        public UserController( IUserService userService, IMovieService movieService)
         {
-            _purchaseService = purchaseService;
             _userService = userService;
             _movieService = movieService;
         }
@@ -32,7 +23,15 @@ namespace MovieShop.API.Controllers
         [HttpPost("purchase")]
         public async Task<ActionResult> CreatePurchase([FromBody] PurchaseRequestModel purchaseRequest)
         {
-            await _purchaseService.PurchaseMovie(purchaseRequest);
+            await _userService.PurchaseMovie(purchaseRequest);
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("favorite")]
+        public async Task<ActionResult> Favorite([FromBody] FavoriteRequestModel favoriteRequest)
+        {
+            await _userService.AddFavorite(favoriteRequest);
             return Ok();
         }
     }

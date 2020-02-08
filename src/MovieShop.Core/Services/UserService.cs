@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using MovieShop.Core.ApiModels.Request;
@@ -14,12 +15,20 @@ namespace MovieShop.Core.Services
     {
         private readonly ICryptoService _encryptionService;
         private readonly IUserRepository _userRepository;
+        private readonly IAsyncRepository<Favorite> _favoriteRepository;
+        private readonly IAsyncRepository<Purchase> _purchaseRepository;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IMovieService _movieService;
         private readonly IMapper _mapper;
-        public UserService(ICryptoService encryptionService, IUserRepository userRepository, IMapper mapper)
+        public UserService(ICryptoService encryptionService, IUserRepository userRepository, IMapper mapper, IAsyncRepository<Favorite> favoriteRepository, ICurrentUserService currentUserService, IMovieService movieService, IAsyncRepository<Purchase> purchaseRepository)
         {
             _encryptionService = encryptionService;
             _userRepository = userRepository;
             _mapper = mapper;
+            _favoriteRepository = favoriteRepository;
+            _currentUserService = currentUserService;
+            _movieService = movieService;
+            _purchaseRepository = purchaseRepository;
         }
 
         public async Task<User> ValidateUser(string email, string password)
@@ -59,6 +68,58 @@ namespace MovieShop.Core.Services
         public async Task<User> GetUser(string username)
         {
             throw new System.NotImplementedException();
+        }
+
+        public async Task AddFavorite(FavoriteRequestModel favoriteRequest)
+        {
+            if (_currentUserService.UserId != favoriteRequest.UserId)
+            {
+                throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to purchase");
+            }
+            // See if Movie is already Favorited.
+            if (await FavoriteExists(favoriteRequest))
+            {
+                throw new ConflictException("Movie already Favorited");
+            }
+
+            var favorite = _mapper.Map<Favorite>(favoriteRequest);
+            await _favoriteRepository.AddAsync(favorite);
+        }
+
+        public async Task RemoveFavorite(FavoriteRequestModel favorite)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<bool> FavoriteExists(FavoriteRequestModel favorite)
+        {
+            return await _favoriteRepository.GetExistsAsync(f => f.MovieId == favorite.MovieId &&
+                                                                 f.UserId == favorite.UserId);
+        }
+
+        public async Task PurchaseMovie(PurchaseRequestModel purchaseRequest)
+        {
+            if (_currentUserService.UserId != purchaseRequest.UserId)
+            {
+                throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to purchase");
+            }
+
+            // See if Movie is already purchased.
+            if (await IsMoviePurchased(purchaseRequest.MovieId, purchaseRequest.UserId))
+            {
+                throw new ConflictException("Movie already Purchased");
+            }
+            // Get Movie Price from Movie Table
+            var movie = await _movieService.GetMovieAsync(purchaseRequest.MovieId);
+            purchaseRequest.TotalPrice = movie.Price;
+
+            var purchase = _mapper.Map<Purchase>(purchaseRequest);
+            await _purchaseRepository.AddAsync(purchase);
+        }
+
+        public async Task<bool> IsMoviePurchased(int movieId, int userId)
+        {
+            return await _purchaseRepository.GetExistsAsync(p => p.UserId == userId && p.MovieId == movieId);
         }
     }
 }

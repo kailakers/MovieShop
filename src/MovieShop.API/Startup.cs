@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using MovieShop.API.Caching;
 using MovieShop.API.Infrastructure;
+using MovieShop.Core.Entities;
 using MovieShop.Core.MappingProfiles;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
@@ -78,10 +79,12 @@ namespace MovieShop.API
         private void ConfigureRepositoriesDependencyInjection(IServiceCollection services)
         {
             services.AddScoped<IMovieRepository, MovieRepository>();
-            services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ICastRepository, CastRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+            services.AddScoped<IAsyncRepository<Favorite>, EfRepository<Favorite>>();
+            services.AddScoped<IAsyncRepository<Purchase>, EfRepository<Purchase>>();
+            services.AddScoped<IAsyncRepository<Genre>, EfRepository<Genre>>();
         }
 
         private void ConfigureServicesDependencyInjection(IServiceCollection services)
@@ -93,7 +96,6 @@ namespace MovieShop.API
             services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<ICryptoService, CryptoService>();
             services.AddScoped<ICastService, CastService>();
-            services.AddScoped<IPurchaseService, PurchaseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

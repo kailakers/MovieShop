@@ -50,3 +50,13 @@ select  u.Id
 	on u.Id = r.UserId
 	group by u.Id, u.FirstName
 	order by AverageRating desc
+
+
+	-- EF 3 Favorite Exixts
+	   SELECT CASE
+          WHEN EXISTS (
+              SELECT 1
+              FROM [Favorite] AS [f]
+              WHERE ([f].[MovieId] = 14) AND ([f].[UserId] = 1)) THEN CAST(1 AS bit)
+          ELSE CAST(0 AS bit)
+      END

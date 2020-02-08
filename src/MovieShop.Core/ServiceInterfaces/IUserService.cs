@@ -11,5 +11,12 @@ namespace MovieShop.Core.ServiceInterfaces
         Task<UserRegisterResponseModel> CreateUser(UserRegisterRequestModel requestModel);
         Task<UserRegisterResponseModel> GetUserDetails(int id);
         Task<User> GetUser(string username);
+
+        Task AddFavorite(FavoriteRequestModel favorite);
+        Task RemoveFavorite(FavoriteRequestModel favorite);
+        Task<bool> FavoriteExists(FavoriteRequestModel favorite);
+
+        Task PurchaseMovie(PurchaseRequestModel purchaseRequest);
+        Task<bool> IsMoviePurchased(int movieId, int userId);
     }
 }
