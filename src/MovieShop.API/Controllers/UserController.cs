@@ -29,9 +29,17 @@ namespace MovieShop.API.Controllers
 
         [Authorize]
         [HttpPost("favorite")]
-        public async Task<ActionResult> Favorite([FromBody] FavoriteRequestModel favoriteRequest)
+        public async Task<ActionResult> CreateFavorite([FromBody] FavoriteRequestModel favoriteRequest)
         {
             await _userService.AddFavorite(favoriteRequest);
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("review")]
+        public async Task<ActionResult> CreateReview([FromBody] ReviewRequestModel reviewRequest)
+        {
+            await _userService.AddMovieReview(reviewRequest);
             return Ok();
         }
 
@@ -48,6 +56,14 @@ namespace MovieShop.API.Controllers
         public async Task<ActionResult> GetUserFavoriteMoviesAsync(int id)
         {
             var userMovies = await _userService.GetAllFavoritesForUser(id);
+            return Ok(userMovies);
+        }
+
+        [Authorize]
+        [HttpGet("{id:int}/reviews")]
+        public async Task<ActionResult> GetUserReviewedMoviesAsync(int id)
+        {
+            var userMovies = await _userService.GetAllReviewsByUser(id);
             return Ok(userMovies);
         }
     }

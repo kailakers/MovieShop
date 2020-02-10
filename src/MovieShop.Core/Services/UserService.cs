@@ -171,14 +171,15 @@ namespace MovieShop.Core.Services
             await _reviewRepository.DeleteAsync(review);
         }
 
-        public async Task<ReviewsResponseModel> GetAllReviewsByUser(int userId)
+        public async Task<ReviewResponseModel> GetAllReviewsByUser(int id)
         {
-            throw new NotImplementedException();
+            if (_currentUserService.UserId != id)
+                throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to View Reviews");
+
+            var userReviews = await _reviewRepository.ListAllWithIncludesAsync(r => r.UserId == id, r => r.Movie);
+            return _mapper.Map<ReviewResponseModel>(userReviews);
+
         }
 
-        public async Task<ReviewMovieResponseModel> GetReviewForMovieByUser(int userId, int movieId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -28,10 +28,33 @@ namespace MovieShop.Core.MappingProfiles
                 .ForMember(p => p.FavoriteMovies, opt => opt.MapFrom(src => GetFavoriteMovies(src)))
                 .ForMember(p => p.UserId, opt => opt.MapFrom(src => src.FirstOrDefault().UserId));
 
+            CreateMap<IEnumerable<Review>, ReviewResponseModel>()
+                .ForMember(r => r.MovieReviews, opt => opt.MapFrom(src => GetUserReviewedMovies(src)))
+                .ForMember(r => r.UserId, opt => opt.MapFrom(src => src.FirstOrDefault().UserId));
+
+
             // Request Models to Db Entities Mappings
             CreateMap<PurchaseRequestModel, Purchase>();
             CreateMap<FavoriteRequestModel, Favorite>();
             CreateMap<ReviewRequestModel, Review>();
+        }
+
+        private List<ReviewResponseModel.ReviewMovieResponseModel> GetUserReviewedMovies(IEnumerable<Review> reviews)
+        {
+            var reviewResponse = new ReviewResponseModel {MovieReviews = new List<ReviewResponseModel.ReviewMovieResponseModel>()};
+
+            foreach (var review in reviews)
+            {
+                reviewResponse.MovieReviews.Add(new ReviewResponseModel.ReviewMovieResponseModel
+                                                {
+                                                    MovieId = review.MovieId,
+                                                    Rating = review.Rating,
+                                                    UserId = review.UserId,
+                                                    ReviewText = review.ReviewText
+                                                });
+            }
+
+            return reviewResponse.MovieReviews;
         }
 
         private List<FavoriteResponseModel.FavoriteMovieResponseModel> GetFavoriteMovies(

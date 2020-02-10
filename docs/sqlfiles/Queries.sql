@@ -66,3 +66,10 @@ select  u.Id
       FROM [Purchase] AS [p]
       INNER JOIN [Movie] AS [m] ON [p].[MovieId] = [m].[Id]
       WHERE [p].[UserId] = 1
+
+-- Get Reviews by user by EF
+
+SELECT [r].[MovieId], [r].[UserId], [r].[Rating], [r].[ReviewText], [m].[Id], [m].[BackdropUrl], [m].[Budget], [m].[CreatedBy], [m].[CreatedDate], [m].[ImdbUrl], [m].[OriginalLanguage], [m].[Overview], [m].[PosterUrl], [m].[Price], [m].[ReleaseDate], [m].[Revenue], [m].[RunTime], [m].[Tagline], [m].[Title], [m].[TmdbUrl], [m].[UpdatedBy], [m].[UpdatedDate]
+      FROM [Review] AS [r]
+      INNER JOIN [Movie] AS [m] ON [r].[MovieId] = [m].[Id]
+      WHERE [r].[UserId] = 1

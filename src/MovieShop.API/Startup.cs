@@ -92,6 +92,7 @@ namespace MovieShop.API
             services.AddScoped<IAsyncRepository<Favorite>, EfRepository<Favorite>>();
             services.AddScoped<IAsyncRepository<Purchase>, EfRepository<Purchase>>();
             services.AddScoped<IAsyncRepository<Genre>, EfRepository<Genre>>();
+            services.AddScoped<IAsyncRepository<Review>, EfRepository<Review>>();
         }
 
         private void ConfigureServicesDependencyInjection(IServiceCollection services)
