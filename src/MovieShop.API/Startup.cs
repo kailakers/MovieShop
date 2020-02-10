@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MovieShop.API.Caching;
 using MovieShop.API.Infrastructure;
 using MovieShop.Core.Entities;
@@ -37,6 +38,13 @@ namespace MovieShop.API
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "MovieShop API", Version = "v1"});
+            });
+
             services.AddMvc(options => { options.Filters.Add(typeof(ModelStateValidationFilterAttribute)); });
 
             // Add memory cache services
@@ -108,6 +116,15 @@ namespace MovieShop.API
             {
                 builder.WithOrigins(Configuration.GetValue<string>("clientSPAUrl")).AllowAnyHeader()
                        .AllowAnyMethod();
+            });
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MovieShop API V1");
+                c.RoutePrefix = string.Empty;
             });
 
             app.UseHttpsRedirection();
