@@ -44,6 +44,21 @@ namespace MovieShop.API.Controllers
         }
 
         [Authorize]
+        [HttpPut("review")]
+        public async Task<ActionResult> UpdateReview([FromBody] ReviewRequestModel reviewRequest)
+        {
+            await _userService.UpdateMovieReview(reviewRequest);
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete("review")]
+        public async Task<ActionResult> DeleteReview(int reviewId)
+        {
+            await _userService.DeleteMovieReview(reviewId);
+            return NoContent();
+        }
+        [Authorize]
         [HttpGet("{id:int}/purchases")]
         public async Task<ActionResult> GetUserPurchasedMoviesAsync(int id)
         {
