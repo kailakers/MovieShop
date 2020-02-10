@@ -18,10 +18,10 @@ namespace MovieShop.API.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetAllMovies([FromQuery] int pageSize = 30, [FromQuery] int pageIndex = 1,
+        public async Task<IActionResult> GetAllMovies([FromQuery] int pageSize = 30, [FromQuery] int page = 1,
                                                       string title = "")
         {
-            var movies = await _movieService.GetMoviesByPagination(pageSize, pageIndex, title);
+            var movies = await _movieService.GetMoviesByPagination(pageSize, page, title);
          
             return Ok(movies);
         }

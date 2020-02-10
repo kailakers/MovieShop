@@ -8,7 +8,7 @@ namespace MovieShop.Core.ServiceInterfaces
 {
     public interface IMovieService
     {
-        Task<PagedResultSet<MovieResponseModel>> GetMoviesByPagination(int pageSize = 20, int pageIndex = 0, string title = "");
+        Task<PagedResultSet<MovieResponseModel>> GetMoviesByPagination(int pageSize = 20, int page = 0, string title = "");
         Task<MovieDetailsResponseModel> GetMovieAsync(int id);
         Task<int> GetMoviesCount(string title = "");
         Task<IEnumerable<MovieResponseModel>> GetTopRatedMovies();

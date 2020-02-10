@@ -37,7 +37,7 @@ namespace MovieShop.Core.Services
             var movies =
                 new PagedResultSet<MovieResponseModel>(_mapper.Map<List<MovieResponseModel>>(pagedMovies),
                                                            pagedMovies.PageIndex,
-                                                           pagedMovies.PageIndex, pagedMovies.TotalCount);
+                                                           pageSize, pagedMovies.TotalCount);
             return movies;
         }
 

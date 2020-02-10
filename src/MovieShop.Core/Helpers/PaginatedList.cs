@@ -10,9 +10,9 @@ namespace MovieShop.Core.Helpers
    public class PaginatedList<T>: List<T>
     {
      
-        public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
+        public PaginatedList(List<T> items, int count, int page, int pageSize)
         {
-            PageIndex = pageIndex;
+            PageIndex = page;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             TotalCount = count;
             AddRange(items);
