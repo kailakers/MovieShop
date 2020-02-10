@@ -22,5 +22,11 @@ namespace MovieShop.Core.ServiceInterfaces
         Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest);
         Task<PurchaseResponseModel> GetAllPurchasesForUser(int id);
 
+
+        Task AddMovieReview(ReviewRequestModel reviewRequest);
+        Task UpdateMovieReview(ReviewRequestModel reviewRequest);
+        Task DeleteMovieReview(int reviewId);
+        Task<ReviewsResponseModel> GetAllReviewsByUser(int userId);
+        Task<ReviewMovieResponseModel> GetReviewForMovieByUser(int userId, int movieId);
     }
 }

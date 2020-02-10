@@ -31,6 +31,7 @@ namespace MovieShop.Core.MappingProfiles
             // Request Models to Db Entities Mappings
             CreateMap<PurchaseRequestModel, Purchase>();
             CreateMap<FavoriteRequestModel, Favorite>();
+            CreateMap<ReviewRequestModel, Review>();
         }
 
         private List<FavoriteResponseModel.FavoriteMovieResponseModel> GetFavoriteMovies(

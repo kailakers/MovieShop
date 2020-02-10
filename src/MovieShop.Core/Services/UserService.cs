@@ -15,16 +15,18 @@ namespace MovieShop.Core.Services
     public class UserService : IUserService
     {
         private readonly ICurrentUserService _currentUserService;
+        private readonly IUserRepository _userRepository;
         private readonly ICryptoService _encryptionService;
-        private readonly IAsyncRepository<Favorite> _favoriteRepository;
-        private readonly IMapper _mapper;
         private readonly IMovieService _movieService;
         private readonly IAsyncRepository<Purchase> _purchaseRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IAsyncRepository<Favorite> _favoriteRepository;
+        private readonly IAsyncRepository<Review> _reviewRepository;
+        private readonly IMapper _mapper;
+
 
         public UserService(ICryptoService encryptionService, IUserRepository userRepository, IMapper mapper,
                            IAsyncRepository<Favorite> favoriteRepository, ICurrentUserService currentUserService,
-                           IMovieService movieService, IAsyncRepository<Purchase> purchaseRepository)
+                           IMovieService movieService, IAsyncRepository<Purchase> purchaseRepository, IAsyncRepository<Review> reviewRepository)
         {
             _encryptionService = encryptionService;
             _userRepository = userRepository;
@@ -33,6 +35,7 @@ namespace MovieShop.Core.Services
             _currentUserService = currentUserService;
             _movieService = movieService;
             _purchaseRepository = purchaseRepository;
+            _reviewRepository = reviewRepository;
         }
 
         public async Task<User> ValidateUser(string email, string password)
@@ -142,6 +145,40 @@ namespace MovieShop.Core.Services
                                                                       p => p.Movie);
             return _mapper.Map<PurchaseResponseModel>(purchasedMovies);
 
+        }
+
+        public async Task AddMovieReview(ReviewRequestModel reviewRequest)
+        {
+            if (_currentUserService.UserId != reviewRequest.UserId)
+                throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to Review");
+            var review = _mapper.Map<Review>(reviewRequest);
+
+            await _reviewRepository.AddAsync(review);
+        }
+
+        public async Task UpdateMovieReview(ReviewRequestModel reviewRequest)
+        {
+            if (_currentUserService.UserId != reviewRequest.UserId)
+                throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to Review");
+            var review = _mapper.Map<Review>(reviewRequest);
+
+            await _reviewRepository.UpdateAsync(review);
+        }
+
+        public async Task DeleteMovieReview(int reviewId)
+        {
+            var review = await _reviewRepository.GetByIdAsync(reviewId);
+            await _reviewRepository.DeleteAsync(review);
+        }
+
+        public async Task<ReviewsResponseModel> GetAllReviewsByUser(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ReviewMovieResponseModel> GetReviewForMovieByUser(int userId, int movieId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
