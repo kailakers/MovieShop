@@ -25,7 +25,7 @@ namespace MovieShop.Core.ServiceInterfaces
 
         Task AddMovieReview(ReviewRequestModel reviewRequest);
         Task UpdateMovieReview(ReviewRequestModel reviewRequest);
-        Task DeleteMovieReview(int reviewId);
+        Task DeleteMovieReview(int userId, int movieId);
         Task<ReviewResponseModel> GetAllReviewsByUser(int id);
     }
 }

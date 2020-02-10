@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -165,10 +166,12 @@ namespace MovieShop.Core.Services
             await _reviewRepository.UpdateAsync(review);
         }
 
-        public async Task DeleteMovieReview(int reviewId)
+        public async Task DeleteMovieReview(int userId, int movieId)
         {
-            var review = await _reviewRepository.GetByIdAsync(reviewId);
-            await _reviewRepository.DeleteAsync(review);
+            if (_currentUserService.UserId != userId)
+                throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to Delete Review");
+            var review = await _reviewRepository.ListAsync(r => r.UserId == userId && r.MovieId == movieId);
+            await _reviewRepository.DeleteAsync(review.First());
         }
 
         public async Task<ReviewResponseModel> GetAllReviewsByUser(int id)

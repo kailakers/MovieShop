@@ -52,10 +52,10 @@ namespace MovieShop.API.Controllers
         }
 
         [Authorize]
-        [HttpDelete("review")]
-        public async Task<ActionResult> DeleteReview(int reviewId)
+        [HttpDelete("{userId:int}/movie/{movieId:int}")]
+        public async Task<ActionResult> DeleteReview(int userId, int movieId)
         {
-            await _userService.DeleteMovieReview(reviewId);
+            await _userService.DeleteMovieReview(userId, movieId);
             return NoContent();
         }
         [Authorize]
