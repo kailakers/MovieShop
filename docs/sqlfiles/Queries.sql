@@ -88,7 +88,9 @@ SELECT mb.*
   FROM [MovieShop].[dbo].[Movie] m)
   order by mb.VoteCount desc
 
-  -- delete from Movie where id =202
+  --  delete from MovieGenre where movieid = 203
+  --  delete from Movie where id =203
+  -- 
   
 
   

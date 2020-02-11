@@ -47,5 +47,6 @@ namespace MovieShop.Core.ApiModels.Request
         public decimal? Price { get; set; }
 
         public List<Genre> Genres { get; set; }
+        
     }
 }

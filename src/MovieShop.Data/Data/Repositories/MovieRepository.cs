@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MovieShop.Core.Entities;
-using MovieShop.Core.Exceptions;
 using MovieShop.Core.RepositoryInterfaces;
 
 namespace MovieShop.Infrastructure.Data.Repositories
@@ -15,7 +13,6 @@ namespace MovieShop.Infrastructure.Data.Repositories
         {
         }
 
-    
 
         public async Task<IEnumerable<Movie>> GetTopRatedMovies()
         {
@@ -59,10 +56,10 @@ namespace MovieShop.Infrastructure.Data.Repositories
         public override async Task<Movie> GetByIdAsync(int id)
         {
             var movie = await _dbContext.Movies
-                                        .Include(m => m.MovieCasts).ThenInclude(m => m.Cast)
+                                        .Include(m => m.MovieCasts).ThenInclude(m => m.Cast).Include( m => m.Reviews)
                                         .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null) return null;
-            var movieRating = await _dbContext.Reviews.Where(r => r.MovieId == id).AverageAsync(r => r.Rating);
+            var movieRating = movie.Reviews.Average(r => (decimal?) r.Rating);
             if (movieRating > 0) movie.Rating = movieRating;
 
             return movie;
