@@ -73,3 +73,24 @@ SELECT [r].[MovieId], [r].[UserId], [r].[Rating], [r].[ReviewText], [m].[Id], [m
       FROM [Review] AS [r]
       INNER JOIN [Movie] AS [m] ON [r].[MovieId] = [m].[Id]
       WHERE [r].[UserId] = 1
+
+	  SELECT [r].[MovieId], [r].[UserId], [r].[Rating], [r].[ReviewText]
+      FROM [Review] AS [r]
+      WHERE ([r].[UserId] = 1) AND ([r].[MovieId] = 3)
+
+
+select * from Movie order by id desc
+select * from MovieGenre where MovieId = 203
+
+SELECT mb.*
+  FROM [MoviesDB].[dbo].[Movies] mb
+  where mb.OriginalTitle not in (SELECT m.title
+  FROM [MovieShop].[dbo].[Movie] m)
+  order by mb.VoteCount desc
+
+  -- delete from Movie where id =202
+  
+
+  
+
+  

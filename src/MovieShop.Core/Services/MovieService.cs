@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using MovieShop.Core.ApiModels.Request;
 using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Entities;
 using MovieShop.Core.Exceptions;
@@ -17,11 +18,16 @@ namespace MovieShop.Core.Services
     {
         private readonly IMapper _mapper;
         private readonly IMovieRepository _movieRepository;
+        private readonly IAsyncRepository<MovieGenre> _genresRepository;
 
-        public MovieService(IMovieRepository movieRepository, IMapper mapper)
+        private ICurrentUserService _currentUserService;
+
+        public MovieService(IMovieRepository movieRepository, IMapper mapper, ICurrentUserService currentUserService, IAsyncRepository<MovieGenre> genresRepository)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
+            _currentUserService = currentUserService;
+            _genresRepository = genresRepository;
         }
 
 
@@ -36,8 +42,8 @@ namespace MovieShop.Core.Services
                                                                   filterExpression);
             var movies =
                 new PagedResultSet<MovieResponseModel>(_mapper.Map<List<MovieResponseModel>>(pagedMovies),
-                                                           pagedMovies.PageIndex,
-                                                           pageSize, pagedMovies.TotalCount);
+                                                       pagedMovies.PageIndex,
+                                                       pageSize, pagedMovies.TotalCount);
             return movies;
         }
 
@@ -76,6 +82,26 @@ namespace MovieShop.Core.Services
             if (!movies.Any()) throw new NotFoundException("Movies for genre", genreId);
             var response = _mapper.Map<IEnumerable<MovieResponseModel>>(movies);
             return response;
+        }
+
+        public async Task<MovieDetailsResponseModel> CreateMovie(MovieCreateRequest movieCreateRequest)
+        {
+            //if (_currentUserService.UserId != favoriteRequest.UserId)
+            //    throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to purchase");
+
+            // check whether the user is Admin and can create the movie claim
+
+            var movie = _mapper.Map<Movie>(movieCreateRequest);
+
+            var createdMovie = await _movieRepository.AddAsync(movie);
+           // var movieGenres = new List<MovieGenre>();
+            foreach (var genre in movieCreateRequest.Genres)
+            {
+                var movieGenre = new MovieGenre {MovieId = createdMovie.Id, GenreId = genre.Id};
+                await _genresRepository.AddAsync(movieGenre);
+            }
+            
+            return _mapper.Map<MovieDetailsResponseModel>(createdMovie);
         }
     }
 }

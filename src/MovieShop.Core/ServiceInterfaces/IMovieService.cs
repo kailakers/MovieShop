@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MovieShop.Core.ApiModels.Request;
 using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Entities;
 using MovieShop.Core.Helpers;
@@ -14,5 +15,7 @@ namespace MovieShop.Core.ServiceInterfaces
         Task<IEnumerable<MovieResponseModel>> GetTopRatedMovies();
         Task<IEnumerable<MovieResponseModel>> GetHighestGrossingMovies();
         Task<IEnumerable<MovieResponseModel>> GetMoviesByGenre(int genreId);
+
+        Task<MovieDetailsResponseModel> CreateMovie(MovieCreateRequest movieCreateRequest);
     }
 }

@@ -14,7 +14,6 @@ namespace MovieShop.Core.ApiModels.Request
         public string Email { get; set; }
 
         [Required]
-        [DataType(DataType.Password)]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 8)]
         [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$^+=!*()@%&]).{8,}$", ErrorMessage = "Password Should have minimum 8 with at least one upper, lower, number and special character")]
         public string Password { get; set; }
