@@ -22,7 +22,8 @@ namespace MovieShop.Infrastructure.Data.Repositories
                                                                    Id = r.MovieId,
                                                                    r.Movie.PosterUrl,
                                                                    r.Movie.Title,
-                                                                   r.Movie.BackdropUrl
+                                                                   r.Movie.BackdropUrl,
+                                                                   r.Movie.ReleaseDate
                                                                })
                                                  .OrderByDescending(g => g.Average(m => m.Rating))
                                                  .Select(m => new Movie
@@ -31,6 +32,7 @@ namespace MovieShop.Infrastructure.Data.Repositories
                                                                   PosterUrl = m.Key.PosterUrl,
                                                                   Title = m.Key.Title,
                                                                   BackdropUrl = m.Key.BackdropUrl,
+                                                                  ReleaseDate = m.Key.ReleaseDate,
                                                                   Rating = m.Average(x => x.Rating)
                                                               })
                                                  .Take(25)
