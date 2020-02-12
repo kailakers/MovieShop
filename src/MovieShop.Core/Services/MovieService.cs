@@ -19,15 +19,16 @@ namespace MovieShop.Core.Services
         private readonly IMapper _mapper;
         private readonly IMovieRepository _movieRepository;
         private readonly IAsyncRepository<MovieGenre> _genresRepository;
-
+        private readonly IPurchaseRepository _purchaseRepository;
         private ICurrentUserService _currentUserService;
 
-        public MovieService(IMovieRepository movieRepository, IMapper mapper, ICurrentUserService currentUserService, IAsyncRepository<MovieGenre> genresRepository)
+        public MovieService(IMovieRepository movieRepository, IMapper mapper, ICurrentUserService currentUserService, IAsyncRepository<MovieGenre> genresRepository, IPurchaseRepository purchaseRepository)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
             _currentUserService = currentUserService;
             _genresRepository = genresRepository;
+            _purchaseRepository = purchaseRepository;
         }
 
 
@@ -45,6 +46,21 @@ namespace MovieShop.Core.Services
                                                        pagedMovies.PageIndex,
                                                        pageSize, pagedMovies.TotalCount);
             return movies;
+        }
+
+        public async Task<PagedResultSet<MovieResponseModel>> GetAllMoviePurchasesByPagination(int pageSize = 50, int page = 0)
+        {
+            var totalPurchases = await _purchaseRepository.GetCountAsync();
+            var purchases =  await _purchaseRepository.GetAllPurchases(pageSize, page);
+
+            var data = _mapper.Map<List<MovieResponseModel>>(purchases);
+            var purchasedMovies = new PagedResultSet<MovieResponseModel>(data, page, pageSize, totalPurchases);
+            return purchasedMovies;
+        }
+
+        public async Task<PaginatedList<MovieResponseModel>> GetAllPurchasesByMovieId(int movieId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<MovieDetailsResponseModel> GetMovieAsync(int id)
@@ -101,6 +117,21 @@ namespace MovieShop.Core.Services
                 await _genresRepository.AddAsync(movieGenre);
             }
             
+            return _mapper.Map<MovieDetailsResponseModel>(createdMovie);
+        }
+
+        public async Task<MovieDetailsResponseModel> UpdateMovie(MovieCreateRequest movieCreateRequest)
+        {
+            var movie = _mapper.Map<Movie>(movieCreateRequest);
+
+            var createdMovie = await _movieRepository.UpdateAsync(movie);
+            // var movieGenres = new List<MovieGenre>();
+            foreach (var genre in movieCreateRequest.Genres)
+            {
+                var movieGenre = new MovieGenre { MovieId = createdMovie.Id, GenreId = genre.Id };
+                await _genresRepository.UpdateAsync(movieGenre);
+            }
+
             return _mapper.Map<MovieDetailsResponseModel>(createdMovie);
         }
     }

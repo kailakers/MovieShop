@@ -16,7 +16,7 @@ namespace MovieShop.Core.RepositoryInterfaces
         Task<int> GetCountAsync(Expression<Func<T, bool>> filter = null);
         Task<bool> GetExistsAsync(Expression<Func<T, bool>> filter = null);
         Task<T> AddAsync(T entity);
-        Task UpdateAsync(T entity);
+        Task<T> UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task<PaginatedList<T>> GetPagedData(int pageIndex, int pageSize,
                                       Func<IQueryable<T>, IOrderedQueryable<T>> orderedQuery = null,

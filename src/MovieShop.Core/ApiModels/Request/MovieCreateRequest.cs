@@ -7,6 +7,8 @@ namespace MovieShop.Core.ApiModels.Request
 {
     public class MovieCreateRequest
     {
+        public int Id { get; set; }
+
         [Required]
         [StringLength(150)]
         public string Title { get; set; }
@@ -47,6 +49,5 @@ namespace MovieShop.Core.ApiModels.Request
         public decimal? Price { get; set; }
 
         public List<Genre> Genres { get; set; }
-        
     }
 }

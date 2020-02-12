@@ -94,6 +94,7 @@ namespace MovieShop.API
             services.AddScoped<IAsyncRepository<Genre>, EfRepository<Genre>>();
             services.AddScoped<IAsyncRepository<Review>, EfRepository<Review>>();
             services.AddScoped<IAsyncRepository<MovieGenre>, EfRepository<MovieGenre>>();
+            services.AddScoped<IPurchaseRepository, PurchaseRepository>();
         }
 
         private void ConfigureServicesDependencyInjection(IServiceCollection services)
@@ -111,8 +112,8 @@ namespace MovieShop.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-                // app.UseDeveloperExceptionPage();
-                app.UseExceptionMiddleware();
+                 app.UseDeveloperExceptionPage();
+                //app.UseExceptionMiddleware();
 
             app.UseCors(builder =>
             {

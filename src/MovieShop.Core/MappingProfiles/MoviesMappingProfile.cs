@@ -32,6 +32,10 @@ namespace MovieShop.Core.MappingProfiles
                 .ForMember(r => r.MovieReviews, opt => opt.MapFrom(src => GetUserReviewedMovies(src)))
                 .ForMember(r => r.UserId, opt => opt.MapFrom(src => src.FirstOrDefault().UserId));
 
+            CreateMap<Purchase, MovieResponseModel>().ForMember(p => p.Id, opt => opt.MapFrom( src => src.Movie.Id))
+                                                     .ForMember(p => p.Title, opt=> opt.MapFrom(src => src.Movie.Title))
+                                                     .ForMember(p => p.PosterUrl, opt=> opt.MapFrom(src => src.Movie.PosterUrl));
+
             CreateMap<MovieCreateRequest, Movie>();
                 //.ForMember( m => m.MovieGenres, opt => opt.MapFrom( src => GetMovieGenres(src.Genres)));
 

@@ -66,10 +66,11 @@ namespace MovieShop.Infrastructure.Data.Repositories
             return entity;
         }
 
-        public virtual async Task UpdateAsync(T entity)
+        public virtual async Task<T> UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
+            return entity;
         }
 
         public virtual async Task DeleteAsync(T entity)

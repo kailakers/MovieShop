@@ -34,8 +34,15 @@ namespace MovieShop.API.Controllers
         [HttpPut("movie")]
         public async Task<IActionResult> UpdateMovie([FromBody] MovieCreateRequest movieCreateRequest)
         {
-            var createdMovie = await _movieService.CreateMovie(movieCreateRequest);
+            var createdMovie = await _movieService.UpdateMovie(movieCreateRequest);
             return Ok(createdMovie);
+        }
+
+        [HttpGet("purchases")]
+        public async Task<IActionResult> GetAllPurchases([FromQuery] int pageSize = 30, [FromQuery] int page = 1)
+        {
+            var movies = await _movieService.GetAllMoviePurchasesByPagination(pageSize, page);
+            return Ok(movies);
         }
     }
 }

@@ -8,6 +8,7 @@ using MovieShop.Core.ApiModels.Request;
 using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Entities;
 using MovieShop.Core.Exceptions;
+using MovieShop.Core.Helpers;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
 
@@ -81,6 +82,11 @@ namespace MovieShop.Core.Services
         public async Task<User> GetUser(string email)
         {
             return await _userRepository.GetUserByEmail(email);
+        }
+
+        public async Task<PagedResultSet<User>> GetAllUsersByPagination(int pageSize = 20, int page = 0, string lastName = "")
+        {
+            throw new NotImplementedException();
         }
 
         public async Task AddFavorite(FavoriteRequestModel favoriteRequest)
