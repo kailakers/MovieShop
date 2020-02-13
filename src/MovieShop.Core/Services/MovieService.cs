@@ -78,25 +78,25 @@ namespace MovieShop.Core.Services
             return await _movieRepository.GetCountAsync(m => m.Title.Contains(title));
         }
 
-        public async Task<IEnumerable<MovieDetailsResponseModel>> GetTopRatedMovies()
+        public async Task<IEnumerable<MovieResponseModel>> GetTopRatedMovies()
         {
             var topMovies = await _movieRepository.GetTopRatedMovies();
-            var response = _mapper.Map<IEnumerable<MovieDetailsResponseModel>>(topMovies);
+            var response = _mapper.Map<IEnumerable<MovieResponseModel>>(topMovies);
             return response;
         }
 
-        public async Task<IEnumerable<MovieDetailsResponseModel>> GetHighestGrossingMovies()
+        public async Task<IEnumerable<MovieResponseModel>> GetHighestGrossingMovies()
         {
             var movies = await _movieRepository.GetHighestGrossingMovies();
-            var response = _mapper.Map<IEnumerable<MovieDetailsResponseModel>>(movies);
+            var response = _mapper.Map<IEnumerable<MovieResponseModel>>(movies);
             return response;
         }
 
-        public async Task<IEnumerable<MovieDetailsResponseModel>> GetMoviesByGenre(int genreId)
+        public async Task<IEnumerable<MovieResponseModel>> GetMoviesByGenre(int genreId)
         {
             var movies = await _movieRepository.GetMoviesByGenre(genreId);
             if (!movies.Any()) throw new NotFoundException("Movies for genre", genreId);
-            var response = _mapper.Map<IEnumerable<MovieDetailsResponseModel>>(movies);
+            var response = _mapper.Map<IEnumerable<MovieResponseModel>>(movies);
             return response;
         }
 

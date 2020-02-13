@@ -22,7 +22,6 @@ namespace MovieShop.Infrastructure.Data.Repositories
                                                                    Id = r.MovieId,
                                                                    r.Movie.PosterUrl,
                                                                    r.Movie.Title,
-                                                                   r.Movie.BackdropUrl,
                                                                    r.Movie.ReleaseDate
                                                                })
                                                  .OrderByDescending(g => g.Average(m => m.Rating))
@@ -31,11 +30,10 @@ namespace MovieShop.Infrastructure.Data.Repositories
                                                                   Id = m.Key.Id,
                                                                   PosterUrl = m.Key.PosterUrl,
                                                                   Title = m.Key.Title,
-                                                                  BackdropUrl = m.Key.BackdropUrl,
                                                                   ReleaseDate = m.Key.ReleaseDate,
                                                                   Rating = m.Average(x => x.Rating)
                                                               })
-                                                 .Take(25)
+                                                 .Take(50)
                                                  .ToListAsync();
 
             return topRatedMovies;
@@ -51,7 +49,8 @@ namespace MovieShop.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<Movie>> GetHighestGrossingMovies()
         {
-            var movies = await _dbContext.Movies.OrderByDescending(m => m.Revenue).Take(25).ToListAsync();
+            var movies = await _dbContext.Movies.OrderByDescending(m => m.Revenue).Take(50).ToListAsync();
+
             return movies;
         }
 
