@@ -16,7 +16,8 @@ namespace MovieShop.Core.MappingProfiles
                 .ForMember(c => c.Movies, opt => opt.MapFrom(src => GetMoviesForCast(src.MovieCasts)));
 
             CreateMap<Movie, MovieDetailsResponseModel>()
-                .ForMember(md => md.Casts, opt => opt.MapFrom(src => GetCasts(src.MovieCasts)));
+                .ForMember(md => md.Casts, opt => opt.MapFrom(src => GetCasts(src.MovieCasts)))
+                .ForMember(md => md.Genres, opt => opt.MapFrom(src => GetMovieGenres(src.MovieGenres)));
 
             CreateMap<User, UserRegisterResponseModel>();
 
@@ -45,12 +46,12 @@ namespace MovieShop.Core.MappingProfiles
             CreateMap<ReviewRequestModel, Review>();
         }
 
-        private List<MovieGenre> GetMovieGenres(List<Genre> srcGenres)
+        private List<Genre> GetMovieGenres(IEnumerable<MovieGenre> srcGenres)
         {
-           var movieGenres = new List<MovieGenre>();
+           var movieGenres = new List<Genre>();
             foreach (var genre in srcGenres)
             {
-                movieGenres.Add(new MovieGenre{GenreId = genre.Id});
+                movieGenres.Add( new Genre{ Id = genre.GenreId, Name = genre.Genre.Name});
             }
 
             return movieGenres;

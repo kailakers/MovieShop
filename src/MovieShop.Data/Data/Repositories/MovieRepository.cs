@@ -57,10 +57,11 @@ namespace MovieShop.Infrastructure.Data.Repositories
         public override async Task<Movie> GetByIdAsync(int id)
         {
             var movie = await _dbContext.Movies
-                                        .Include(m => m.MovieCasts).ThenInclude(m => m.Cast).Include( m => m.Reviews)
+                                        .Include(m => m.MovieCasts).ThenInclude(m => m.Cast).Include(m => m.MovieGenres)
+                                        .ThenInclude(m => m.Genre)
                                         .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null) return null;
-            var movieRating = movie.Reviews.Average(r => (decimal?) r.Rating);
+            var movieRating = await _dbContext.Reviews.Where(r => r.MovieId == id).AverageAsync(r => r.Rating);
             if (movieRating > 0) movie.Rating = movieRating;
 
             return movie;

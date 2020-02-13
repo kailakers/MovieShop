@@ -123,3 +123,25 @@ SELECT mb.*
       ) AS [t0] ON [t].[Id] = [t0].[MovieId]
       LEFT JOIN [Review] AS [r] ON [t].[Id] = [r].[MovieId]
       ORDER BY [t].[Id], [t0].[CastId], [t0].[MovieId], [t0].[Character], [t0].[Id], [r].[MovieId], [r].[UserId]
+
+
+
+
+	  SELECT [t].[Id], [t].[BackdropUrl], [t].[Budget], [t].[CreatedBy], [t].[CreatedDate], [t].[ImdbUrl], [t].[OriginalLanguage], [t].[Overview], [t].[PosterUrl], [t].[Price], [t].[ReleaseDate], [t].[Revenue], [t].[RunTime], [t].[Tagline], [t].[Title], [t].[TmdbUrl], [t].[UpdatedBy], [t].[UpdatedDate], [t0].[CastId], [t0].[MovieId], [t0].[Character], [t0].[Id], [t0].[Gender], [t0].[Name], [t0].[ProfilePath], [t0].[TmdbUrl], [t1].[MovieId], [t1].[GenreId], [t1].[Id], [t1].[Name], [r].[MovieId], [r].[UserId], [r].[Rating], [r].[ReviewText]
+      FROM (
+          SELECT TOP(1) [m].[Id], [m].[BackdropUrl], [m].[Budget], [m].[CreatedBy], [m].[CreatedDate], [m].[ImdbUrl], [m].[OriginalLanguage], [m].[Overview], [m].[PosterUrl], [m].[Price], [m].[ReleaseDate], [m].[Revenue], [m].[RunTime], [m].[Tagline], [m].[Title], [m].[TmdbUrl], [m].[UpdatedBy], [m].[UpdatedDate]
+          FROM [Movie] AS [m]
+          WHERE [m].[Id] = 12
+      ) AS [t]
+      LEFT JOIN (
+          SELECT [m0].[CastId], [m0].[MovieId], [m0].[Character], [c].[Id], [c].[Gender], [c].[Name], [c].[ProfilePath], [c].[TmdbUrl]
+          FROM [MovieCast] AS [m0]
+          INNER JOIN [Cast] AS [c] ON [m0].[CastId] = [c].[Id]
+      ) AS [t0] ON [t].[Id] = [t0].[MovieId]
+      LEFT JOIN (
+          SELECT [m1].[MovieId], [m1].[GenreId], [g].[Id], [g].[Name]
+          FROM [MovieGenre] AS [m1]
+          INNER JOIN [Genre] AS [g] ON [m1].[GenreId] = [g].[Id]
+      ) AS [t1] ON [t].[Id] = [t1].[MovieId]
+      LEFT JOIN [Review] AS [r] ON [t].[Id] = [r].[MovieId]
+      ORDER BY [t].[Id], [t0].[CastId], [t0].[MovieId], [t0].[Character], [t0].[Id], [t1].[MovieId], [t1].[GenreId], [t1].[Id], [r].[MovieId], [r].[UserId]

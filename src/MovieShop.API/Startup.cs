@@ -112,8 +112,8 @@ namespace MovieShop.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-                 app.UseDeveloperExceptionPage();
-                //app.UseExceptionMiddleware();
+                // app.UseDeveloperExceptionPage();
+                app.UseExceptionMiddleware();
 
             app.UseCors(builder =>
             {

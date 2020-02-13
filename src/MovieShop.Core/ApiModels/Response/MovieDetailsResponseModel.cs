@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MovieShop.Core.Entities;
 
 namespace MovieShop.Core.ApiModels.Response
 {
@@ -20,6 +21,7 @@ namespace MovieShop.Core.ApiModels.Response
         public int? RunTime { get; set; }
         public decimal? Price { get; set; }
         public List<CastResponseModel> Casts { get; set; }
+        public List<Genre> Genres { get; set; }
 
         public class CastResponseModel
         {
