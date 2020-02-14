@@ -71,6 +71,13 @@ namespace MovieShop.Core.Services
             return response;
         }
 
+        public async Task<IEnumerable<ReviewMovieResponseModel>> GetReviewsForMovie(int id)
+        {
+            var reviews = await _movieRepository.GetMovieReviews(id);
+            var response = _mapper.Map<IEnumerable<ReviewMovieResponseModel>>(reviews);
+            return response;
+        }
+
 
         public async Task<int> GetMoviesCount(string title = "")
         {

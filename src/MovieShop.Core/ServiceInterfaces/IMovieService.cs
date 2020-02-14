@@ -14,6 +14,8 @@ namespace MovieShop.Core.ServiceInterfaces
         Task<PaginatedList<MovieResponseModel>> GetAllPurchasesByMovieId(int movieId);
 
         Task<MovieDetailsResponseModel> GetMovieAsync(int id);
+        Task<IEnumerable<ReviewMovieResponseModel>> GetReviewsForMovie(int id);
+
         Task<int> GetMoviesCount(string title = "");
         Task<IEnumerable<MovieResponseModel>> GetTopRatedMovies();
         Task<IEnumerable<MovieResponseModel>> GetHighestGrossingMovies();

@@ -145,3 +145,9 @@ SELECT mb.*
       ) AS [t1] ON [t].[Id] = [t1].[MovieId]
       LEFT JOIN [Review] AS [r] ON [t].[Id] = [r].[MovieId]
       ORDER BY [t].[Id], [t0].[CastId], [t0].[MovieId], [t0].[Character], [t0].[Id], [t1].[MovieId], [t1].[GenreId], [t1].[Id], [r].[MovieId], [r].[UserId]
+
+
+	SELECT [r].[MovieId], [r].[UserId], [r].[Rating], [r].[ReviewText], [u].[Id], [u].[FirstName], [u].[LastName]
+      FROM [Review] AS [r]
+      INNER JOIN [User] AS [u] ON [r].[UserId] = [u].[Id]
+      WHERE [r].[MovieId] =1

@@ -57,5 +57,13 @@ namespace MovieShop.API.Controllers
             var movies = await _movieService.GetMoviesByGenre(genreId);
             return Ok(movies);
         }
+
+        [HttpGet]
+        [Route("{id}/reviews")]
+        public async Task<IActionResult> GetMovieReviews(int id)
+        {
+            var reviews = await _movieService.GetReviewsForMovie(id);
+            return Ok(reviews);
+        }
     }
 }

@@ -33,6 +33,9 @@ namespace MovieShop.Core.MappingProfiles
                 .ForMember(r => r.MovieReviews, opt => opt.MapFrom(src => GetUserReviewedMovies(src)))
                 .ForMember(r => r.UserId, opt => opt.MapFrom(src => src.FirstOrDefault().UserId));
 
+            CreateMap<Review, ReviewMovieResponseModel>()
+                .ForMember(r => r.Name, opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName));
+
             CreateMap<Purchase, MovieResponseModel>().ForMember(p => p.Id, opt => opt.MapFrom( src => src.Movie.Id))
                                                      .ForMember(p => p.Title, opt=> opt.MapFrom(src => src.Movie.Title))
                                                      .ForMember(p => p.PosterUrl, opt=> opt.MapFrom(src => src.Movie.PosterUrl));
@@ -58,13 +61,13 @@ namespace MovieShop.Core.MappingProfiles
         }
 
 
-        private List<ReviewResponseModel.ReviewMovieResponseModel> GetUserReviewedMovies(IEnumerable<Review> reviews)
+        private List<ReviewMovieResponseModel> GetUserReviewedMovies(IEnumerable<Review> reviews)
         {
-            var reviewResponse = new ReviewResponseModel {MovieReviews = new List<ReviewResponseModel.ReviewMovieResponseModel>()};
+            var reviewResponse = new ReviewResponseModel {MovieReviews = new List<ReviewMovieResponseModel>()};
 
             foreach (var review in reviews)
             {
-                reviewResponse.MovieReviews.Add(new ReviewResponseModel.ReviewMovieResponseModel
+                reviewResponse.MovieReviews.Add(new ReviewMovieResponseModel
                                                 {
                                                     MovieId = review.MovieId,
                                                     Rating = review.Rating,
@@ -137,7 +140,8 @@ namespace MovieShop.Core.MappingProfiles
                                   Gender = cast.Cast.Gender,
                                   Name = cast.Cast.Name,
                                   ProfilePath = cast.Cast.ProfilePath,
-                                  TmdbUrl = cast.Cast.TmdbUrl
+                                  TmdbUrl = cast.Cast.TmdbUrl,
+                                  Character = cast.Character
                               });
 
             return movieCast;
