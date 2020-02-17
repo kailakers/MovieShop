@@ -42,6 +42,16 @@ namespace MovieShop.Infrastructure.Data
             modelBuilder.Entity<Purchase>(ConfigurePurchase);
             modelBuilder.Entity<Favorite>(ConfigureFavorites);
             modelBuilder.Entity<Review>(ConfigureReview);
+            modelBuilder.Entity<Trailer>(ConfigureTrailer);
+        }
+
+        private void ConfigureTrailer(EntityTypeBuilder<Trailer> builder)
+        {
+            builder.ToTable("Trailer");
+            builder.HasKey(t => t.Id);
+            builder.Property(t => t.TrailerUrl).HasMaxLength(2084);
+            builder.Property(t => t.Name).HasMaxLength(2084);
+
         }
 
         private void ConfigureGenre(EntityTypeBuilder<Genre> builder)
