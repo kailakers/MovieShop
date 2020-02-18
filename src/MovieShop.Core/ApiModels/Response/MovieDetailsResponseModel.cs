@@ -20,6 +20,7 @@ namespace MovieShop.Core.ApiModels.Response
         public DateTime? ReleaseDate { get; set; }
         public int? RunTime { get; set; }
         public decimal? Price { get; set; }
+        public int FavoritesCount { get; set; }
         public List<CastResponseModel> Casts { get; set; }
         public List<Genre> Genres { get; set; }
 

@@ -21,14 +21,16 @@ namespace MovieShop.Core.Services
         private readonly IAsyncRepository<MovieGenre> _genresRepository;
         private readonly IPurchaseRepository _purchaseRepository;
         private ICurrentUserService _currentUserService;
+        private readonly IAsyncRepository<Favorite> _favoriteRepository;
 
-        public MovieService(IMovieRepository movieRepository, IMapper mapper, ICurrentUserService currentUserService, IAsyncRepository<MovieGenre> genresRepository, IPurchaseRepository purchaseRepository)
+        public MovieService(IMovieRepository movieRepository, IMapper mapper, ICurrentUserService currentUserService, IAsyncRepository<MovieGenre> genresRepository, IPurchaseRepository purchaseRepository, IAsyncRepository<Favorite> favoriteRepository)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
             _currentUserService = currentUserService;
             _genresRepository = genresRepository;
             _purchaseRepository = purchaseRepository;
+            _favoriteRepository = favoriteRepository;
         }
 
 
@@ -67,7 +69,9 @@ namespace MovieShop.Core.Services
         {
             var movie = await _movieRepository.GetByIdAsync(id);
             if (movie == null) throw new NotFoundException("Movie", id);
+            var favoritesCount = await _favoriteRepository.GetCountAsync(f => f.MovieId == id);
             var response = _mapper.Map<MovieDetailsResponseModel>(movie);
+            response.FavoritesCount = favoritesCount;
             return response;
         }
 

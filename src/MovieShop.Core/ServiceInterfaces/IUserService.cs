@@ -17,7 +17,7 @@ namespace MovieShop.Core.ServiceInterfaces
         
         Task AddFavorite(FavoriteRequestModel favoriteRequest);
         Task RemoveFavorite(FavoriteRequestModel favoriteRequest);
-        Task<bool> FavoriteExists(FavoriteRequestModel favoriteRequest);
+        Task<bool> FavoriteExists(int id, int movieId);
         Task<FavoriteResponseModel> GetAllFavoritesForUser(int id);
 
         Task PurchaseMovie(PurchaseRequestModel purchaseRequest);

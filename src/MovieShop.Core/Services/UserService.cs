@@ -94,7 +94,7 @@ namespace MovieShop.Core.Services
             if (_currentUserService.UserId != favoriteRequest.UserId)
                 throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to purchase");
             // See if Movie is already Favorited.
-            if (await FavoriteExists(favoriteRequest)) throw new ConflictException("Movie already Favorited");
+            if (await FavoriteExists(favoriteRequest.UserId, favoriteRequest.MovieId)) throw new ConflictException("Movie already Favorited");
 
             var favorite = _mapper.Map<Favorite>(favoriteRequest);
             await _favoriteRepository.AddAsync(favorite);
@@ -102,14 +102,17 @@ namespace MovieShop.Core.Services
 
         public async Task RemoveFavorite(FavoriteRequestModel favoriteRequest)
         {
-            var favorite = _mapper.Map<Favorite>(favoriteRequest);
-            await _favoriteRepository.DeleteAsync(favorite);
+            var dbFavorite =
+              await  _favoriteRepository.ListAsync(r => r.UserId == favoriteRequest.UserId &&
+                                                   r.MovieId == favoriteRequest.MovieId);
+           // var favorite = _mapper.Map<Favorite>(favoriteRequest);
+            await _favoriteRepository.DeleteAsync(dbFavorite.First());
         }
 
-        public async Task<bool> FavoriteExists(FavoriteRequestModel favorite)
+        public async Task<bool> FavoriteExists(int id, int movieId)
         {
-            return await _favoriteRepository.GetExistsAsync(f => f.MovieId == favorite.MovieId &&
-                                                                 f.UserId == favorite.UserId);
+            return await _favoriteRepository.GetExistsAsync(f => f.MovieId == movieId &&
+                                                                 f.UserId == id);
         }
 
         public async Task<FavoriteResponseModel> GetAllFavoritesForUser(int id)
