@@ -41,6 +41,12 @@ namespace MovieShop.API.Controllers
             return CreatedAtRoute("GetUser", new { id = createdUser.Id }, createdUser);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> EmailExists([FromQuery]string email)
+        {
+            var user = await _userService.GetUser(email);
+            return Ok(user == null ? new {emailExists = false } : new { emailExists = true });
+        }
         [HttpPost("login")]
         public async Task<ActionResult> LoginAsync([FromBody] LoginRequestModel loginRequest)
         {
@@ -58,7 +64,7 @@ namespace MovieShop.API.Controllers
             var claims = new List<Claim>
                          {
                              new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                             new Claim(JwtRegisteredClaimNames.Birthdate, user.DateOfBirth?.ToShortDateString()),
+                            // new Claim(JwtRegisteredClaimNames.Birthdate, user.DateOfBirth?.ToShortDateString()),
                              new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
                              new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
                              new Claim(JwtRegisteredClaimNames.Email, user.Email),

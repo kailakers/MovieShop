@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MovieShop.Core.Entities;
 using MovieShop.Core.RepositoryInterfaces;
@@ -17,7 +18,8 @@ namespace MovieShop.Core.Services
 
         public async Task<IEnumerable<Genre>> GetAllGenres()
         {
-            return await _genreRepository.ListAllAsync();
+            var genres = await _genreRepository.ListAllAsync();
+            return genres.OrderBy(g => g.Name);
         }
     }
 }
