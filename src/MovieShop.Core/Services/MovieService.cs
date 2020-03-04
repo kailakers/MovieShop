@@ -20,14 +20,12 @@ namespace MovieShop.Core.Services
         private readonly IMovieRepository _movieRepository;
         private readonly IAsyncRepository<MovieGenre> _genresRepository;
         private readonly IPurchaseRepository _purchaseRepository;
-        private ICurrentUserService _currentUserService;
         private readonly IAsyncRepository<Favorite> _favoriteRepository;
 
-        public MovieService(IMovieRepository movieRepository, IMapper mapper, ICurrentUserService currentUserService, IAsyncRepository<MovieGenre> genresRepository, IPurchaseRepository purchaseRepository, IAsyncRepository<Favorite> favoriteRepository)
+        public MovieService(IMovieRepository movieRepository, IMapper mapper, IAsyncRepository<MovieGenre> genresRepository, IPurchaseRepository purchaseRepository, IAsyncRepository<Favorite> favoriteRepository)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
-            _currentUserService = currentUserService;
             _genresRepository = genresRepository;
             _purchaseRepository = purchaseRepository;
             _favoriteRepository = favoriteRepository;
