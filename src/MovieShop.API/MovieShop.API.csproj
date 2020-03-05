@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MovieShop.Core\MovieShop.Core.csproj" />
-    <ProjectReference Include="..\MovieShop.Data\MovieShop.Infrastructure.csproj" />
+    <ProjectReference Include="..\MovieShop.Infrastructure\MovieShop.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
