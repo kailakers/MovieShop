@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MovieShop.Core.Entities;
 using MovieShop.Core.RepositoryInterfaces;
+using MovieShop.Infrastructure.Data;
 
-namespace MovieShop.Infrastructure.Data.Repositories
+namespace MovieShop.Infrastructure.Repositories
 {
     public class MovieRepository : EfRepository<Movie>, IMovieRepository
     {

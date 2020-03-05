@@ -18,7 +18,7 @@ using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
 using MovieShop.Core.Services;
 using MovieShop.Infrastructure.Data;
-using MovieShop.Infrastructure.Data.Repositories;
+using MovieShop.Infrastructure.Repositories;
 
 namespace MovieShop.API
 {

@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using MovieShop.Core.Entities;
 using MovieShop.Core.RepositoryInterfaces;
-using Microsoft.EntityFrameworkCore;
+using MovieShop.Infrastructure.Data;
 
-namespace MovieShop.Infrastructure.Data.Repositories
+namespace MovieShop.Infrastructure.Repositories
 {
     public class CastRepository: EfRepository<Cast>, ICastRepository
     {
