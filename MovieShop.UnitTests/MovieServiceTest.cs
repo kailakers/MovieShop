@@ -39,16 +39,16 @@ namespace MovieShop.UnitTests
             _mockFavoriteRepository = new Mock<IAsyncRepository<Favorite>>();
         }
 
-        private IEnumerable<Movie> GetAllMockMovies()
+        private static IEnumerable<Movie> GetAllMockMovies()
         {
             return new List<Movie>
                    {
-                       new Movie {Id = 1, Title = "Avengers", Budget = 1200000},
-                       new Movie {Id = 2, Title = "Avengers", Budget = 1200000},
-                       new Movie {Id = 3, Title = "Avengers", Budget = 1200000},
-                       new Movie {Id = 4, Title = "Avengers", Budget = 1200000},
-                       new Movie {Id = 5, Title = "Avengers", Budget = 1200000},
-                       new Movie {Id = 6, Title = "Avengers", Budget = 1200000}
+                       new Movie {Id = 1, Title = "Avengers: Infinity War", Budget = 1200000},
+                       new Movie {Id = 2, Title = "Avatar", Budget = 1200000},
+                       new Movie {Id = 3, Title = "Star Wars: The Force Awakens", Budget = 1200000},
+                       new Movie {Id = 4, Title = "Titanic", Budget = 1200000},
+                       new Movie {Id = 5, Title = "The Avengers", Budget = 1200000},
+                       new Movie {Id = 6, Title = "Furious 7", Budget = 1200000}
                    };
         }
 
@@ -62,7 +62,7 @@ namespace MovieShop.UnitTests
 
             Assert.NotNull(movies);
             Assert.That(movies.Count(), Is.EqualTo(6));
-            CollectionAssert.AllItemsAreInstancesOfType( movies, typeof(MovieResponseModel) );
+            CollectionAssert.AllItemsAreInstancesOfType(movies, typeof(MovieResponseModel));
         }
     }
 }
