@@ -16,9 +16,9 @@ using MovieShop.Core.Entities;
 using MovieShop.Core.MappingProfiles;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
-using MovieShop.Core.Services;
 using MovieShop.Infrastructure.Data;
 using MovieShop.Infrastructure.Repositories;
+using MovieShop.Infrastructure.Services;
 
 namespace MovieShop.API
 {

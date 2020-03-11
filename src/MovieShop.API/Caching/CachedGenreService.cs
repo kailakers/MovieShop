@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using MovieShop.Core.Entities;
 using MovieShop.Core.ServiceInterfaces;
-using MovieShop.Core.Services;
 
 namespace MovieShop.API.Caching
 {

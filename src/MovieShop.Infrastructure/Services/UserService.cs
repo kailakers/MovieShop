@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace MovieShop.Infrastructure.Services
         private readonly IAsyncRepository<Favorite> _favoriteRepository;
         private readonly IAsyncRepository<Review> _reviewRepository;
         private readonly IMapper _mapper;
+        private List<Movie> _movies;
 
 
         public UserService(ICryptoService encryptionService, IUserRepository userRepository, IMapper mapper,
@@ -83,7 +85,7 @@ namespace MovieShop.Infrastructure.Services
             return await _userRepository.GetUserByEmail(email);
         }
 
-        public async Task<PagedResultSet<User>> GetAllUsersByPagination(int pageSize = 20, int page = 0, string lastName = "")
+        public  Task<PagedResultSet<User>> GetAllUsersByPagination(int pageSize = 20, int page = 0, string lastName = "")
         {
             throw new NotImplementedException();
         }
