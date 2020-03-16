@@ -24,13 +24,16 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
 
-- task: UseNode@1
+- task: Npm@1
+  displayName: 'npm install'
   inputs:
-    version: '10.x'
-  displayName: 'Install Node.js'
+    command: install
+    workingDir: MovieShopSPA
 
-- script: |
-    npm install -g @angular/cli
-    npm install
-    ng build --prod
-    displayName: 'npm install and build'
+- task: Npm@1
+  displayName: 'Build Angular'
+  inputs:
+    command: custom
+    customCommand: run build -- --prod
+    workingDir: MovieShopSPA
+
