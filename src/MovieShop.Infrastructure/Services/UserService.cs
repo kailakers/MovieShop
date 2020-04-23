@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -24,12 +23,12 @@ namespace MovieShop.Infrastructure.Services
         private readonly IAsyncRepository<Favorite> _favoriteRepository;
         private readonly IAsyncRepository<Review> _reviewRepository;
         private readonly IMapper _mapper;
-        private List<Movie> _movies;
 
 
         public UserService(ICryptoService encryptionService, IUserRepository userRepository, IMapper mapper,
-                           IAsyncRepository<Favorite> favoriteRepository, ICurrentUserService currentUserService,
-                           IMovieService movieService, IAsyncRepository<Purchase> purchaseRepository, IAsyncRepository<Review> reviewRepository)
+            IAsyncRepository<Favorite> favoriteRepository, ICurrentUserService currentUserService,
+            IMovieService movieService, IAsyncRepository<Purchase> purchaseRepository,
+            IAsyncRepository<Review> reviewRepository)
         {
             _encryptionService = encryptionService;
             _userRepository = userRepository;
@@ -58,15 +57,20 @@ namespace MovieShop.Infrastructure.Services
             var salt = _encryptionService.CreateSalt();
             var hashedPassword = _encryptionService.HashPassword(requestModel.Password, salt);
             var user = new User
-                       {
-                           Email = requestModel.Email,
-                           Salt = salt,
-                           HashedPassword = hashedPassword,
-                           FirstName = requestModel.FirstName,
-                           LastName = requestModel.LastName
-                       };
+            {
+                Email = requestModel.Email,
+                Salt = salt,
+                HashedPassword = hashedPassword,
+                FirstName = requestModel.FirstName,
+                LastName = requestModel.LastName
+            };
             var createdUser = await _userRepository.AddAsync(user);
 
+            //var response = new UserRegisterResponseModel
+            //{
+            //    Id = createdUser.Id, Email = createdUser.Email, FirstName = createdUser.FirstName,
+            //    LastName = createdUser.LastName
+            //};
             var response = _mapper.Map<UserRegisterResponseModel>(createdUser);
             return response;
         }
@@ -85,7 +89,7 @@ namespace MovieShop.Infrastructure.Services
             return await _userRepository.GetUserByEmail(email);
         }
 
-        public  Task<PagedResultSet<User>> GetAllUsersByPagination(int pageSize = 20, int page = 0, string lastName = "")
+        public Task<PagedResultSet<User>> GetAllUsersByPagination(int pageSize = 20, int page = 0, string lastName = "")
         {
             throw new NotImplementedException();
         }
@@ -95,7 +99,8 @@ namespace MovieShop.Infrastructure.Services
             if (_currentUserService.UserId != favoriteRequest.UserId)
                 throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to purchase");
             // See if Movie is already Favorited.
-            if (await FavoriteExists(favoriteRequest.UserId, favoriteRequest.MovieId)) throw new ConflictException("Movie already Favorited");
+            if (await FavoriteExists(favoriteRequest.UserId, favoriteRequest.MovieId))
+                throw new ConflictException("Movie already Favorited");
 
             var favorite = _mapper.Map<Favorite>(favoriteRequest);
             await _favoriteRepository.AddAsync(favorite);
@@ -104,9 +109,9 @@ namespace MovieShop.Infrastructure.Services
         public async Task RemoveFavorite(FavoriteRequestModel favoriteRequest)
         {
             var dbFavorite =
-              await  _favoriteRepository.ListAsync(r => r.UserId == favoriteRequest.UserId &&
-                                                   r.MovieId == favoriteRequest.MovieId);
-           // var favorite = _mapper.Map<Favorite>(favoriteRequest);
+                await _favoriteRepository.ListAsync(r => r.UserId == favoriteRequest.UserId &&
+                                                         r.MovieId == favoriteRequest.MovieId);
+            // var favorite = _mapper.Map<Favorite>(favoriteRequest);
             await _favoriteRepository.DeleteAsync(dbFavorite.First());
         }
 
@@ -121,8 +126,9 @@ namespace MovieShop.Infrastructure.Services
             if (_currentUserService.UserId != id)
                 throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to View Favorites");
 
-            var favoriteMovies = await _favoriteRepository.ListAllWithIncludesAsync(p => p.UserId == _currentUserService.UserId,
-                                                                                     p => p.Movie);
+            var favoriteMovies = await _favoriteRepository.ListAllWithIncludesAsync(
+                p => p.UserId == _currentUserService.UserId,
+                p => p.Movie);
             return _mapper.Map<FavoriteResponseModel>(favoriteMovies);
         }
 
@@ -144,7 +150,8 @@ namespace MovieShop.Infrastructure.Services
 
         public async Task<bool> IsMoviePurchased(PurchaseRequestModel purchaseRequest)
         {
-            return await _purchaseRepository.GetExistsAsync(p => p.UserId == purchaseRequest.UserId && p.MovieId == purchaseRequest.MovieId);
+            return await _purchaseRepository.GetExistsAsync(p =>
+                p.UserId == purchaseRequest.UserId && p.MovieId == purchaseRequest.MovieId);
         }
 
         public async Task<PurchaseResponseModel> GetAllPurchasesForUser(int id)
@@ -152,10 +159,10 @@ namespace MovieShop.Infrastructure.Services
             if (_currentUserService.UserId != id)
                 throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to View Purchases");
 
-            var purchasedMovies = await _purchaseRepository.ListAllWithIncludesAsync(p => p.UserId == _currentUserService.UserId,
-                                                                      p => p.Movie);
+            var purchasedMovies = await _purchaseRepository.ListAllWithIncludesAsync(
+                p => p.UserId == _currentUserService.UserId,
+                p => p.Movie);
             return _mapper.Map<PurchaseResponseModel>(purchasedMovies);
-
         }
 
         public async Task AddMovieReview(ReviewRequestModel reviewRequest)
@@ -191,8 +198,6 @@ namespace MovieShop.Infrastructure.Services
 
             var userReviews = await _reviewRepository.ListAllWithIncludesAsync(r => r.UserId == id, r => r.Movie);
             return _mapper.Map<ReviewResponseModel>(userReviews);
-
         }
-
     }
 }

@@ -10,8 +10,11 @@ namespace MovieShop.Infrastructure.Services
         public string CreateSalt()
         {
             byte[] randomBytes = new byte[128 / 8];
-            using var generator = RandomNumberGenerator.Create();
-            generator.GetBytes(randomBytes);
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomBytes);
+            }
+           
             return Convert.ToBase64String(randomBytes);
         }
 

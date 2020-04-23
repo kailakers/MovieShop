@@ -47,6 +47,7 @@ namespace MovieShop.API.Controllers
             var user = await _userService.GetUser(email);
             return Ok(user == null ? new {emailExists = false } : new { emailExists = true });
         }
+
         [HttpPost("login")]
         public async Task<ActionResult> LoginAsync([FromBody] LoginRequestModel loginRequest)
         {

@@ -52,25 +52,25 @@ namespace MovieShop.API
             services.AddHttpContextAccessor();
 
             services.AddDbContext<MovieShopDbContext>(options =>
-                                                          options.UseSqlServer(Configuration
-                                                                                   .GetConnectionString("MovieShopDbConnection")));
+                options.UseSqlServer(Configuration
+                    .GetConnectionString("MovieShopDbConnection")));
             services.AddAutoMapper(typeof(Startup), typeof(MoviesMappingProfile));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options =>
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        options.TokenValidationParameters = new TokenValidationParameters
-                                                            {
-                                                                ValidateIssuer = false,
-                                                                ValidateAudience = false,
-                                                                ValidateIssuerSigningKey = true,
-                                                                IssuerSigningKey =
-                                                                    new SymmetricSecurityKey(Encoding
-                                                                                             .UTF8
-                                                                                             .GetBytes(Configuration
-                                                                                                           ["TokenSettings:PrivateKey"]))
-                                                            };
-                    });
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Encoding
+                                .UTF8
+                                .GetBytes(Configuration
+                                    ["TokenSettings:PrivateKey"]))
+                    };
+                });
 
             services.AddAuthorization(options =>
             {
@@ -112,13 +112,13 @@ namespace MovieShop.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-                 app.UseDeveloperExceptionPage();
-                //app.UseExceptionMiddleware();
+                app.UseDeveloperExceptionPage();
+            //app.UseExceptionMiddleware();
 
             app.UseCors(builder =>
             {
                 builder.WithOrigins(Configuration.GetValue<string>("clientSPAUrl")).AllowAnyHeader()
-                       .AllowAnyMethod();
+                    .AllowAnyMethod();
             });
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
