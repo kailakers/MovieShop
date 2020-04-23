@@ -31,8 +31,4 @@
     <ProjectReference Include="..\MovieShop.Infrastructure\MovieShop.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="WorkerService\" />
-  </ItemGroup>
-
 </Project>

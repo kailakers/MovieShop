@@ -21,7 +21,9 @@ using MovieShop.Infrastructure.Data;
 using MovieShop.Infrastructure.Repositories;
 using MovieShop.Infrastructure.Services;
 using Hangfire;
+using Hangfire.Common;
 using Hangfire.SqlServer;
+using MovieShop.API.WorkerService;
 
 namespace MovieShop.API
 {
@@ -63,15 +65,16 @@ namespace MovieShop.API
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
-                .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
-                {
-                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                    QueuePollInterval = TimeSpan.Zero,
-                    UseRecommendedIsolationLevel = true,
-                    UsePageLocksOnDequeue = true,
-                    DisableGlobalLocks = true
-                }));
+                .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"),
+                    new SqlServerStorageOptions
+                    {
+                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                        QueuePollInterval = TimeSpan.Zero,
+                        UseRecommendedIsolationLevel = true,
+                        UsePageLocksOnDequeue = true,
+                        DisableGlobalLocks = true
+                    }));
 
             // Add the processing server as IHostedService
             services.AddHangfireServer();
@@ -117,6 +120,7 @@ namespace MovieShop.API
             services.AddScoped<IAsyncRepository<Review>, EfRepository<Review>>();
             services.AddScoped<IAsyncRepository<MovieGenre>, EfRepository<MovieGenre>>();
             services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+            services.AddScoped<IChartRepository, ChartRepository>();
         }
 
         private void ConfigureServicesDependencyInjection(IServiceCollection services)
@@ -128,10 +132,11 @@ namespace MovieShop.API
             services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<ICryptoService, CryptoService>();
             services.AddScoped<ICastService, CastService>();
+            services.AddScoped<IChartRecurringService, ChartRecurringService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRecurringJobManager recurringJobs)
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
@@ -151,7 +156,10 @@ namespace MovieShop.API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "MovieShop API V1");
                 c.RoutePrefix = string.Empty;
             });
+
             app.UseHangfireDashboard();
+            recurringJobs.AddOrUpdate("ChartServiceJob", Job.FromExpression<IChartRecurringService>(c => c.EnqueueAsync("testdata")),
+                Cron.Hourly());
 
             app.UseHttpsRedirection();
 
