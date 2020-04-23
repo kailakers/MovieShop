@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -26,6 +27,14 @@ namespace MovieShop.API.Controllers
             _movieService = movieService;
             _userService = userService;
             _cache = cache;
+        }
+
+        [HttpGet]
+        [Route("")]
+        public ActionResult TriggerNow()
+        {
+            RecurringJob.Trigger("ChartServiceJob");
+            return Ok("job started");
         }
 
         [HttpPost("movie")]

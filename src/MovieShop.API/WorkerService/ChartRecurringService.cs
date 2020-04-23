@@ -26,7 +26,7 @@ namespace MovieShop.API.WorkerService
             _logger = logger;
         }
 
-        public async Task<string> EnqueueAsync<T>(T args)
+        public async Task<string> ExecuteAsync<T>(T args)
         {
             var jobType = "ChartServiceJob";
             BackgroundJob.Enqueue(() => GetPopularMovies());
@@ -46,6 +46,6 @@ namespace MovieShop.API.WorkerService
 
     public interface IChartRecurringService
     {
-        Task<string> EnqueueAsync<T>(T args);
+        Task<string> ExecuteAsync<T>(T args);
     }
 }

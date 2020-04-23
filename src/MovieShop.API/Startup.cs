@@ -158,15 +158,13 @@ namespace MovieShop.API
             });
 
             app.UseHangfireDashboard();
-            recurringJobs.AddOrUpdate("ChartServiceJob", Job.FromExpression<IChartRecurringService>(c => c.EnqueueAsync("testdata")),
-                Cron.Minutely());
+            recurringJobs.AddOrUpdate("ChartServiceJob",
+                Job.FromExpression<IChartRecurringService>(c => c.ExecuteAsync("testdata")),
+                Cron.Hourly());
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
         }
     }

@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -26,6 +27,7 @@ namespace MovieShop.API.Controllers
             _config = config;
         }
 
+       
         [HttpGet]
         [Route("{id:int}", Name = "GetUser")]
         public async Task<ActionResult> GetUserByIdAsync(int id)
