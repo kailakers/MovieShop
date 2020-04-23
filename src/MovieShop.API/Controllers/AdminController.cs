@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using MovieShop.Core.ApiModels.Request;
+using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Entities;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
@@ -17,18 +19,20 @@ namespace MovieShop.API.Controllers
     {
         private readonly IMovieService _movieService;
         private readonly IUserService _userService;
-        public AdminController(IMovieService movieService, IUserService userService)
+        private readonly IMemoryCache _cache;
+
+        public AdminController(IMovieService movieService, IUserService userService, IMemoryCache cache)
         {
             _movieService = movieService;
             _userService = userService;
-           
+            _cache = cache;
         }
 
         [HttpPost("movie")]
         public async Task<IActionResult> CreateMovie([FromBody] MovieCreateRequest movieCreateRequest)
         {
             var createdMovie = await _movieService.CreateMovie(movieCreateRequest);
-            return CreatedAtRoute("GetMovie", new { id = createdMovie.Id }, createdMovie);
+            return CreatedAtRoute("GetMovie", new {id = createdMovie.Id}, createdMovie);
         }
 
         [HttpPut("movie")]
@@ -42,6 +46,13 @@ namespace MovieShop.API.Controllers
         public async Task<IActionResult> GetAllPurchases([FromQuery] int pageSize = 30, [FromQuery] int page = 1)
         {
             var movies = await _movieService.GetAllMoviePurchasesByPagination(pageSize, page);
+            return Ok(movies);
+        }
+
+        [HttpGet("top")]
+        public IActionResult GetTopMovies()
+        {
+            var movies = _cache.Get<IEnumerable<MovieChartResponseModel>>("chartsData");
             return Ok(movies);
         }
     }

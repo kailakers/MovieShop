@@ -159,7 +159,7 @@ namespace MovieShop.API
 
             app.UseHangfireDashboard();
             recurringJobs.AddOrUpdate("ChartServiceJob", Job.FromExpression<IChartRecurringService>(c => c.EnqueueAsync("testdata")),
-                Cron.Hourly());
+                Cron.Minutely());
 
             app.UseHttpsRedirection();
 
