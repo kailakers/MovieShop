@@ -1,3 +1,4 @@
+USE MovieShop;
 SELECT r.MovieId, m.Title, m.PosterUrl, AVG(r.Rating) AS Rating
 FROM Movie m
     left JOIN Review r ON m.Id = r.MovieId
@@ -164,3 +165,38 @@ for json path, INCLUDE_NULL_VALUES , root('data')
         FROM [Review] AS [r]
             INNER JOIN [User] AS [u] ON [r].[UserId] = [u].[Id]
         WHERE [r].[MovieId] =1
+
+
+        SELECT *
+        from Purchase
+
+        -- Select rows from a Table or View '[TableOrViewName]' in schema '[dbo]'
+        SELECT p.MovieId, m.Title, COUNT(*) PurchaseCount
+        FROM [dbo].[Purchase] p
+            JOIN Movie m on p.MovieId = m.Id
+        GROUP by p.MovieId, m.Title
+        ORDER by COUNT(*) DESC
+
+        -- Insert rows into table 'TableName' in schema '[dbo]'
+        INSERT INTO [dbo].[Purchase]
+            ( -- Columns to insert data into
+            [UserId], [MovieId], [PurchaseNumber], [TotalPrice], [PurchaseDateTime]
+            )
+        VALUES
+            ( 28, 1, NEWID(), 9.9, GETDATE()),
+            ( 3, 1, NEWID(), 9.9, GETDATE()),
+            ( 4, 1, NEWID(), 9.9, GETDATE()),
+            ( 5, 1, NEWID(), 9.9, GETDATE()),
+            ( 6, 1, NEWID(), 9.9, GETDATE()),
+            ( 7, 1, NEWID(), 9.9, GETDATE()),
+            ( 8, 1, NEWID(), 9.9, GETDATE()),
+            ( 9, 1, NEWID(), 9.9, GETDATE()),
+            ( 10, 1, NEWID(), 9.9, GETDATE()),
+            ( 11, 1, NEWID(), 9.9, GETDATE()),
+            ( 32, 1, NEWID(), 9.9, GETDATE()),
+            ( 24, 1, NEWID(), 9.9, GETDATE()),
+            ( 27, 1, NEWID(), 9.9, GETDATE()),
+            ( 25, 1, NEWID(), 9.9, GETDATE())
+
+-- Add more rows here
+GO

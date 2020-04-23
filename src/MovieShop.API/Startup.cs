@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,6 +20,8 @@ using MovieShop.Core.ServiceInterfaces;
 using MovieShop.Infrastructure.Data;
 using MovieShop.Infrastructure.Repositories;
 using MovieShop.Infrastructure.Services;
+using Hangfire;
+using Hangfire.SqlServer;
 
 namespace MovieShop.API
 {
@@ -54,6 +57,25 @@ namespace MovieShop.API
             services.AddDbContext<MovieShopDbContext>(options =>
                 options.UseSqlServer(Configuration
                     .GetConnectionString("MovieShopDbConnection")));
+
+            // Add Hangfire services.
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    UsePageLocksOnDequeue = true,
+                    DisableGlobalLocks = true
+                }));
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
+
             services.AddAutoMapper(typeof(Startup), typeof(MoviesMappingProfile));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -129,6 +151,7 @@ namespace MovieShop.API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "MovieShop API V1");
                 c.RoutePrefix = string.Empty;
             });
+            app.UseHangfireDashboard();
 
             app.UseHttpsRedirection();
 
