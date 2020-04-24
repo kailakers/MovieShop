@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using MovieShop.API.Hub;
 using MovieShop.Core.ApiModels.Request;
 using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Entities;
@@ -21,12 +23,14 @@ namespace MovieShop.API.Controllers
         private readonly IMovieService _movieService;
         private readonly IUserService _userService;
         private readonly IMemoryCache _cache;
+        private readonly IHubContext<MovieShopHub> _hubContext;
 
-        public AdminController(IMovieService movieService, IUserService userService, IMemoryCache cache)
+        public AdminController(IMovieService movieService, IUserService userService, IMemoryCache cache, IHubContext<MovieShopHub> hubContext)
         {
             _movieService = movieService;
             _userService = userService;
             _cache = cache;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -63,6 +67,13 @@ namespace MovieShop.API.Controllers
         {
             var movies = _cache.Get<IEnumerable<MovieChartResponseModel>>("chartsData");
             return Ok(movies);
+        }
+
+        [HttpGet("push/{data}")]
+        public async Task<IActionResult> PushNotification(string data)
+        {
+            await _hubContext.Clients.All.SendAsync("discountNotification", data);
+            return Ok();
         }
     }
 }

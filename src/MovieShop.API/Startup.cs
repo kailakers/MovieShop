@@ -23,6 +23,7 @@ using MovieShop.Infrastructure.Services;
 using Hangfire;
 using Hangfire.Common;
 using Hangfire.SqlServer;
+using MovieShop.API.Hub;
 using MovieShop.API.WorkerService;
 
 namespace MovieShop.API
@@ -55,6 +56,7 @@ namespace MovieShop.API
             // Add memory cache services
             services.AddMemoryCache();
             services.AddHttpContextAccessor();
+            services.AddSignalR();
 
             services.AddDbContext<MovieShopDbContext>(options =>
                 options.UseSqlServer(Configuration
@@ -145,7 +147,8 @@ namespace MovieShop.API
             app.UseCors(builder =>
             {
                 builder.WithOrigins(Configuration.GetValue<string>("clientSPAUrl")).AllowAnyHeader()
-                    .AllowAnyMethod();
+                    .AllowAnyMethod()
+                    .AllowCredentials();
             });
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -165,7 +168,11 @@ namespace MovieShop.API
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<MovieShopHub>("/movieshophub");
+            });
         }
     }
 }
