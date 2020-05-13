@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using MovieShop.Core.Exceptions;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 
 namespace MovieShop.API.Infrastructure
 {
@@ -70,7 +71,7 @@ namespace MovieShop.API.Infrastructure
 
             context.Response.ContentType = "application/json";
 
-            var result = JsonConvert.SerializeObject(new { errors });
+            var result = JsonSerializer.Serialize(new { errors });
             await context.Response.WriteAsync(result);
         }
     }

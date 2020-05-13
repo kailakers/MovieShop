@@ -135,14 +135,15 @@ namespace MovieShop.API
             services.AddScoped<ICryptoService, CryptoService>();
             services.AddScoped<ICastService, CastService>();
             services.AddScoped<IChartRecurringService, ChartRecurringService>();
+            services.AddScoped<IJwtService, JwtService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRecurringJobManager recurringJobs)
         {
             if (env.IsDevelopment())
-                app.UseDeveloperExceptionPage();
-            //app.UseExceptionMiddleware();
+                //   app.UseDeveloperExceptionPage();
+                app.UseExceptionMiddleware();
 
             app.UseCors(builder =>
             {

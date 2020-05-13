@@ -41,7 +41,7 @@ namespace MovieShop.Infrastructure.Services
             var pagedMovies = await _movieRepository.GetPagedData(pageIndex, pageSize,
                                                                   movies => movies.OrderBy(m => m.Title),
                                                                   filterExpression);
-            var movies =
+            var movies = 
                 new PagedResultSet<MovieResponseModel>(_mapper.Map<List<MovieResponseModel>>(pagedMovies),
                                                        pagedMovies.PageIndex,
                                                        pageSize, pagedMovies.TotalCount);

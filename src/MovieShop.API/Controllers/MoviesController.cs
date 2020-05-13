@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MovieShop.Core.ServiceInterfaces;
@@ -19,10 +20,9 @@ namespace MovieShop.API.Controllers
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllMovies([FromQuery] int pageSize = 30, [FromQuery] int page = 1,
-                                                      string title = "")
+            string title = "")
         {
             var movies = await _movieService.GetMoviesByPagination(pageSize, page, title);
-         
             return Ok(movies);
         }
 

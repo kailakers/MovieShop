@@ -20,14 +20,15 @@ namespace MovieShop.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IConfiguration _config;
+        private readonly IJwtService _jwtService;
 
-        public AccountController(IUserService userService, IConfiguration config)
+        public AccountController(IUserService userService, IConfiguration config, IJwtService jwtService)
         {
             _userService = userService;
             _config = config;
+            _jwtService = jwtService;
         }
 
-       
         [HttpGet]
         [Route("{id:int}", Name = "GetUser")]
         public async Task<ActionResult> GetUserByIdAsync(int id)
@@ -40,59 +41,26 @@ namespace MovieShop.API.Controllers
         public async Task<ActionResult> RegisterUserAsync([FromBody] UserRegisterRequestModel user)
         {
             var createdUser = await _userService.CreateUser(user);
-            return CreatedAtRoute("GetUser", new { id = createdUser.Id }, createdUser);
+            return CreatedAtRoute("GetUser", new {id = createdUser.Id}, createdUser);
         }
 
         [HttpGet]
-        public async Task<ActionResult> EmailExists([FromQuery]string email)
+        public async Task<ActionResult> EmailExists([FromQuery] string email)
         {
             var user = await _userService.GetUser(email);
-            return Ok(user == null ? new {emailExists = false } : new { emailExists = true });
+            return Ok(user == null ? new {emailExists = false} : new {emailExists = true});
         }
 
         [HttpPost("login")]
         public async Task<ActionResult> LoginAsync([FromBody] LoginRequestModel loginRequest)
         {
-
             var user = await _userService.ValidateUser(loginRequest.Email, loginRequest.Password);
             if (user == null)
             {
                 return Unauthorized();
             }
-            return Ok(new { token = GenerateJWT(user) });
-        }
 
-        private string GenerateJWT(User user)
-        {
-            var claims = new List<Claim>
-                         {
-                             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                            // new Claim(JwtRegisteredClaimNames.Birthdate, user.DateOfBirth?.ToShortDateString()),
-                             new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
-                             new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
-                             new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                         };
-
-            var identityClaims = new ClaimsIdentity();
-            identityClaims.AddClaims(claims);
-
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenSettings:PrivateKey"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-            var expires = DateTime.UtcNow.AddHours(_config.GetValue<double>("TokenSettings:ExpirationHours"));
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-                                  {
-                                      Subject = identityClaims,
-                                      Expires = expires,
-                                      SigningCredentials = credentials,
-                                      Issuer = _config["TokenSettings:Issuer"],
-                                      Audience = _config["TokenSettings:Audience"]
-                                  };
-
-            var encodedJwt = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(encodedJwt);
+            return Ok(new {token = _jwtService.GenerateToken(user)});
         }
     }
 }
