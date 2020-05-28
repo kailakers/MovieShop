@@ -25,6 +25,7 @@ using Hangfire.Common;
 using Hangfire.SqlServer;
 using MovieShop.API.Hub;
 using MovieShop.API.WorkerService;
+using MovieShop.Infrastructure.Helpers;
 
 namespace MovieShop.API
 {
@@ -107,36 +108,18 @@ namespace MovieShop.API
                 options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
             });
 
-            ConfigureRepositoriesDependencyInjection(services);
-            ConfigureServicesDependencyInjection(services);
+            ConfigureDependencyInjection(services);
         }
 
-        private void ConfigureRepositoriesDependencyInjection(IServiceCollection services)
+        private void ConfigureDependencyInjection(IServiceCollection services)
         {
-            services.AddScoped<IMovieRepository, MovieRepository>();
-            services.AddScoped<ICastRepository, CastRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IAsyncRepository<Favorite>, EfRepository<Favorite>>();
-            services.AddScoped<IAsyncRepository<Purchase>, EfRepository<Purchase>>();
-            services.AddScoped<IAsyncRepository<Genre>, EfRepository<Genre>>();
-            services.AddScoped<IAsyncRepository<Review>, EfRepository<Review>>();
-            services.AddScoped<IAsyncRepository<MovieGenre>, EfRepository<MovieGenre>>();
-            services.AddScoped<IPurchaseRepository, PurchaseRepository>();
-            services.AddScoped<IChartRepository, ChartRepository>();
-        }
-
-        private void ConfigureServicesDependencyInjection(IServiceCollection services)
-        {
-            services.AddScoped<IMovieService, MovieService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddTransient<ICachedGenreService, CachedGenreService>();
-            services.AddScoped<IGenreService, GenreService>();
-            services.AddScoped<ICryptoService, CryptoService>();
-            services.AddScoped<ICastService, CastService>();
             services.AddScoped<IChartRecurringService, ChartRecurringService>();
-            services.AddScoped<IJwtService, JwtService>();
+            services.AddRepositories();
+            services.AddServices();
         }
+
+      
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRecurringJobManager recurringJobs)
