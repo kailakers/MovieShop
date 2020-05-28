@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Hangfire;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using MovieShop.Core.ApiModels.Request;
-using MovieShop.Core.Entities;
 using MovieShop.Core.ServiceInterfaces;
 
 namespace MovieShop.API.Controllers

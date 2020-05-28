@@ -1,5 +1,3 @@
-using System;
-
 namespace MovieShop.MVC.Models
 {
     public class ErrorViewModel

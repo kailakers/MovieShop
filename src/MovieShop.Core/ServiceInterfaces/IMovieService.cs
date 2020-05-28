@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using MovieShop.Core.ApiModels.Request;
 using MovieShop.Core.ApiModels.Response;
-using MovieShop.Core.Entities;
 using MovieShop.Core.Helpers;
 
 namespace MovieShop.Core.ServiceInterfaces

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using MovieShop.Core.RepositoryInterfaces;
 using Hangfire;
 using Microsoft.Extensions.Logging;
-using MovieShop.Core.ApiModels.Response;
 
 namespace MovieShop.API.WorkerService
 {

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MovieShop.Core.ApiModels.Request;
 using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Entities;
