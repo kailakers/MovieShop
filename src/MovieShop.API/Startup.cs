@@ -108,7 +108,6 @@ namespace MovieShop.API
 
         private void ConfigureDependencyInjection(IServiceCollection services)
         {
-            services.AddTransient<ICachedGenreService, CachedGenreService>();
             services.AddScoped<IChartRecurringService, ChartRecurringService>();
             services.AddRepositories();
             services.AddServices();

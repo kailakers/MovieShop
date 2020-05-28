@@ -26,6 +26,7 @@ namespace MovieShop.Infrastructure.Helpers
         public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IGenreService, GenreService>();

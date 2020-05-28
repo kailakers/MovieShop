@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MovieShop.API.Caching;
+using MovieShop.Core.ServiceInterfaces;
 
 namespace MovieShop.API.Controllers
 {
@@ -8,8 +9,8 @@ namespace MovieShop.API.Controllers
     [ApiController]
     public class GenresController : ControllerBase
     {
-        private readonly ICachedGenreService _genreService;
-        public GenresController(ICachedGenreService genreService)
+        private readonly IGenreService _genreService;
+        public GenresController(IGenreService genreService)
         {
             _genreService = genreService;
         }

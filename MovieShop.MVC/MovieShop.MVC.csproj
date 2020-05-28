@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\src\MovieShop.Core\MovieShop.Core.csproj" />
+    <ProjectReference Include="..\src\MovieShop.Infrastructure\MovieShop.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
