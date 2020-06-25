@@ -40,7 +40,7 @@ namespace MovieShop.API.Controllers
         public async Task<IActionResult> CreateMovie([FromBody] MovieCreateRequest movieCreateRequest)
         {
             var createdMovie = await _movieService.CreateMovie(movieCreateRequest);
-            return CreatedAtRoute("GetMovie", new {id = createdMovie.Id}, createdMovie);
+            return CreatedAtRoute("GetMovie", new { id = createdMovie.Id }, createdMovie);
         }
 
         [HttpPut("movie")]

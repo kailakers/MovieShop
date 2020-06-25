@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
+using Moq;
 using MovieShop.Core.Entities;
+using MovieShop.Core.MappingProfiles;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
 using MovieShop.Infrastructure.Services;
@@ -10,16 +13,37 @@ namespace MovieShop.UnitTests
 {
     public class UserServiceTest
     {
-        private ICurrentUserService _currentUserService;
+        private Mock<ICurrentUserService> _currentUserService;
         private ICryptoService _encryptionService;
-        private IAsyncRepository<Favorite> _favoriteRepository;
+        private Mock<IAsyncRepository<Favorite>> _favoriteRepository;
         private IMapper _mapper;
+
         private List<Movie> _movies;
-        private IMovieService _movieService;
-        private IAsyncRepository<Purchase> _purchaseRepository;
-        private IAsyncRepository<Review> _reviewRepository;
+        private Mock<IMovieService> _movieService;
+        private Mock<IAsyncRepository<Purchase>> _purchaseRepository;
+        private Mock<IAsyncRepository<Review>> _reviewRepository;
+
         private UserService _sut;
-        private IUserRepository _userRepository;
+        private List<Movie> _userPurchasedMovies;
+        private Mock<IUserRepository> _userRepository;
+
+        [SetUp]
+        public void SetUp()
+        {
+            var myProfile = new MoviesMappingProfile();
+            var configuration = new MapperConfiguration(cfg => cfg.AddProfile(myProfile));
+            _mapper = new Mapper(configuration);
+
+            _currentUserService = new Mock<ICurrentUserService>();
+            _encryptionService = new CryptoService();
+            _favoriteRepository = new Mock<IAsyncRepository<Favorite>>();
+            _movieService = new Mock<IMovieService>();
+            _purchaseRepository = new Mock<IAsyncRepository<Purchase>>();
+            _reviewRepository = new Mock<IAsyncRepository<Review>>();
+            _userRepository = new Mock<IUserRepository>();
+
+           
+        }
 
         [OneTimeSetUp]
         public void OneTimeSetup()
@@ -49,6 +73,19 @@ namespace MovieShop.UnitTests
                           new Movie {Id = 15, Title = "Iron Man", Budget = 1200000},
                           new Movie {Id = 16, Title = "Furious 7", Budget = 1200000}
                       };
+
+
+            _userPurchasedMovies = new List<Movie>
+                                   {
+                                       new Movie {Id = 1, Title = "Avengers: Infinity War", Budget = 1200000},
+                                       new Movie {Id = 2, Title = "Avatar", Budget = 1200000},
+                                       new Movie
+                                       {
+                                           Id = 14, Title = "Harry Potter and the Philosopher's Stone", Budget = 1200000
+                                       },
+                                       new Movie {Id = 15, Title = "Iron Man", Budget = 1200000},
+                                       new Movie {Id = 16, Title = "Furious 7", Budget = 1200000}
+                                   };
         }
     }
 }

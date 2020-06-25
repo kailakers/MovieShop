@@ -98,7 +98,7 @@ namespace MovieShop.Infrastructure.Services
         {
             if (_currentUserService.UserId != favoriteRequest.UserId)
                 throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to purchase");
-            // See if Movie is already Favorited.
+            // See if Movie is already Favorite.
             if (await FavoriteExists(favoriteRequest.UserId, favoriteRequest.MovieId))
                 throw new ConflictException("Movie already Favorited");
 
