@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using MovieShop.Core.Exceptions;
+
 //using Newtonsoft.Json;
 
 namespace MovieShop.API.Infrastructure
@@ -38,7 +39,7 @@ namespace MovieShop.API.Infrastructure
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
             _logger.LogInformation($"Request completed with status code: {context.Response.StatusCode} ");
             _logger.LogError($"Something went wrong: {exception}");
             object errors = null;
@@ -46,30 +47,30 @@ namespace MovieShop.API.Infrastructure
             switch (exception)
             {
                 case BadRequestException ex:
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                     errors = ex.Message;
                     break;
                 case ConflictException ex:
-                    context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    context.Response.StatusCode = (int) HttpStatusCode.Conflict;
                     errors = ex.Message;
                     break;
                 case NotFoundException _:
-                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    // context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     errors = exception.Message;
-                    break;
+                 break;
                 case HttpException re:
                     errors = re.Errors;
-                    context.Response.StatusCode = (int)re.Code;
+                    context.Response.StatusCode = (int) re.Code;
                     break;
                 case Exception e:
                     errors = string.IsNullOrWhiteSpace(e.Message) ? "Error" : "Server error, please try later";
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                     break;
             }
 
             context.Response.ContentType = "application/json";
 
-            var result = JsonSerializer.Serialize(new { errors });
+            var result = JsonSerializer.Serialize(new {errors});
             await context.Response.WriteAsync(result);
         }
     }
