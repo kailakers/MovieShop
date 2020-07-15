@@ -10,9 +10,9 @@ namespace MovieShop.API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly IConfiguration _config;
         private readonly IJwtService _jwtService;
+        private readonly IUserService _userService;
 
         public AccountController(IUserService userService, IConfiguration config, IJwtService jwtService)
         {
@@ -47,10 +47,7 @@ namespace MovieShop.API.Controllers
         public async Task<ActionResult> LoginAsync([FromBody] LoginRequestModel loginRequest)
         {
             var user = await _userService.ValidateUser(loginRequest.Email, loginRequest.Password);
-            if (user == null)
-            {
-                return Unauthorized();
-            }
+            if (user == null) return Unauthorized();
 
             return Ok(new {token = _jwtService.GenerateToken(user)});
         }
