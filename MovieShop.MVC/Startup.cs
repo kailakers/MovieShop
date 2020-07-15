@@ -1,8 +1,14 @@
+using System;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MovieShop.Core.MappingProfiles;
+using MovieShop.Infrastructure.Data;
 using MovieShop.Infrastructure.Helpers;
 
 namespace MovieShop.MVC
@@ -19,12 +25,27 @@ namespace MovieShop.MVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<MovieShopDbContext>(options =>
+                options.UseSqlServer(Configuration
+                    .GetConnectionString("MovieShopDbConnection")));
             services.AddControllersWithViews();
+            //sets the default authentication scheme for the app
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+                {
+                    options.Cookie.Name = "MovieShopAuthCookie";
+                    options.ExpireTimeSpan = TimeSpan.FromHours(2);
+                    options.LoginPath = "/Account/Login";
+                });
             ConfigureDependencyInjection(services);
+            services.AddMemoryCache();
+            services.AddHttpContextAccessor();
+
         }
 
         private void ConfigureDependencyInjection(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup), typeof(MoviesMappingProfile));
+
             services.AddRepositories();
             services.AddServices();
         }
@@ -44,6 +65,7 @@ namespace MovieShop.MVC
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
