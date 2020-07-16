@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MovieShop.Core.ApiModels.Response
+namespace MovieShop.Core.Models.Response
 {
    public class MovieResponseModel
     {

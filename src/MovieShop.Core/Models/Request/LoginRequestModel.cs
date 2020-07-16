@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MovieShop.Core.ApiModels.Request
+namespace MovieShop.Core.Models.Request
 {
     public class LoginRequestModel
     {

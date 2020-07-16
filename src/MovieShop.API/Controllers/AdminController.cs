@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using MovieShop.API.Hub;
-using MovieShop.Core.ApiModels.Request;
-using MovieShop.Core.ApiModels.Response;
+using MovieShop.Core.Models.Request;
+using MovieShop.Core.Models.Response;
 using MovieShop.Core.ServiceInterfaces;
 
 namespace MovieShop.API.Controllers

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using MovieShop.Core.ApiModels.Response;
+using MovieShop.Core.Models.Response;
 using MovieShop.Core.RepositoryInterfaces;
 
 namespace MovieShop.Infrastructure.Repositories

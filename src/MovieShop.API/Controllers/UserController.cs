@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MovieShop.Core.ApiModels.Request;
+using MovieShop.Core.Models.Request;
 using MovieShop.Core.ServiceInterfaces;
 
 namespace MovieShop.API.Controllers

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
-using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Exceptions;
+using MovieShop.Core.Models.Response;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MovieShop.Core.ApiModels.Request
+namespace MovieShop.Core.Models.Request
 {
     // https://liftcodeplay.files.wordpress.com/2017/07/regexrequirement.png
     // https://liftcodeplay.com/2017/07/15/asp-net-core-password-complexity-validation-using-a-regular-expression-in-a-view-model/

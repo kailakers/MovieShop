@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MovieShop.Core.ApiModels.Request;
-using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Helpers;
+using MovieShop.Core.Models.Request;
+using MovieShop.Core.Models.Response;
 
 namespace MovieShop.Core.ServiceInterfaces
 {

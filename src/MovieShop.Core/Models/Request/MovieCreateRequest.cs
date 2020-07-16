@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using MovieShop.Core.Entities;
 
-namespace MovieShop.Core.ApiModels.Request
+namespace MovieShop.Core.Models.Request
 {
     public class MovieCreateRequest
     {

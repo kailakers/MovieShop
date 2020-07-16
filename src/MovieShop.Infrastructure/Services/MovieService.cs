@@ -4,11 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
-using MovieShop.Core.ApiModels.Request;
-using MovieShop.Core.ApiModels.Response;
 using MovieShop.Core.Entities;
 using MovieShop.Core.Exceptions;
 using MovieShop.Core.Helpers;
+using MovieShop.Core.Models.Request;
+using MovieShop.Core.Models.Response;
 using MovieShop.Core.RepositoryInterfaces;
 using MovieShop.Core.ServiceInterfaces;
 

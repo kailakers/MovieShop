@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MovieShop.Core.ApiModels.Request;
+using MovieShop.Core.Models.Request;
 using MovieShop.Core.ServiceInterfaces;
 
 namespace MovieShop.MVC.Controllers

@@ -29,6 +29,9 @@ namespace MovieShop.MVC
                 options.UseSqlServer(Configuration
                     .GetConnectionString("MovieShopDbConnection")));
             services.AddControllersWithViews();
+
+            services.AddAutoMapper(typeof(Startup), typeof(MoviesMappingProfile));
+
             //sets the default authentication scheme for the app
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
                 {
@@ -44,8 +47,6 @@ namespace MovieShop.MVC
 
         private void ConfigureDependencyInjection(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(Startup), typeof(MoviesMappingProfile));
-
             services.AddRepositories();
             services.AddServices();
         }

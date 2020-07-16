@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using MovieShop.Core.ApiModels.Response;
+using MovieShop.Core.Models.Response;
 
 namespace MovieShop.Core.RepositoryInterfaces
 {

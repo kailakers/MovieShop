@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MovieShop.Core.Entities;
 
-namespace MovieShop.Core.ApiModels.Response
+namespace MovieShop.Core.Models.Response
 {
     public class MovieDetailsResponseModel
     {

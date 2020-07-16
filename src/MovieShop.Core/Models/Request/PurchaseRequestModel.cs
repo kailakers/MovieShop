@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MovieShop.Core.ApiModels.Request
+namespace MovieShop.Core.Models.Request
 {
     public class PurchaseRequestModel
     {
