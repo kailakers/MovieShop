@@ -7,7 +7,11 @@ namespace MovieShop.Core.ServiceInterfaces
     {
         int? UserId { get; }
         bool IsAuthenticated { get; }
-        string Name { get; }
+        string UserName { get; }
+        string FullName { get; }
+        string Email { get; }
+        string RemoteIpAddress { get; }
         IEnumerable<Claim> GetClaimsIdentity();
+        IEnumerable<string> Roles { get; }
     }
 }

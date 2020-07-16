@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -35,7 +36,7 @@ namespace MovieShop.MVC.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(LoginRequestModel loginRequest, string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
             if (!ModelState.IsValid) return View();
 
             var user = await _userService.ValidateUser(loginRequest.Email, loginRequest.Password);
@@ -49,7 +50,8 @@ namespace MovieShop.MVC.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim("FullName", user.FirstName + " " + user.LastName),
+                new Claim(ClaimTypes.GivenName, user.FirstName),
+                new Claim(ClaimTypes.Surname,  user.LastName),
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -58,6 +60,12 @@ namespace MovieShop.MVC.Controllers
                 new ClaimsPrincipal(claimsIdentity));
 
           return LocalRedirect(returnUrl);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return LocalRedirect("~/");
         }
     }
 }

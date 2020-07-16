@@ -16,14 +16,32 @@ namespace MovieShop.Infrastructure.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public string Name => GetName();
+
         public int? UserId => GetUserId();
         public bool IsAuthenticated => GetAuthenticated();
-        public string Name => GetName();
+        public string UserName => _httpContextAccessor.HttpContext.User.Identity.Name;
+
+        public string FullName => _httpContextAccessor.HttpContext.User.Claims
+                                                      .FirstOrDefault(c => c.Type == ClaimTypes.GivenName)
+                                                      ?.Value + " " + _httpContextAccessor.HttpContext.User.Claims
+                                                                                          .FirstOrDefault(c =>
+                                                                                                              c.Type ==
+                                                                                                              ClaimTypes
+                                                                                                                  .Surname)
+                                                                                          ?.Value;
+
+        public string Email => _httpContextAccessor.HttpContext.User.Claims
+                                                   .FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+        public string RemoteIpAddress => _httpContextAccessor.HttpContext.Connection?.RemoteIpAddress.ToString();
 
         public IEnumerable<Claim> GetClaimsIdentity()
         {
             return _httpContextAccessor.HttpContext.User.Claims;
         }
+
+        public IEnumerable<string> Roles => GetRoles();
 
         private int? GetUserId()
         {
@@ -41,6 +59,16 @@ namespace MovieShop.Infrastructure.Services
         {
             return _httpContextAccessor.HttpContext.User.Identity.Name ??
                    _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+        }
+
+        private IEnumerable<string> GetRoles()
+        {
+            var claims = GetClaimsIdentity();
+            var roles = new List<string>();
+            foreach (var claim in claims)
+                if (claim.Type == ClaimTypes.Role)
+                    roles.Add(claim.Value);
+            return roles;
         }
     }
 }
