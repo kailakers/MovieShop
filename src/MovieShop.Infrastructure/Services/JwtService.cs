@@ -30,7 +30,7 @@ namespace MovieShop.Infrastructure.Services
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
             };
-            claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            if (user.Roles != null) claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var identityClaims = new ClaimsIdentity();
             identityClaims.AddClaims(claims);

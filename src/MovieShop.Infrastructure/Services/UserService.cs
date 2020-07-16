@@ -48,8 +48,15 @@ namespace MovieShop.Infrastructure.Services
             if (user == null) return null;
             var hashedPassword = _encryptionService.HashPassword(password, user.Salt);
             var isSuccess =  user.HashedPassword == hashedPassword;
-           // var roles = await _userRoleRepository.ListAllWithIncludesAsync(ur => ur.UserId == user.Id, role => role.Role );
+            var roles = await _userRoleRepository.ListAllWithIncludesAsync(ur => ur.UserId == user.Id, role => role.Role );
+          
             var response = _mapper.Map<UserLoginResponseModel>(user);
+
+            var userRoles = roles.ToList();
+            if (userRoles.Any())
+            {
+                response.Roles = userRoles.Select(r => r.Role.Name).ToList();
+            }
             return isSuccess ? response : null;
         }
 
