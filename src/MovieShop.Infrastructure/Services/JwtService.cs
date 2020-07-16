@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MovieShop.Core.Entities;
+using MovieShop.Core.Models.Response;
 using MovieShop.Core.ServiceInterfaces;
 
 namespace MovieShop.Infrastructure.Services
@@ -18,7 +20,7 @@ namespace MovieShop.Infrastructure.Services
         {
             _config = config;
         }
-        public string GenerateToken(User user)
+        public string GenerateToken(UserLoginResponseModel user)
         {
             var claims = new List<Claim>
             {
@@ -28,6 +30,7 @@ namespace MovieShop.Infrastructure.Services
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
             };
+            claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var identityClaims = new ClaimsIdentity();
             identityClaims.AddClaims(claims);

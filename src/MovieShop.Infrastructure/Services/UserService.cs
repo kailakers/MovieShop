@@ -16,6 +16,7 @@ namespace MovieShop.Infrastructure.Services
     public class UserService : IUserService
     {
         private readonly ICurrentUserService _currentUserService;
+        private readonly IAsyncRepository<UserRole> _userRoleRepository;
         private readonly IUserRepository _userRepository;
         private readonly ICryptoService _encryptionService;
         private readonly IMovieService _movieService;
@@ -26,7 +27,7 @@ namespace MovieShop.Infrastructure.Services
 
 
         public UserService(ICryptoService encryptionService, IUserRepository userRepository, IMapper mapper,
-            IAsyncRepository<Favorite> favoriteRepository, ICurrentUserService currentUserService,
+            IAsyncRepository<Favorite> favoriteRepository, ICurrentUserService currentUserService, IAsyncRepository<UserRole> userRoleRepository,
             IMovieService movieService, IAsyncRepository<Purchase> purchaseRepository,
             IAsyncRepository<Review> reviewRepository)
         {
@@ -35,17 +36,21 @@ namespace MovieShop.Infrastructure.Services
             _mapper = mapper;
             _favoriteRepository = favoriteRepository;
             _currentUserService = currentUserService;
+            _userRoleRepository = userRoleRepository;
             _movieService = movieService;
             _purchaseRepository = purchaseRepository;
             _reviewRepository = reviewRepository;
         }
 
-        public async Task<User> ValidateUser(string email, string password)
+        public async Task<UserLoginResponseModel> ValidateUser(string email, string password)
         {
             var user = await _userRepository.GetUserByEmail(email);
             if (user == null) return null;
             var hashedPassword = _encryptionService.HashPassword(password, user.Salt);
-            return user.HashedPassword != hashedPassword ? null : user;
+            var isSuccess =  user.HashedPassword == hashedPassword;
+           // var roles = await _userRoleRepository.ListAllWithIncludesAsync(ur => ur.UserId == user.Id, role => role.Role );
+            var response = _mapper.Map<UserLoginResponseModel>(user);
+            return isSuccess ? response : null;
         }
 
         public async Task<UserRegisterResponseModel> CreateUser(UserRegisterRequestModel requestModel)

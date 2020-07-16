@@ -19,6 +19,7 @@ namespace MovieShop.Infrastructure.Helpers
             services.AddScoped<IAsyncRepository<Genre>, EfRepository<Genre>>();
             services.AddScoped<IAsyncRepository<Review>, EfRepository<Review>>();
             services.AddScoped<IAsyncRepository<MovieGenre>, EfRepository<MovieGenre>>();
+            services.AddScoped<IAsyncRepository<UserRole>, EfRepository<UserRole>>();
             services.AddScoped<IPurchaseRepository, PurchaseRepository>();
             services.AddScoped<IChartRepository, ChartRepository>();
         }
