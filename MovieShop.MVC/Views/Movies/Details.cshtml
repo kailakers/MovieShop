@@ -1,0 +1,90 @@
+﻿@model MovieShop.Core.Models.Response.MovieDetailsResponseModel
+
+    <div class="bg-image" style="background-image: url(@Model.BackdropUrl)">
+
+        <div class="row">
+            <div class="col-md-3 offset-2">
+
+                <!-- Movie Card row -->
+                <div>
+                    <img src="@Model.PosterUrl" class="card-img-top" />
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <h1 class="text-white">
+                            @Model.Title
+                        </h1>
+                        <small class="text-muted"> @Model.Tagline </small>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-4 text-secondary font-weight-bold mt-2">
+                        @Model.RunTime m | @Model.ReleaseDate.Value.Date.Year
+                    </div>
+                    <div class="col-8">
+
+                        @foreach (var genre in Model.Genres)
+                        {
+                            <a class="badge badge-pill badge-dark ml-1" asp-action="Genre" asp-route-id="@genre.Id">
+                                @genre.Name
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4 mt-3">
+                        <h4>
+                            <span class="badge badge-warning">
+                                @Model.Rating
+                            </span>
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-light mt-2">
+                        @Model.Overview
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 mt-4 offset-1">
+                <ul class="list-group">
+                    <li class="list-group-item">
+
+
+                    </li>
+                    <li class="list-group-item">
+                        <button type="button"
+                                class="btn btn-outline-light btn-lg btn-block btn-sm">
+                            <i class="far fa-edit mr-1"></i>
+                            REVIEW
+                        </button>
+                    </li>
+                    <li class="list-group-item">
+                        <button type="button"
+                                class="btn btn-outline-light btn-lg btn-block btn-sm">
+                            <i class="fas fa-play mr-1"></i> TRAILER
+                        </button>
+                    </li>
+
+                    <li class="list-group-item">
+                        <button type="button" class="btn btn-light btn-lg btn-block btn-sm">
+                            BUY @Model.Price
+                        </button>
+
+                        <button type="button" class="btn btn-light btn-lg btn-block btn-sm">
+                            WATCH MOVIE
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
