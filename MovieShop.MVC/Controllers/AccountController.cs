@@ -27,6 +27,11 @@ namespace MovieShop.MVC.Controllers
             _logger = logger;
         }
 
+        public async Task<IActionResult> Register()
+        {
+            return View();
+        }
+
         [HttpGet]
         public ActionResult Login()
         {

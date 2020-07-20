@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 namespace MovieShop.Core.Models.Request
 {
     // https://liftcodeplay.files.wordpress.com/2017/07/regexrequirement.png

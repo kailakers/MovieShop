@@ -167,6 +167,12 @@
 <!-- Modal -->
 <form method="post" asp-controller="User" asp-action="CreatePurchase">
     <div class="modal fade" id="buyMovieModal" tabindex="-1" role="dialog" aria-labelledby="buyMovieModal" aria-hidden="true">
+        
+        @*@if (!User.Identity.IsAuthenticated)
+        {
+            var redirectToActionResult = new RedirectToActionResult("Login", "Account", null);
+
+        }*@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

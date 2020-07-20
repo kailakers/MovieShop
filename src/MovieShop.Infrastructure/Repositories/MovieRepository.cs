@@ -81,7 +81,8 @@ namespace MovieShop.Infrastructure.Repositories
                                         .ThenInclude(m => m.Genre)
                                         .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null) return null;
-            var movieRating = await _dbContext.Reviews.Where(r => r.MovieId == id).AverageAsync(r => r.Rating);
+            var movieRating = await _dbContext.Reviews.Where(r => r.MovieId == id).DefaultIfEmpty()
+                                              .AverageAsync(r => r == null ? 0 : r.Rating);
             if (movieRating > 0) movie.Rating = movieRating;
 
             return movie;
