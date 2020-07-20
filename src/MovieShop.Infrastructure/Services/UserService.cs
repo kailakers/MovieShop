@@ -148,7 +148,7 @@ namespace MovieShop.Infrastructure.Services
         {
             if (_currentUserService.UserId != purchaseRequest.UserId)
                 throw new HttpException(HttpStatusCode.Unauthorized, "You are not Authorized to purchase");
-
+            if (_currentUserService.UserId != null) purchaseRequest.UserId = _currentUserService.UserId.Value;
             // See if Movie is already purchased.
             if (await IsMoviePurchased(purchaseRequest))
                 throw new ConflictException("Movie already Purchased");

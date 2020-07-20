@@ -1,6 +1,7 @@
 ﻿@using System.Globalization
+@using MovieShop.Core.ServiceInterfaces
 @model MovieShop.Core.Models.Response.MovieDetailsResponseModel
-
+@inject ICurrentUserService UserService
 <div class="bg-image" style="background-image: url(@Model.BackdropUrl)">
 
     <div class="row">
@@ -8,7 +9,7 @@
 
             <!-- Movie Card row -->
             <div>
-                <img src="@Model.PosterUrl" class="card-img-top"/>
+                <img src="@Model.PosterUrl" class="card-img-top" />
             </div>
 
         </div>
@@ -76,7 +77,7 @@
                 </li>
 
                 <li class="list-group-item">
-                    <button type="button" class="btn btn-light btn-lg btn-block btn-sm">
+                    <button type="button" class="btn btn-light btn-lg btn-block btn-sm" data-toggle="modal" data-target="#buyMovieModal">
                         BUY @Model.Price
                     </button>
 
@@ -109,7 +110,7 @@
                 <i class="far fa-money-bill-alt"></i> Box Office
                 <span class="badge badge-pill badge-pill badge-dark">
                     @NumberFormatInfo.CurrentInfo.CurrencySymbol
-                    @Model.Revenue.Value.ToString("C0")
+                    @Model.Revenue?.ToString("C0")
                 </span>
             </li>
 
@@ -117,7 +118,7 @@
                 <i class="fas fa-dollar-sign mr-2"></i> Budget
                 <span class="badge badge-pill badge-dark">
                     @NumberFormatInfo.CurrentInfo.CurrencySymbol
-                    @Model.Budget.Value.ToString("C0")
+                    @Model.Budget?.ToString("C0")
                 </span>
             </li>
 
@@ -142,18 +143,18 @@
             <tbody>
 
 
-            @foreach (var cast in Model?.Casts)
-            {
-                <tr>
-                    <td>
-                        <img src="@cast.ProfilePath"
-                             class="cast-small-img rounded-circle"
-                             alt="@cast.Name"/>
-                    </td>
-                    <td> @cast.Name </td>
-                    <td> @cast.Character</td>
-                </tr>
-            }
+                @foreach (var cast in Model?.Casts)
+                {
+                    <tr>
+                        <td>
+                            <img src="@cast.ProfilePath"
+                                 class="cast-small-img rounded-circle"
+                                 alt="@cast.Name" />
+                        </td>
+                        <td> @cast.Name </td>
+                        <td> @cast.Character</td>
+                    </tr>
+                }
 
 
             </tbody>
@@ -161,3 +162,36 @@
 
     </div>
 </div>
+
+
+<!-- Modal -->
+<form method="post" asp-controller="User" asp-action="CreatePurchase">
+    <div class="modal fade" id="buyMovieModal" tabindex="-1" role="dialog" aria-labelledby="buyMovieModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p>Are you sure you wanna buy</p>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="modal-title" id="exampleModalLabel">@Model.Title which is $@Model.Price </h5>
+                </div>
+                <input type="hidden" value="@Model.Id" name="MovieId" />
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <input type="hidden" value="@UserService.UserId" name="UserId" />
+
+                }
+
+                <div class="modal-footer">
+                    <input type="submit" value="YES" class="btn btn-primary" />
+                    <input type="button" class="btn btn-outline-dark" data-dismiss="modal" value="NO" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
