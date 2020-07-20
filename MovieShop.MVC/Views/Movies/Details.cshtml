@@ -9,7 +9,7 @@
 
             <!-- Movie Card row -->
             <div>
-                <img src="@Model.PosterUrl" class="card-img-top" />
+                <img src="@Model.PosterUrl" class="card-img-top"/>
             </div>
 
         </div>
@@ -143,18 +143,18 @@
             <tbody>
 
 
-                @foreach (var cast in Model?.Casts)
-                {
-                    <tr>
-                        <td>
-                            <img src="@cast.ProfilePath"
-                                 class="cast-small-img rounded-circle"
-                                 alt="@cast.Name" />
-                        </td>
-                        <td> @cast.Name </td>
-                        <td> @cast.Character</td>
-                    </tr>
-                }
+            @foreach (var cast in Model?.Casts)
+            {
+                <tr>
+                    <td>
+                        <img src="@cast.ProfilePath"
+                             class="cast-small-img rounded-circle"
+                             alt="@cast.Name"/>
+                    </td>
+                    <td> @cast.Name </td>
+                    <td> @cast.Character</td>
+                </tr>
+            }
 
 
             </tbody>
@@ -179,17 +179,16 @@
                 <div class="modal-body">
                     <h5 class="modal-title" id="exampleModalLabel">@Model.Title which is $@Model.Price </h5>
                 </div>
-                <input type="hidden" value="@Model.Id" name="MovieId" />
+                <input type="hidden" value="@Model.Id" name="MovieId"/>
 
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <input type="hidden" value="@UserService.UserId" name="UserId" />
-
+                    <input type="hidden" value="@UserService.UserId" name="UserId"/>
                 }
 
                 <div class="modal-footer">
-                    <input type="submit" value="YES" class="btn btn-primary" />
-                    <input type="button" class="btn btn-outline-dark" data-dismiss="modal" value="NO" />
+                    <input type="submit" value="YES" class="btn btn-primary"/>
+                    <input type="button" class="btn btn-outline-dark" data-dismiss="modal" value="NO"/>
                 </div>
             </div>
         </div>
