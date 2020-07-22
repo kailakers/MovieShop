@@ -56,7 +56,9 @@ namespace MovieShop.MVC
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+              //  app.UseDeveloperExceptionPage();
+               // app.UseExceptionHandler("/Home/Error");
+               app.UseMovieShopExceptionMiddleware();
             }
             else
             {

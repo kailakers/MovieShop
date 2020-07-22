@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>MovieShop.Infrastructure</AssemblyName>
     <RootNamespace>MovieShop.Infrastructure</RootNamespace>
   </PropertyGroup>
@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
@@ -25,6 +26,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MovieShop.Core\MovieShop.Core.csproj" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+
   </ItemGroup>
 
 </Project>
