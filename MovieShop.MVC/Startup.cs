@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using MovieShop.Core.MappingProfiles;
 using MovieShop.Infrastructure.Data;
 using MovieShop.Infrastructure.Helpers;
+using MovieShop.MVC.Infrastructure;
 
 namespace MovieShop.MVC
 {
@@ -64,6 +65,8 @@ namespace MovieShop.MVC
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseCustomMiddleware();
             app.UseStaticFiles();
 
             app.UseRouting();

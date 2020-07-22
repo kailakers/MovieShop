@@ -1,24 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MovieShop.Core.Exceptions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 
-namespace MovieShop.Infrastructure.Helpers
+namespace MovieShop.MVC.Infrastructure
 {
+    //Note that the order in which you register middleware in your application’s request pipeline matters.The various middleware components execute sequentially
+    //in the order in which they’re registered. In the case of a global exception handler like our ErrorHandlingMiddleware, we’ll register it early in the Configure(..)
+    //method so that it captures exceptions that occur in downstream middleware components.
+
+
     public class MovieShopExceptionMiddleware
     {
         private readonly ILogger<MovieShopExceptionMiddleware> _logger;
         private readonly RequestDelegate _next;
+        public static readonly object HttpContextItemsMiddlewareKey = new Object();
 
         public MovieShopExceptionMiddleware(RequestDelegate next, ILogger<MovieShopExceptionMiddleware> logger)
         {
@@ -28,53 +27,34 @@ namespace MovieShop.Infrastructure.Helpers
 
         public async Task Invoke(HttpContext httpContext)
         {
+            _logger.LogInformation("My MovieShopExceptionMiddleware BEFORE");
             try
             {
+                _logger.LogInformation("My MovieShopExceptionMiddleware went through");
                 await _next(httpContext);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong in ExceptionMiddleware: {ex}");
+                _logger.LogError($"Catching exception in ExceptionMiddleware: {ex}");
                 await HandleExceptionAsync(httpContext, ex);
             }
+        //    await _next(httpContext);
+             _logger.LogInformation("My MovieShopExceptionMiddleware AFTER");
         }
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+          //  context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
             _logger.LogInformation($"Request completed with status code: {context.Response.StatusCode} ");
             _logger.LogError($"Something went wrong: {exception}");
-            var env = context.RequestServices.GetRequiredService<IWebHostEnvironment>();
-            string result;
-            var matchText = "JSON";
-
-            bool requiresJsonResponse = context.Request
-                .GetTypedHeaders()
-                .Accept
-                .Any(t => t.Suffix.Value?.ToUpper() == matchText
-                          || t.SubTypeWithoutSuffix.Value?.ToUpper() == matchText);
-
-            if (env.IsDevelopment())
-            {
-                var errorDetails = new ErrorResponseModel
-                {
-                    ExceptionMessage = exception.Message,
-                    ExceptionStackTrace = exception.StackTrace,
-                    InnerExceptionMessage = exception.InnerException?.Message
-                };
-                result = JsonSerializer.Serialize(new {errors = errorDetails});
-
-                if (!requiresJsonResponse)
-                {
-                    context.Items.Add("ErrorDetails", errorDetails);
-                }
-            }
-            else
-            {
-                result = JsonSerializer.Serialize(new {errors = exception.Message});
-            }
-
+            var errorDetails = new ErrorResponseModel
+                               {
+                                   ExceptionMessage = exception.Message,
+                                   ExceptionStackTrace = exception.StackTrace,
+                                   InnerExceptionMessage = exception.InnerException?.Message
+                               };
+            context.Items.Add("ErrorDetails", errorDetails);
+            context.Items["test"] = "testdata";
             switch (exception)
             {
                 case BadRequestException _:
@@ -98,16 +78,10 @@ namespace MovieShop.Infrastructure.Helpers
                     break;
             }
 
-            if (requiresJsonResponse)
-            {
-                context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(result);
-            }
-            else
-            {
-                context.Items["test"] = "testdata";
-                context.Response.Redirect("/Home/Error");
-            }
+            context.Items[HttpContextItemsMiddlewareKey] = "K-9";
+            context.Response.Redirect("/Home/Error");
+            await Task.CompletedTask;
+
         }
     }
 

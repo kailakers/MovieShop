@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MovieShop.Core.Exceptions;
 using MovieShop.Core.ServiceInterfaces;
+using MovieShop.MVC.Infrastructure;
 using MovieShop.MVC.Models;
 
 namespace MovieShop.MVC.Controllers
@@ -22,6 +23,7 @@ namespace MovieShop.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
+            _logger.LogInformation("Index method called");
             var topGrossingMovies = await _movieService.GetHighestGrossingMovies();
             return View(topGrossingMovies);
         }
@@ -31,10 +33,11 @@ namespace MovieShop.MVC.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            var errorDetails = HttpContext.Items["test"];
+            var errorDetails = HttpContext.Items["ErrorDetails"];
+            HttpContext.Items.TryGetValue(MovieShopExceptionMiddleware.HttpContextItemsMiddlewareKey, out var data);
+            var log = data;
             return View(new ErrorViewModel
             {
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
