@@ -10,9 +10,10 @@ namespace MovieShop.MVC
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-                         .Enrich.FromLogContext()
-                         .WriteTo.Console()
-                         .CreateLogger();
+                .Enrich.FromLogContext()
+                .WriteTo.File("logs\\myapp.txt", rollingInterval: RollingInterval.Day)
+                //.WriteTo.File(new RenderedCompactJsonFormatter(), "logs\\log.ndjson")
+                .CreateLogger();
 
             try
             {
@@ -32,11 +33,8 @@ namespace MovieShop.MVC
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
-                       .UseSerilog()
-                       .ConfigureWebHostDefaults(webBuilder =>
-                       {
-                           webBuilder.UseStartup<Startup>();
-                       });
+                .UseSerilog()
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
         }
     }
 }

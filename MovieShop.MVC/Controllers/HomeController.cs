@@ -29,15 +29,15 @@ namespace MovieShop.MVC.Controllers
         }
 
         public IActionResult Privacy()
+
+
         {
-            return View();
+           
         }
 
         public IActionResult Error()
         {
             var errorDetails = HttpContext.Items["ErrorDetails"];
-            HttpContext.Items.TryGetValue(MovieShopExceptionMiddleware.HttpContextItemsMiddlewareKey, out var data);
-            var log = data;
             return View(new ErrorViewModel
             {
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,

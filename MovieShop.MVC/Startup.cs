@@ -66,7 +66,6 @@ namespace MovieShop.MVC
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseCustomMiddleware();
             app.UseStaticFiles();
 
             app.UseRouting();

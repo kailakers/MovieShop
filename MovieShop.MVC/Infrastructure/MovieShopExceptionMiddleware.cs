@@ -54,7 +54,6 @@ namespace MovieShop.MVC.Infrastructure
                                    InnerExceptionMessage = exception.InnerException?.Message
                                };
             context.Items.Add("ErrorDetails", errorDetails);
-            context.Items["test"] = "testdata";
             switch (exception)
             {
                 case BadRequestException _:
@@ -78,7 +77,6 @@ namespace MovieShop.MVC.Infrastructure
                     break;
             }
 
-            context.Items[HttpContextItemsMiddlewareKey] = "K-9";
             context.Response.Redirect("/Home/Error");
             await Task.CompletedTask;
 
