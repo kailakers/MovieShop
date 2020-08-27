@@ -26,6 +26,7 @@ namespace MovieShop.UnitTests
         private List<Movie> _movies;
 
 
+        
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
@@ -87,6 +88,8 @@ namespace MovieShop.UnitTests
             Assert.NotNull(movies);
             Assert.That(movies.Count(), Is.EqualTo(16));
             CollectionAssert.AllItemsAreInstancesOfType(movies, typeof(MovieResponseModel));
+
+            
         }
     }
 }

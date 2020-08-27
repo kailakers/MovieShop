@@ -28,13 +28,7 @@ namespace MovieShop.MVC.Controllers
             return View(topGrossingMovies);
         }
 
-        public IActionResult Privacy()
-
-
-        {
-           
-        }
-
+      
         public IActionResult Error()
         {
             var errorDetails = HttpContext.Items["ErrorDetails"];
