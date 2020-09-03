@@ -10,14 +10,12 @@ namespace MovieShop.API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IConfiguration _config;
         private readonly IJwtService _jwtService;
         private readonly IUserService _userService;
 
-        public AccountController(IUserService userService, IConfiguration config, IJwtService jwtService)
+        public AccountController(IUserService userService, IJwtService jwtService)
         {
             _userService = userService;
-            _config = config;
             _jwtService = jwtService;
         }
 
